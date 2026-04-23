@@ -7,7 +7,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "tsc && vite build",
+    "format:blade": "prettier --write \"resources/views/**/*.blade.php\"",
+    "format:blade:check": "prettier --check \"resources/views/**/*.blade.php\"",
+    "typecheck": "tsc --noEmit",
     "translate": "npm run translate:pot && npm run translate:update",
     "translate:pot": "wp i18n make-pot . ./resources/lang/sage.pot --include=\"theme.json,patterns,app,resources\"",
     "translate:update": "for file in ./resources/lang/*.po; do wp i18n update-po ./resources/lang/sage.pot $file; done",
@@ -16,10 +19,33 @@
     "translate:mo": "wp i18n make-mo ./resources/lang ./resources/lang"
   },
   "devDependencies": {
+    "@prettier/plugin-php": "^0.25.0",
     "@roots/vite-plugin": "^2.0.0",
+    "@tailwindcss/typography": "^0.5.19",
     "@tailwindcss/vite": "^4.0.0",
+    "@types/node": "^25.6.0",
+    "@types/wordpress__block-editor": "^15.0.6",
+    "@wordpress/block-editor": "^15.17.0",
+    "@wordpress/blocks": "^15.17.0",
+    "@wordpress/components": "^32.6.0",
+    "@wordpress/core-data": "^7.44.0",
+    "@wordpress/dom-ready": "^4.44.0",
+    "@wordpress/element": "^6.44.0",
+    "@wordpress/server-side-render": "^6.20.0",
     "laravel-vite-plugin": "^3.0.0",
+    "prettier": "^3.8.3",
+    "prettier-plugin-blade": "^3.1.5",
+    "prettier-plugin-tailwindcss": "^0.7.2",
     "tailwindcss": "^4.0.0",
-    "vite": "^8.0.0"
+    "typescript": "^6.0.3",
+    "vite": "^8.0.0",
+    "vite-plugin-webfont-dl": "^3.11.1"
+  },
+  "dependencies": {
+    "@alpinejs/collapse": "^3.15.11",
+    "@types/wordpress__server-side-render": "^6.15.0",
+    "alpinejs": "^3.15.11",
+    "lightgallery": "^2.9.0",
+    "swiper": "^12.1.0"
   }
 }

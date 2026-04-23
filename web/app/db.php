@@ -1,0 +1,1 @@
+D:/LocalSites/kwiaty-bukiety-bedrock/app/public/web/app/plugins/query-monitor/wp-content/db.php

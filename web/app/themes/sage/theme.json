@@ -1,7 +1,20 @@
 {
-  "__preprocessed__": "This file is used to build the theme.json file in the `public/build/assets` directory. The built artifact includes Tailwind's colors, fonts, and font sizes.",
   "$schema": "https://schemas.wp.org/trunk/theme.json",
   "version": 3,
+  "styles": {
+    "elements": {
+      "link": {
+        ":hover": {
+          "typography": {
+            "textDecoration": "none"
+          }
+        },
+        "typography": {
+          "textDecoration": "none"
+        }
+      }
+    }
+  },
   "settings": {
     "layout": {
       "contentSize": "48rem"

@@ -1,9 +1,9 @@
-@props([
+@props ([
   'type' => null,
   'message' => null,
 ])
 
-@php($class = match ($type) {
+@php ($class = match ($type) {
   'success' => 'text-green-50 bg-green-400',
   'caution' => 'text-yellow-50 bg-yellow-400',
   'warning' => 'text-red-50 bg-red-400',

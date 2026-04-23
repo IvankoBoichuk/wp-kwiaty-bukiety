@@ -1,4 +1,69 @@
-@import "tailwindcss" theme(static);
-@source "../../app/**/*.php";
-@source "../**/*.blade.php";
-@source "../**/*.js";
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Galada&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&display=swap');
+@import 'tailwindcss';
+@import './typography.css';
+@plugin '@tailwindcss/typography';
+
+@source '../../app/**/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@theme {
+  /* Primary brand colors - customize these for your project */
+  --color-primary: #0c3421;
+  --color-primary-dark: #03130b;
+  --color-secondary: #e5efde;
+  --color-accent: #e8e8db;
+
+  /* From Design System */
+  --color-purple: #6c5b7b;
+  --color-purple-dark: #484d6f;
+  --color-purple-light: #b19bc5;
+  --color-purple-easy: #b19bc5;
+  --color-green-default: #0c4a2c;
+  --color-green-dark: #0c3421;
+  --color-green-easy: #6d9586;
+
+  /* Neutral colors */
+  --color-background: #fcf9f6;
+  --color-gray-6: #f2f2f2;
+  --color-gray-4: #bdbdbd;
+  --color-gray-3: #828282;
+  --color-gray-2: #4f4f4f;
+  --color-gray-1: #333333;
+  --color-dark-text: #0c4a2c;
+
+  /* Fonts - replace with your project fonts */
+  --font-main: 'Raleway', system-ui, -apple-system, sans-serif;
+  --font-deco: 'Galada', system-ui, -apple-system, sans-serif;
+  --font-heading: 'Cormorant Garamond', serif;
+
+  /* Shadows */
+  --shadow-100: 0px 1px 4px rgba(12, 12, 13, 0.05);
+}
+
+/* Base styles */
+@layer base {
+  :root {
+    /* Swiper configuration */
+    --swiper-pagination-color: var(--color-purple-easy);
+    --swiper-pagination-bullet-horizontal-gap: 2.5px;
+    --swiper-pagination-bullet-size: 8px;
+    --swiper-pagination-bullet-border-radius: 12px;
+    --swiper-pagination-bullet-inactive-opacity: 1;
+    --swiper-pagination-bullet-inactive-color: var(--color-purple-easy);
+  }
+
+  body {
+    @apply bg-background font-main text-dark-text text-[14px] lining-nums sm:text-[16px];
+  }
+
+  .swiper-pagination-bullet {
+    @apply transition-all duration-300 ease-in-out;
+  }
+
+  .swiper-pagination-bullet-active {
+    --swiper-pagination-bullet-width: 16px;
+  }
+}

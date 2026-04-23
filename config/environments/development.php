@@ -15,6 +15,7 @@ Config::define('WP_DEBUG_LOG', env('WP_DEBUG_LOG') ?? true);
 Config::define('WP_DISABLE_FATAL_ERROR_HANDLER', true);
 Config::define('SCRIPT_DEBUG', true);
 Config::define('DISALLOW_INDEXING', true);
+Config::define('WP_MEMORY_LIMIT', -1);
 
 ini_set('display_errors', '1');
 

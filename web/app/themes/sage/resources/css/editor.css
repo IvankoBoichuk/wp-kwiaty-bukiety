@@ -1,1 +1,44 @@
+@import "./fonts.css";
 @import "tailwindcss";
+@import "./typography.css";
+
+@theme {
+	--color-primary: #0c3421;
+	--color-primary-dark: #03130b;
+	--color-secondary: #e5efde;
+	--color-accent: #e8e8db;
+	--color-purple: #6c5b7b;
+	--color-purple-dark: #484d6f;
+	--color-purple-light: #b19bc5;
+	--color-purple-easy: #b19bc5;
+	--color-green-default: #0c4a2c;
+	--color-green-dark: #0c3421;
+	--color-green-easy: #6d9586;
+	--color-background: #fcf9f6;
+	--color-gray-6: #f2f2f2;
+	--color-gray-4: #bdbdbd;
+	--color-gray-3: #828282;
+	--color-gray-2: #4f4f4f;
+	--color-gray-1: #333333;
+	--color-dark-text: #0c4a2c;
+	--font-main: "Raleway", system-ui, -apple-system, sans-serif;
+	--font-deco: "Galada", system-ui, -apple-system, sans-serif;
+	--font-heading: "Cormorant Garamond", serif;
+	--shadow-100: 0px 1px 4px rgba(12, 12, 13, 0.05);
+}
+
+@layer base {
+	body {
+		@apply bg-background font-main text-dark-text;
+	}
+}
+
+@layer components {
+	.wp-block[data-type^="sage/"] {
+		max-width: none;
+	}
+
+	.kb-home-block-preview {
+		@apply overflow-hidden rounded-2xl border border-[#e7e1d8] bg-background;
+	}
+}

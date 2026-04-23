@@ -1,11 +1,12 @@
 import { defineConfig } from 'vite'
 import tailwindcss from '@tailwindcss/vite';
 import laravel from 'laravel-vite-plugin'
+import webfontDownload from 'vite-plugin-webfont-dl'
 import { wordpressPlugin, wordpressThemeJson } from '@roots/vite-plugin';
 
 // Set APP_URL if it doesn't exist for Laravel Vite plugin
-if (! process.env.APP_URL) {
-  process.env.APP_URL = 'http://example.test';
+if (!process.env.APP_URL) {
+  process.env.APP_URL = 'http://localhost:10059';
 }
 
 export default defineConfig({
@@ -14,10 +15,9 @@ export default defineConfig({
     tailwindcss(),
     laravel({
       input: [
-        'resources/css/app.css',
-        'resources/js/app.js',
+        'resources/js/app.ts',
         'resources/css/editor.css',
-        'resources/js/editor.js',
+        'resources/js/editor.ts',
       ],
       refresh: true,
       assets: ['resources/images/**', 'resources/fonts/**'],
@@ -33,9 +33,15 @@ export default defineConfig({
       disableTailwindFontSizes: false,
       disableTailwindBorderRadius: false,
     }),
+
+    webfontDownload([], {
+      assetsSubfolder: 'fonts',
+      subsetsAllowed: ['latin']
+    }),
   ],
   resolve: {
     alias: {
+      '@': '/resources/js',
       '@scripts': '/resources/js',
       '@styles': '/resources/css',
       '@fonts': '/resources/fonts',
