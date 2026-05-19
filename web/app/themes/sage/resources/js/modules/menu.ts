@@ -1,10 +1,6 @@
 import Alpine from 'alpinejs';
-import collapse from '@alpinejs/collapse';
 
 export function initMenu() {
-  // Register collapse plugin
-  Alpine.plugin(collapse);
-
   Alpine.data('mobileMenu', () => ({
     isOpen: false,
 
@@ -42,6 +38,4 @@ export function initMenu() {
       return this.activeItem === id;
     }
   }));
-
-  Alpine.start();
 }

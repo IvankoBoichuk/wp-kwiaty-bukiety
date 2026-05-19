@@ -14,11 +14,12 @@ the readme will list any important changes.
 @version     1.6.4
 --}}
 
-@extends ('layouts.app')
+@extends('layouts.app')
 
-@section ('content')
+@section('content')
+  {{-- <main id="product" class="flex flex-col grow gap-12 pb-12 md:pt-4 lg:gap-25 lg:pt-8 lg:pb-25 bg-[#FCF9F6]"> --}}
+  {{-- </main> --}}
   @php
-    do_action('get_header', 'shop');
     do_action('woocommerce_before_main_content');
   @endphp
   @while (have_posts())
@@ -29,7 +30,5 @@ the readme will list any important changes.
   @endwhile
   @php
     do_action('woocommerce_after_main_content');
-    do_action('get_sidebar', 'shop');
-    do_action('get_footer', 'shop');
   @endphp
 @endsection

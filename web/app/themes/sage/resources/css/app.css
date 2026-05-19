@@ -66,4 +66,65 @@
   .swiper-pagination-bullet-active {
     --swiper-pagination-bullet-width: 16px;
   }
+
+  .woocommerce-breadcrumb {
+    @apply sr-only;
+  }
+}
+
+@layer components {
+  .single-product-order-panel form.cart {
+    @apply flex flex-col gap-4;
+  }
+
+  .single-product-order-panel .variations {
+    @apply w-full border-separate border-spacing-0;
+  }
+
+  .single-product-order-panel .variations tbody {
+    @apply flex flex-col gap-3;
+  }
+
+  .single-product-order-panel .variations tr {
+    @apply flex flex-col gap-2;
+  }
+
+  .single-product-order-panel .variations label {
+    @apply text-body-14 text-green-default font-medium;
+  }
+
+  .single-product-order-panel .variations select {
+    @apply text-body-13 bg-background text-green-default focus:border-green-easy w-full rounded-xl border border-[#E0E0D7] px-3 py-2.5 focus:outline-none;
+  }
+
+  .single-product-order-panel .reset_variations {
+    @apply text-body-13 text-[#2F80ED];
+  }
+
+  .single-product-order-panel .woocommerce-variation-price,
+  .single-product-order-panel .price {
+    @apply text-green-default text-[22px] leading-none font-semibold;
+  }
+
+  .single-product-order-panel .quantity .qty {
+    @apply bg-background text-green-default focus:border-green-easy w-full rounded-xl border border-[#E0E0D7] px-3 py-2.5 focus:outline-none;
+  }
+
+  .single-product-order-panel .woocommerce-variation-add-to-cart,
+  .single-product-order-panel .cart {
+    @apply flex flex-col gap-3;
+  }
+
+  .single-product-order-panel .single_add_to_cart_button {
+    @apply border-green-default bg-green-dark text-gray-6 inline-flex w-full items-center justify-center gap-2 rounded-full border-2 px-8 py-4 text-[13px] font-semibold uppercase transition-all duration-200;
+  }
+
+  .single-product-order-panel .stock {
+    @apply text-body-13 text-green-easy;
+  }
+
+  .single-product-order-panel .woocommerce-variation-description,
+  .single-product-order-panel .woocommerce-product-details__short-description {
+    @apply text-body-13 text-green-default;
+  }
 }
