@@ -17,14 +17,13 @@
     "
   />
   <noscript><link rel="stylesheet" href="{{ $webfonts }}" /></noscript>
-  @vite(['resources/js/app.ts'])
 </head>
 
 <body @php(body_class()) x-data="mobileMenu">
   @php(wp_body_open())
 
-  <div id="app">
-    <a class="sr-only focus:not-sr-only" href="#main"> {{ __('Skip to content', 'sage') }} </a>
+  <div id="app" class="container mx-auto px-3">
+    <a class="sr-only focus:not-sr-only" href="#main"> {{ __('Skip to content', 'sage-front') }} </a>
 
     @include('sections.header')
 

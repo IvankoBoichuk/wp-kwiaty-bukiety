@@ -2,8 +2,9 @@ import type { ProductPlugin, ProductPurchaseAddition, ProductPurchaseStore } fro
 
 export class AdditionsPlugin implements ProductPlugin {
     pluginName = 'additions'
+
     init(store: ProductPurchaseStore): void {
-        const additionButtons = document.querySelectorAll<HTMLButtonElement>('.addition-toggle')
+        const additionCheckboxes = document.querySelectorAll<HTMLInputElement>('.addition-checkbox')
         const additionContainers = document.querySelectorAll<HTMLElement>('[data-addition-inputs]')
 
         const syncAdditionInputs = (additionId: string, isSelected: boolean): void => {
@@ -31,21 +32,11 @@ export class AdditionsPlugin implements ProductPlugin {
             })
         }
 
-        additionButtons.forEach((btn) => {
-            btn.addEventListener('click', () => {
-                const parent = btn.closest('.group')
-
-                if (!parent) {
-                    return
-                }
-
-                const isSelected = btn.dataset.selected === 'true'
-                const nextSelectedState = !isSelected
-                const plusIcon = btn.querySelector('.addition-icon-plus')
-                const minusIcon = btn.querySelector('.addition-icon-minus')
-                const additionId = Number(btn.dataset.additionId)
-                const additionPrice = Number(btn.dataset.additionPrice ?? '0')
-                const additionName = btn.dataset.additionName ?? ''
+        additionCheckboxes.forEach((checkbox) => {
+            const syncCheckboxState = (): void => {
+                const additionId = Number(checkbox.dataset.additionId)
+                const additionPrice = Number(checkbox.dataset.additionPrice ?? '0')
+                const additionName = checkbox.dataset.additionName ?? ''
 
                 if (additionId > 0 && additionName !== '') {
                     const addition: ProductPurchaseAddition = {
@@ -54,24 +45,14 @@ export class AdditionsPlugin implements ProductPlugin {
                         price: Number.isFinite(additionPrice) ? additionPrice : 0,
                     }
 
-                    store.setAddition(addition, nextSelectedState)
+                    store.setAddition(addition, checkbox.checked)
                 }
 
-                if (isSelected) {
-                    btn.dataset.selected = 'false'
-                    plusIcon?.classList.remove('hidden')
-                    minusIcon?.classList.add('hidden')
-                    parent.classList.remove('active')
-                    syncAdditionInputs(btn.dataset.additionId ?? '', false)
-                    return
-                }
+                syncAdditionInputs(checkbox.dataset.additionId ?? '', checkbox.checked)
+            }
 
-                btn.dataset.selected = 'true'
-                plusIcon?.classList.add('hidden')
-                minusIcon?.classList.remove('hidden')
-                parent.classList.add('active')
-                syncAdditionInputs(btn.dataset.additionId ?? '', true)
-            })
+            syncCheckboxState()
+            checkbox.addEventListener('change', syncCheckboxState)
         })
     }
 }

@@ -9,7 +9,12 @@ use WC_Product_Variable;
 
 final class SingleProductView
 {
-    public function __construct(public readonly WC_Product $product) {}
+    private ProductData $data;
+
+    public function __construct(public readonly WC_Product $product)
+    {
+        $this->data = new ProductData($product);
+    }
 
     /**
      * @return array<string, mixed>
@@ -23,32 +28,16 @@ final class SingleProductView
             'shortDescription' => (string) $this->product->get_short_description(),
             'description' => (string) $this->product->get_description(),
             'sku' => (string) $this->product->get_sku(),
-            'badges' => $this->badges(),
+            'badges' => $this->data->badges(),
             'gallery' => $this->gallery(),
             'variations' => $this->variations(),
-            'additions' => $this->upsells(),
+            'availableVariations' => $this->availableVariations(),
+            'isVariable' => $this->product instanceof WC_Product_Variable,
+            'additions' => $this->crossSells(),
             'reviews' => $this->reviews(),
             'reviewCount' => (int) $this->product->get_review_count(),
             'averageRating' => (float) $this->product->get_average_rating(),
         ];
-    }
-
-    /**
-     * @return array<int, string>
-     */
-    protected function badges(): array
-    {
-        $badges = [];
-
-        if ($this->product->is_on_sale()) {
-            $badges[] = __('Promocja', 'sage-front');
-        }
-
-        if ($this->product->is_featured()) {
-            $badges[] = __('Polecany', 'sage-front');
-        }
-
-        return $badges;
     }
 
     /**
@@ -95,6 +84,18 @@ final class SingleProductView
                 'sizes' => $image->sizes(),
             ];
         }, $imageIds);
+    }
+
+    /**
+     * @return array<int, array<string, mixed>>
+     */
+    protected function availableVariations(): array
+    {
+        if (!($this->product instanceof WC_Product_Variable)) {
+            return [];
+        }
+
+        return $this->product->get_available_variations();
     }
 
     /**
@@ -162,7 +163,7 @@ final class SingleProductView
     /**
      * @return array<int, Product>
      */
-    protected function upsells(): array
+    protected function upSells(): array
     {
         $products = [];
 
@@ -176,28 +177,33 @@ final class SingleProductView
 
         return $products;
     }
-
     /**
-     * @return array<int, array<string, int|float|string>>
+     * @return array<int, Product>
      */
-    protected function reviews(): array
+    protected function crossSells(): array
     {
-        $comments = get_comments([
-            'post_id' => $this->product->get_id(),
-            'status' => 'approve',
-            'type' => 'review',
-            'number' => 4,
-        ]);
+        $products = [];
 
-        $reviews = [];
+        foreach ($this->product->get_cross_sell_ids() as $id) {
+            $crossSell = wc_get_product($id);
 
-        foreach ($comments as $comment) {
-            if ($comment instanceof \WP_Comment) {
-                $reviews[] = Review::fromWordPressComment($comment)->toArray();
+            if ($crossSell instanceof WC_Product) {
+                $products[] = Product::fromWooCommerce($crossSell);
             }
         }
 
-        return $reviews;
+        return $products;
+    }
+
+    /**
+     * @return array<int, Review>
+     */
+    protected function reviews(): array
+    {
+        return array_map(
+            fn(\WP_Comment $comment) => Review::fromWordPressComment($comment),
+            $this->data->approvedReviewComments(),
+        );
     }
 
     /**
@@ -205,17 +211,6 @@ final class SingleProductView
      */
     public function relatedProducts(int $limit = 6): array
     {
-        $products = [];
-        $relatedIds = wc_get_related_products($this->product->get_id(), $limit);
-
-        foreach ($relatedIds as $id) {
-            $related = wc_get_product($id);
-
-            if ($related instanceof WC_Product) {
-                $products[] = Product::fromWooCommerce($related);
-            }
-        }
-
-        return $products;
+        return $this->data->relatedProducts($limit);
     }
 }

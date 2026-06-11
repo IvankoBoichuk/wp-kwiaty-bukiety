@@ -34,8 +34,8 @@ class ContactSettingsPage
     public static function registerPage(): void
     {
         self::$pageHook = (string) add_theme_page(
-            __('Contact Settings', 'sage'),
-            __('Contacts', 'sage'),
+            __('Contact Settings', 'sage-back'),
+            __('Contacts', 'sage-back'),
             'manage_options',
             self::PAGE_SLUG,
             [self::class, 'renderPage'],
@@ -211,11 +211,11 @@ class ContactSettingsPage
         $options = self::getOptions();
         ?>
         <div class="wrap sage-contact-settings">
-            <h1><?php echo esc_html__('Contact Settings', 'sage'); ?></h1>
+            <h1><?php echo esc_html__('Contact Settings', 'sage-back'); ?></h1>
             <p class="description">
                 <?php echo esc_html__(
                     'Manage phones, emails, and social network links from one page.',
-                    'sage',
+                    'sage-back',
                 ); ?>
             </p>
 
@@ -226,23 +226,29 @@ class ContactSettingsPage
                     <?php
                     self::renderRepeater(
                         'phones',
-                        __('Phones', 'sage'),
+                        __('Phones', 'sage-back'),
                         __(
                             'Each item contains a label and phone number.',
-                            'sage',
+                            'sage-back',
                         ),
                         [
                             [
                                 'key' => 'label',
-                                'label' => __('Label', 'sage'),
+                                'label' => __('Label', 'sage-back'),
                                 'type' => 'text',
-                                'placeholder' => __('Sales department', 'sage'),
+                                'placeholder' => __(
+                                    'Sales department',
+                                    'sage-back',
+                                ),
                             ],
                             [
                                 'key' => 'number',
-                                'label' => __('Phone number', 'sage'),
+                                'label' => __('Phone number', 'sage-back'),
                                 'type' => 'text',
-                                'placeholder' => __('+48 123 456 789', 'sage'),
+                                'placeholder' => __(
+                                    '+48 123 456 789',
+                                    'sage-back',
+                                ),
                             ],
                         ],
                         $options['phones'],
@@ -250,25 +256,28 @@ class ContactSettingsPage
 
                     self::renderRepeater(
                         'emails',
-                        __('Emails', 'sage'),
+                        __('Emails', 'sage-back'),
                         __(
                             'Each item contains a label and email address.',
-                            'sage',
+                            'sage-back',
                         ),
                         [
                             [
                                 'key' => 'label',
-                                'label' => __('Label', 'sage'),
+                                'label' => __('Label', 'sage-back'),
                                 'type' => 'text',
-                                'placeholder' => __('Customer support', 'sage'),
+                                'placeholder' => __(
+                                    'Customer support',
+                                    'sage-back',
+                                ),
                             ],
                             [
                                 'key' => 'email',
-                                'label' => __('Email', 'sage'),
+                                'label' => __('Email', 'sage-back'),
                                 'type' => 'email',
                                 'placeholder' => __(
                                     'hello@example.com',
-                                    'sage',
+                                    'sage-back',
                                 ),
                             ],
                         ],
@@ -277,22 +286,22 @@ class ContactSettingsPage
 
                     self::renderRepeater(
                         'socials',
-                        __('Social Networks', 'sage'),
-                        __('Select the network and set its URL.', 'sage'),
+                        __('Social Networks', 'sage-back'),
+                        __('Select the network and set its URL.', 'sage-back'),
                         [
                             [
                                 'key' => 'network',
-                                'label' => __('Network', 'sage'),
+                                'label' => __('Network', 'sage-back'),
                                 'type' => 'select',
                                 'options' => self::SOCIAL_NETWORKS,
                             ],
                             [
                                 'key' => 'url',
-                                'label' => __('Link', 'sage'),
+                                'label' => __('Link', 'sage-back'),
                                 'type' => 'url',
                                 'placeholder' => __(
                                     'https://instagram.com/your-profile',
-                                    'sage',
+                                    'sage-back',
                                 ),
                             ],
                         ],
@@ -302,7 +311,7 @@ class ContactSettingsPage
                 </div>
 
                 <div class="sage-contact-settings__submit">
-                    <?php submit_button(__('Save changes', 'sage')); ?>
+                    <?php submit_button(__('Save changes', 'sage-back')); ?>
                 </div>
             </form>
         </div>
@@ -512,7 +521,7 @@ class ContactSettingsPage
                             class="button button-secondary"
                             data-repeater-add
                         >
-                            <?php echo esc_html__('Add item', 'sage'); ?>
+                            <?php echo esc_html__('Add item', 'sage-back'); ?>
                         </button>
                     </div>
 
@@ -546,11 +555,11 @@ class ContactSettingsPage
         ); ?>">
             <div class="sage-repeater__item-header">
                 <p class="sage-repeater__item-title">
-                    <?php echo esc_html__('Item', 'sage'); ?>
+                    <?php echo esc_html__('Item', 'sage-back'); ?>
                 </p>
 
                 <button type="button" class="button-link-delete" data-repeater-remove>
-                    <?php echo esc_html__('Remove', 'sage'); ?>
+                    <?php echo esc_html__('Remove', 'sage-back'); ?>
                 </button>
             </div>
 

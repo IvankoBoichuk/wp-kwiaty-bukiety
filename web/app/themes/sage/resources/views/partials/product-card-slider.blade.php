@@ -1,9 +1,19 @@
 @php
   use App\Blocks\Blocks;
+
+  $wrapperTag = $wrapperTag ?? 'div';
+  $wrapperAttributes = $wrapperAttributes ?? [];
+  $wrapperClass = trim(
+    (string) ($wrapperClass ??
+      'swiper-slide border-background bg-background shadow-100 flex flex-col items-start justify-center border'),
+  );
 @endphp
 
-<div
-  class="swiper-slide border-background bg-background shadow-100 flex flex-col items-start justify-center border"
+<{{ $wrapperTag }}
+  @foreach ($wrapperAttributes as $attribute => $value)
+    {{ $attribute }}="{{ esc_attr($value) }}"
+  @endforeach
+  @class([$wrapperClass])
 >
   <div class="relative w-full">
     <img
@@ -16,13 +26,10 @@
       class="aspect-square size-full object-cover"
     />
 
-    @if ($item->badges !== [])
+    @if (!empty($item->badges))
       <div class="absolute top-1.25 left-1.25 flex flex-wrap gap-1.5">
         @foreach ($item->badges as $badge)
-          <span
-            class="{{ Blocks::badgeClasses((string) $badge) }}"
-            >{{ $badge }}</span
-          >
+          <span class="{{ Blocks::badgeClasses((string) $badge) }}">{{ $badge }}</span>
         @endforeach
       </div>
     @endif
@@ -30,12 +37,12 @@
 
   <div class="text-dark-text px-1 pt-2 pb-3">
     <a
-      href="{{ $item->link }}"
-      target="{{ $item->target }}"
-      class="truncate text-sm font-bold text-wrap uppercase before:absolute before:inset-0"
+      href="{{ esc_url($item->link) }}"
+      target="{{ esc_attr($item->target) }}"
+      class="text-body-13 truncate font-bold text-wrap uppercase before:absolute before:inset-0"
     >
       {{ $item->name }}
     </a>
-    <p>{!! $item->price !!}</p>
+    <p class="text-body-15">{!! $item->price !!}</p>
   </div>
-</div>
+</{{ $wrapperTag }}>

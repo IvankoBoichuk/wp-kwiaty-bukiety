@@ -1,11 +1,16 @@
-@extends ('layouts.app')
+@extends('layouts.app')
 
-@section ('content')
-  @include ('partials.page-header')
+@section('content')
+  @include('partials.page-header')
 
-  @if (! have_posts())
+  @if (!have_posts())
     <x-alert type="warning">
-      {!! __('Sorry, but the page you are trying to view does not exist.', 'sage') !!}
+      {!!
+        __(
+          'Sorry, but the page you are trying to view does not exist.',
+          'sage-front',
+        )
+      !!}
     </x-alert>
     {!! get_search_form(false) !!}
   @endif

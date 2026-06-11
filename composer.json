@@ -45,7 +45,9 @@
     "roots/wp-config": "1.0.0",
     "wp-plugin/woocommerce": "^10.7",
     "wp-plugin/query-monitor": "^4.0",
-    "roots/allow-svg": "^1.0"
+    "roots/allow-svg": "^1.0",
+    "wp-plugin/woo-payu-payment-gateway": "^2.10",
+    "wp-plugin/woocommerce-paypal-payments": "^4.0.4"
   },
   "require-dev": {
     "laravel/pint": "^1.18"
@@ -63,8 +65,7 @@
   "extra": {
     "installer-paths": {
       "web/app/mu-plugins/{$name}/": [
-        "type:wordpress-muplugin",
-        "wp-plugin/woocommerce"
+        "type:wordpress-muplugin"
       ],
       "web/app/plugins/{$name}/": [
         "type:wordpress-plugin"

@@ -6,9 +6,11 @@
 
 namespace App;
 
+use App\Blocks\Blocks;
 use App\Catalog\Category;
 use App\Catalog\Product;
 use App\Catalog\Review;
+use App\Catalog\Settings;
 use WP_Term_Query;
 
 /**
@@ -20,7 +22,7 @@ add_filter('excerpt_more', function () {
     return sprintf(
         ' &hellip; <a href="%s">%s</a>',
         get_permalink(),
-        __('Continued', 'sage'),
+        __('Continued', 'sage-front'),
     );
 });
 
@@ -176,29 +178,249 @@ add_filter('woocommerce_available_variation', function ($data) {
 });
 
 add_filter(
-    'woocommerce_add_cart_item_data',
-    function ($cartItemData, $productId) {
-        $deliveryDate = sanitize_text_field(
-            wp_unslash($_POST['delivery_date'] ?? ''),
+    'woocommerce_checkout_fields',
+    function ($fields) {
+        $fields['shipping']['shipping_first_name']['class'] = [];
+        $fields['shipping']['shipping_first_name']['label'] = __(
+            'Full name', //'Imię i nazwisko',
+            'sage-front',
         );
-        $deliveryTime = sanitize_text_field(
-            wp_unslash($_POST['delivery_time'] ?? ''),
+        $fields['shipping']['shipping_first_name']['placeholder'] = __(
+            'e.g. John Doe', //'np. Jan Kowalski'
+            'sage-front',
         );
-        $cardMessage = sanitize_textarea_field(
-            wp_unslash($_POST['card_message'] ?? ''),
-        );
-        $additionIds = array_values(
-            array_filter(
-                array_map('absint', (array) ($_POST['addition_ids'] ?? [])),
-            ),
-        );
+        $fields['shipping']['shipping_first_name']['priority'] = 4;
+        $fields['shipping']['shipping_first_name']['required'] = true;
 
-        if ($deliveryDate !== '') {
-            $cartItemData['delivery_date'] = $deliveryDate;
+        $fields['billing']['billing_email']['required'] = true;
+        $fields['billing']['billing_email']['placeholder'] = __(
+            'e.g. john.doe@example.com', //'np. jan.kowalski@example.com',
+            'sage-front',
+        );
+        $fields['billing']['billing_email']['input_class'] = [];
+        $fields['billing']['billing_email']['custom_attributes'] = [
+            'inputmode' => 'email',
+        ];
+
+        $fields['billing']['billing_first_name']['class'] = [];
+        $fields['billing']['billing_first_name']['placeholder'] = __(
+            'e.g. John', //'np. Jan',
+            'sage-front',
+        );
+        $fields['billing']['billing_last_name']['class'] = [];
+        $fields['billing']['billing_last_name']['placeholder'] = __(
+            'e.g. Doe', //'np. Kowalski',
+            'sage-front',
+        );
+        $fields['billing']['billing_last_name']['required'] = true;
+        $fields['billing']['billing_phone']['placeholder'] = __(
+            'e.g. 123 456 789', //'np. 123 456 789',
+            'sage-front',
+        );
+        $fields['billing']['billing_phone']['custom_attributes'] = [
+            'inputmode' => 'tel',
+        ];
+
+        $fields['billing']['billing_nip'] = [
+            'type' => 'text',
+            'label' => __('NIP', 'sage-front'),
+            'placeholder' => __('e.g. 1234567890', 'sage-front'),
+            'required' => false,
+            'class' => ['form-row-wide'],
+            'clear' => true,
+            'priority' => 10000,
+            'custom_attributes' => ['inputmode' => 'numeric'],
+        ];
+
+        $fields['shipping']['shipping_phone'] = [
+            'type' => 'tel',
+            'label' => __('Phone number', 'sage-front'),
+            'placeholder' => __('e.g. 123 456 789', 'sage-front'),
+            'required' => true,
+            'priority' => 100,
+            'custom_attributes' => ['inputmode' => 'tel'],
+        ];
+
+        $fields['shipping']['shipping_postcode']['priority'] = 2;
+        $fields['shipping']['shipping_postcode']['placeholder'] = __(
+            'e.g. 00-001',
+            'sage-front',
+        );
+        $fields['shipping']['shipping_postcode']['label'] = __(
+            'Postal code',
+            'sage-front',
+        );
+        $fields['shipping']['shipping_postcode']['required'] = true;
+        $fields['shipping']['shipping_postcode']['custom_attributes'] = [
+            'inputmode' => 'numeric',
+        ];
+
+        $fields['shipping']['shipping_city']['priority'] = 3;
+        $fields['shipping']['shipping_city']['placeholder'] = __(
+            'e.g. Warsaw',
+            'sage-front',
+        );
+        $fields['shipping']['shipping_city']['label'] = __(
+            'City',
+            'sage-front',
+        );
+        $fields['shipping']['shipping_city']['required'] = true;
+
+        $fields['shipping']['shipping_place_name'] = [
+            'type' => 'text',
+            'label' => __('Place name', 'sage-front'),
+            'placeholder' => __('e.g. Hotel Marriott', 'sage-front'),
+            'priority' => 5,
+            'required' => true,
+        ];
+
+        $fields['shipping']['shipping_address_1']['label'] = __(
+            'Street and number',
+            'sage-front',
+        );
+        $fields['shipping']['shipping_address_1']['placeholder'] = __(
+            'e.g. ul. Marszałkowska 1/5',
+            'sage-front',
+        );
+        $fields['shipping']['shipping_address_1']['priority'] = 1;
+        $fields['shipping']['shipping_address_1']['required'] = true;
+
+        $fields['shipping']['shipping_type_of_place'] = [
+            'type' => 'select',
+            'label' => __('Delivery place', 'sage-front'),
+            'placeholder' => __('Delivery place', 'sage-front'),
+            'default' => 'placeholder',
+            'options' => Settings::locationsOptions(),
+            'required' => true,
+            'class' => ['form-row-wide'],
+            'clear' => true,
+            'priority' => 0,
+        ];
+
+        foreach (
+            [
+                'billing_company',
+                'billing_country',
+                'billing_state',
+                'billing_city',
+                'billing_postcode',
+                'billing_address_1',
+                'billing_address_2',
+                'shipping_company',
+                'shipping_country',
+                'shipping_state',
+                'shipping_address_2',
+            ]
+            as $fieldKey
+        ) {
+            if (str_starts_with($fieldKey, 'billing_')) {
+                unset($fields['billing'][$fieldKey]);
+                continue;
+            }
+
+            unset($fields['shipping'][$fieldKey]);
         }
 
-        if ($deliveryTime !== '') {
-            $cartItemData['delivery_time'] = $deliveryTime;
+        $placeholderMap = [
+            'order_comments' => __(
+                'Notes about your order, e.g. specials notes for delivery',
+                'sage-front',
+            ),
+        ];
+
+        unset($fields['shipping']['shipping_last_name']);
+
+        foreach ($placeholderMap as $fieldKey => $placeholder) {
+            foreach (['billing', 'shipping', 'order'] as $groupKey) {
+                if (!isset($fields[$groupKey][$fieldKey])) {
+                    continue;
+                }
+
+                $fields[$groupKey][$fieldKey]['placeholder'] = $placeholder;
+            }
+        }
+
+        foreach ($fields as $typeKey => &$typeFields) {
+            unset($typeKey);
+
+            foreach ($typeFields as $fieldKey => &$field) {
+                unset($fieldKey);
+
+                if (!isset($field['placeholder']) || !$field['placeholder']) {
+                    $field['placeholder'] = isset($field['label'])
+                        ? $field['label']
+                        : 'placeholder';
+                }
+            }
+        }
+
+        unset($typeFields, $field);
+
+        return $fields;
+    },
+    20,
+);
+
+function getAddToCartRequestPayload(?\WP_REST_Request $request = null): array
+{
+    static $jsonPayload;
+
+    $source = [];
+
+    if ($request instanceof \WP_REST_Request) {
+        $source = $request->get_params();
+    } elseif ($_POST !== []) {
+        $source = wp_unslash($_POST);
+    } else {
+        if ($jsonPayload === null) {
+            $rawPayload = file_get_contents('php://input');
+            $decodedPayload = is_string($rawPayload)
+                ? json_decode($rawPayload, true)
+                : null;
+
+            $jsonPayload = is_array($decodedPayload) ? $decodedPayload : [];
+        }
+
+        $source = $jsonPayload;
+    }
+
+    return [
+        'delivery_date' => sanitize_text_field(
+            (string) ($source['delivery_date'] ??
+                ($source['deliveryDate'] ?? '')),
+        ),
+        'delivery_time' => sanitize_text_field(
+            (string) ($source['delivery_time'] ??
+                ($source['deliveryTime'] ?? '')),
+        ),
+        'card_message' => sanitize_textarea_field(
+            (string) ($source['card_message'] ??
+                ($source['cardMessage'] ?? '')),
+        ),
+        'addition_ids' => array_values(
+            array_filter(
+                array_map(
+                    'absint',
+                    (array) ($source['addition_ids'] ??
+                        ($source['additionIds'] ?? [])),
+                ),
+            ),
+        ),
+    ];
+}
+
+add_filter(
+    'woocommerce_add_cart_item_data',
+    function ($cartItemData, $productId) {
+        $payload = getAddToCartRequestPayload();
+        $deliveryDate = $payload['delivery_date'];
+        $deliveryTime = $payload['delivery_time'];
+        $cardMessage = $payload['card_message'];
+        $additionIds = $payload['addition_ids'];
+
+        if (function_exists('WC') && WC()->session) {
+            WC()->session->set('delivery_date', $deliveryDate);
+            WC()->session->set('delivery_time', $deliveryTime);
         }
 
         if ($cardMessage !== '') {
@@ -207,12 +429,13 @@ add_filter(
 
         if ($additionIds !== []) {
             $cartItemData['addition_ids'] = $additionIds;
+        }
+
+        if ($additionIds !== [] || $cardMessage !== '') {
             $cartItemData['unique_key'] = md5(
                 (string) wp_json_encode([
                     $productId,
                     $additionIds,
-                    $deliveryDate,
-                    $deliveryTime,
                     $cardMessage,
                 ]),
             );
@@ -225,25 +448,139 @@ add_filter(
 );
 
 add_filter(
+    'woocommerce_store_api_add_to_cart_data',
+    function ($add_to_cart_data, \WP_REST_Request $request) {
+        $payload = getAddToCartRequestPayload($request);
+        $deliveryDate = $payload['delivery_date'];
+        $deliveryTime = $payload['delivery_time'];
+        $cardMessage = $payload['card_message'];
+        $additionIds = $payload['addition_ids'];
+
+        $cartItemData = is_array($add_to_cart_data['cart_item_data'] ?? null)
+            ? $add_to_cart_data['cart_item_data']
+            : [];
+
+        if (function_exists('WC') && WC()->session) {
+            WC()->session->set('delivery_date', $deliveryDate);
+            WC()->session->set('delivery_time', $deliveryTime);
+        }
+
+        if ($cardMessage !== '') {
+            $cartItemData['card_message'] = $cardMessage;
+        }
+
+        if ($additionIds !== []) {
+            $cartItemData['addition_ids'] = $additionIds;
+        }
+
+        if ($cardMessage !== '' || $additionIds !== []) {
+            $cartItemData['unique_key'] = md5(
+                (string) wp_json_encode([
+                    $add_to_cart_data['id'] ?? 0,
+                    $additionIds,
+                    $cardMessage,
+                ]),
+            );
+        }
+
+        $add_to_cart_data['cart_item_data'] = $cartItemData;
+
+        return $add_to_cart_data;
+    },
+    10,
+    2,
+);
+
+add_action(
+    'woocommerce_store_api_validate_add_to_cart',
+    function ($product, $request) {
+        unset($product);
+
+        $additionIds = array_values(
+            array_filter(
+                array_map('absint', (array) ($request['additionIds'] ?? [])),
+            ),
+        );
+
+        foreach ($additionIds as $additionId) {
+            if (!(wc_get_product($additionId) instanceof \WC_Product)) {
+                throw new \Exception(
+                    __('One of the additions was not found.', 'sage-front'),
+                );
+            }
+        }
+    },
+    10,
+    2,
+);
+
+add_action(
+    'woocommerce_add_to_cart',
+    function (
+        $cartItemKey,
+        $productId,
+        $quantity,
+        $variationId,
+        $variation,
+        $cartItemData,
+    ) {
+        unset($productId, $variationId, $variation);
+
+        if (
+            !is_array($cartItemData) ||
+            !empty($cartItemData['is_sage_addition']) ||
+            empty($cartItemData['addition_ids']) ||
+            !is_array($cartItemData['addition_ids']) ||
+            !(function_exists('WC') && WC()->cart instanceof \WC_Cart)
+        ) {
+            return;
+        }
+
+        $addedItemKeys = [];
+
+        foreach ($cartItemData['addition_ids'] as $additionId) {
+            $additionCartItemKey = WC()->cart->add_to_cart(
+                absint($additionId),
+                max(1, (int) $quantity),
+                0,
+                [],
+                ['is_sage_addition' => true],
+            );
+
+            if ($additionCartItemKey !== false) {
+                $addedItemKeys[] = $additionCartItemKey;
+                continue;
+            }
+
+            foreach ($addedItemKeys as $addedItemKey) {
+                WC()->cart->remove_cart_item($addedItemKey);
+            }
+
+            WC()->cart->remove_cart_item((string) $cartItemKey);
+
+            if (function_exists('wc_add_notice')) {
+                wc_add_notice(
+                    __(
+                        'Unable to add one of the additions to cart.',
+                        'sage-front',
+                    ),
+                    'error',
+                );
+            }
+
+            break;
+        }
+    },
+    10,
+    6,
+);
+
+add_filter(
     'woocommerce_get_item_data',
     function ($itemData, $cartItem) {
-        if (!empty($cartItem['delivery_date'])) {
-            $itemData[] = [
-                'key' => __('Data dostawy', 'sage-front'),
-                'value' => wc_clean((string) $cartItem['delivery_date']),
-            ];
-        }
-
-        if (!empty($cartItem['delivery_time'])) {
-            $itemData[] = [
-                'key' => __('Przedzial dostawy', 'sage-front'),
-                'value' => wc_clean((string) $cartItem['delivery_time']),
-            ];
-        }
-
         if (!empty($cartItem['card_message'])) {
             $itemData[] = [
-                'key' => __('Tresc bileciku', 'sage-front'),
+                'key' => __('Card message content', 'sage-front'),
                 'value' => wc_clean((string) $cartItem['card_message']),
             ];
         }
@@ -264,7 +601,7 @@ add_filter(
 
             if ($additionNames !== []) {
                 $itemData[] = [
-                    'key' => __('Dodatki', 'sage-front'),
+                    'key' => __('Add-ons', 'sage-front'),
                     'value' => wc_clean(implode(', ', $additionNames)),
                 ];
             }
@@ -281,21 +618,12 @@ add_action(
     function ($item, $cartItemKey, $values) {
         unset($cartItemKey);
 
-        foreach (
-            [
-                'delivery_date' => __('Data dostawy', 'sage-front'),
-                'delivery_time' => __('Przedzial dostawy', 'sage-front'),
-                'card_message' => __('Tresc bileciku', 'sage-front'),
-            ]
-            as $key => $label
-        ) {
-            if (!empty($values[$key])) {
-                $item->add_meta_data(
-                    $label,
-                    wc_clean((string) $values[$key]),
-                    true,
-                );
-            }
+        if (!empty($values['card_message'])) {
+            $item->add_meta_data(
+                __('Card message content', 'sage-front'),
+                wc_clean((string) $values['card_message']),
+                true,
+            );
         }
 
         if (
@@ -317,7 +645,7 @@ add_action(
 
         if ($additionNames !== []) {
             $item->add_meta_data(
-                __('Dodatki', 'sage-front'),
+                __('Add-ons', 'sage-front'),
                 wc_clean(implode(', ', $additionNames)),
                 true,
             );
@@ -327,9 +655,169 @@ add_action(
     3,
 );
 
+add_action(
+    'woocommerce_checkout_create_order',
+    function ($order, $data) {
+        foreach (
+            [
+                'shipping_type_of_place' => __(
+                    'Delivery place type',
+                    'sage-front',
+                ),
+                'shipping_place_name' => __('Place name', 'sage-front'),
+                'shipping_phone' => __('Recipient phone', 'sage-front'),
+                'billing_nip' => __('NIP', 'sage-front'),
+            ]
+            as $fieldKey => $metaLabel
+        ) {
+            if (empty($data[$fieldKey])) {
+                continue;
+            }
+
+            $order->update_meta_data(
+                $metaLabel,
+                wc_clean((string) $data[$fieldKey]),
+            );
+        }
+
+        if (function_exists('WC') && WC()->session) {
+            $deliveryDate = (string) WC()->session->get('delivery_date');
+            $deliveryTime = (string) WC()->session->get('delivery_time');
+
+            if ($deliveryDate !== '') {
+                $order->update_meta_data(
+                    'delivery_date',
+                    wc_clean($deliveryDate),
+                );
+            }
+
+            if ($deliveryTime !== '') {
+                $order->update_meta_data(
+                    'delivery_time',
+                    wc_clean($deliveryTime),
+                );
+            }
+        }
+    },
+    10,
+    2,
+);
+
+add_action(
+    'woocommerce_after_checkout_validation',
+    function ($data, $errors) {
+        $shippingTypeOfPlace = wc_clean(
+            (string) ($data['shipping_type_of_place'] ?? ''),
+        );
+        $shippingPlaceName = wc_clean(
+            (string) ($data['shipping_place_name'] ?? ''),
+        );
+
+        if (
+            $shippingTypeOfPlace === 'private-address' &&
+            $shippingPlaceName === '' &&
+            $errors instanceof \WP_Error
+        ) {
+            $errors->add(
+                'shipping_place_name_required',
+                __('Please provide the place name.', 'sage-front'),
+            );
+        }
+    },
+    10,
+    2,
+);
+
+add_action(
+    'woocommerce_store_api_checkout_update_order_from_request',
+    function (\WC_Order $order, \WP_REST_Request $request) {
+        $additionalFields = (array) ($request['additional_fields'] ?? []);
+
+        foreach (
+            [
+                'shipping_type_of_place' => __(
+                    'Delivery place type',
+                    'sage-front',
+                ),
+                'shipping_place_name' => __('Place name', 'sage-front'),
+                'shipping_phone' => __('Recipient phone', 'sage-front'),
+                'billing_nip' => __('NIP', 'sage-front'),
+            ]
+            as $fieldKey => $metaLabel
+        ) {
+            if (empty($additionalFields[$fieldKey])) {
+                continue;
+            }
+
+            $order->update_meta_data(
+                $metaLabel,
+                wc_clean((string) $additionalFields[$fieldKey]),
+            );
+        }
+
+        if (function_exists('WC') && WC()->session) {
+            $deliveryDate = (string) WC()->session->get('delivery_date');
+            $deliveryTime = (string) WC()->session->get('delivery_time');
+
+            if ($deliveryDate !== '') {
+                $order->update_meta_data(
+                    'delivery_date',
+                    wc_clean($deliveryDate),
+                );
+            }
+
+            if ($deliveryTime !== '') {
+                $order->update_meta_data(
+                    'delivery_time',
+                    wc_clean($deliveryTime),
+                );
+            }
+        }
+    },
+    10,
+    2,
+);
+
 add_action('woocommerce_before_add_to_cart_button', function () {
     echo '<input type="hidden" name="delivery_date" value="" data-delivery-date-hidden>';
     echo '<input type="hidden" name="delivery_time" value="" data-delivery-time-hidden>';
     echo '<input type="hidden" name="card_message" value="" data-card-message-hidden>';
     echo '<div data-addition-inputs hidden></div>';
+});
+
+remove_action('woocommerce_thankyou', 'woocommerce_order_details_table', 10);
+remove_action('woocommerce_after_shop_loop', 'woocommerce_pagination', 10);
+
+add_action('woocommerce_after_shop_loop', function () {
+    global $wp_query;
+
+    if (!($wp_query instanceof \WP_Query)) {
+        return;
+    }
+
+    $currentPage = max(
+        1,
+        (int) get_query_var('paged'),
+        (int) get_query_var('page'),
+    );
+    $maxPages = (int) $wp_query->max_num_pages;
+
+    if ($maxPages <= 1 || $currentPage >= $maxPages) {
+        return;
+    }
+
+    $nextPageUrl = get_pagenum_link($currentPage + 1);
+
+    if (!is_string($nextPageUrl) || $nextPageUrl === '') {
+        return;
+    }
+
+    printf(
+        '<div class="mt-8 flex justify-center" data-products-load-more><button type="button" data-products-load-more-button data-next-url="%s" data-default-label="%s" data-loading-label="%s" class="%s"><span>%s</span></button></div>',
+        esc_url($nextPageUrl),
+        esc_attr__('Show more', 'sage-front'),
+        esc_attr__('Loading...', 'sage-front'),
+        esc_attr(Blocks::buttonClasses('border', 'md', false)),
+        esc_html__('Show more', 'sage-front'),
+    );
 });

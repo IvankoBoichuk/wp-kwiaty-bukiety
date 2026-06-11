@@ -10,6 +10,7 @@ use WC_Product_Variation;
 final class Product
 {
     protected $cache = [];
+    private ProductData $data;
     public readonly int $id;
     public readonly string $name;
     public readonly string $link;
@@ -19,19 +20,12 @@ final class Product
     public readonly Image $image;
     public function __construct(public readonly WC_Product $product)
     {
+        $this->data = new ProductData($product);
         $this->id = $product->get_id();
         $this->name = $product->get_name();
         $this->link = (string) (get_permalink($product->get_id()) ?: '');
         $this->target = '_self';
-        $this->badges = [];
-
-        if ($product->is_on_sale()) {
-            $this->badges[] = __('Promocja', 'sage-front');
-        }
-
-        if ($product->is_featured()) {
-            $this->badges[] = __('Polecany', 'sage-front');
-        }
+        $this->badges = $this->data->badges();
 
         $thumbnailId = $product->get_image_id();
 
@@ -113,22 +107,11 @@ final class Product
         if (isset($this->cache['reviews'])) {
             return $this->cache['reviews'];
         }
-        $comments = get_comments([
-            'post_id' => $this->product->get_id(),
-            'status' => 'approve',
-            'type' => 'review',
-            'number' => 4,
-        ]);
+        $this->cache['reviews'] = array_map(
+            fn(\WP_Comment $comment) => Review::fromWordPressComment($comment),
+            $this->data->approvedReviewComments(),
+        );
 
-        $reviews = [];
-
-        foreach ($comments as $comment) {
-            if ($comment instanceof \WP_Comment) {
-                $reviews[] = Review::fromWordPressComment($comment);
-            }
-        }
-
-        $this->cache['reviews'] = $reviews;
         return $this->cache['reviews'];
     }
     public function relatedProducts(): array
@@ -136,17 +119,12 @@ final class Product
         if (isset($this->cache['relatedProducts'])) {
             return $this->cache['relatedProducts'];
         }
-        $relatedIds = wc_get_related_products($this->product->get_id(), 6);
-
-        if (empty($relatedIds)) {
-            return [];
-        }
-
-        $this->cache['relatedProducts'] = array_map(
-            fn($id) => self::fromID($id),
-            $relatedIds,
-        );
+        $this->cache['relatedProducts'] = $this->data->relatedProducts();
 
         return $this->cache['relatedProducts'];
+    }
+    public function is_funeral(): bool
+    {
+        return $this->data->isFuneral();
     }
 }

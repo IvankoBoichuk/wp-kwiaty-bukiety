@@ -17,8 +17,8 @@ class DeliveryTimerSettingsPage
     public static function registerPage(): void
     {
         add_theme_page(
-            __('Delivery Timer', 'sage'),
-            __('Delivery Timer', 'sage'),
+            __('Delivery Timer', 'sage-back'),
+            __('Delivery Timer', 'sage-back'),
             'manage_options',
             self::PAGE_SLUG,
             [self::class, 'renderPage'],
@@ -58,13 +58,13 @@ class DeliveryTimerSettingsPage
         ?>
         <div class="wrap">
             <h1><?php echo esc_html__(
-                'Налаштування таймера доставки',
-                'sage',
+                'Delivery timer settings',
+                'sage-back',
             ); ?></h1>
             <p class="description">
                 <?php echo esc_html__(
-                    'Задайте години роботи для буднів, вихідних і перелік додаткових вихідних днів.',
-                    'sage',
+                    'Set the working hours for weekdays, weekends, and the list of additional holidays.',
+                    'sage-back',
                 ); ?>
             </p>
 
@@ -79,8 +79,8 @@ class DeliveryTimerSettingsPage
                             <th scope="row">
                                 <label for="sage-delivery-timer-weekday-hours">
                                     <?php echo esc_html__(
-                                        'Робочі години у будні',
-                                        'sage',
+                                        'Working hours on weekdays',
+                                        'sage-back',
                                     ); ?>
                                 </label>
                             </th>
@@ -98,8 +98,8 @@ class DeliveryTimerSettingsPage
                                 />
                                 <p class="description">
                                     <?php echo esc_html__(
-                                        'Формат: 9-17',
-                                        'sage',
+                                        'Format: 9-17',
+                                        'sage-back',
                                     ); ?>
                                 </p>
                             </td>
@@ -108,8 +108,8 @@ class DeliveryTimerSettingsPage
                             <th scope="row">
                                 <label for="sage-delivery-timer-weekend-hours">
                                     <?php echo esc_html__(
-                                        'Робочі години у вихідні',
-                                        'sage',
+                                        'Working hours on weekends',
+                                        'sage-back',
                                     ); ?>
                                 </label>
                             </th>
@@ -127,8 +127,8 @@ class DeliveryTimerSettingsPage
                                 />
                                 <p class="description">
                                     <?php echo esc_html__(
-                                        'Формат: 9-14. Застосовується в суботу та неділю.',
-                                        'sage',
+                                        'Format: 9-14. Applies on Saturday and Sunday.',
+                                        'sage-back',
                                     ); ?>
                                 </p>
                             </td>
@@ -137,8 +137,8 @@ class DeliveryTimerSettingsPage
                             <th scope="row">
                                 <label for="sage-delivery-timer-holidays">
                                     <?php echo esc_html__(
-                                        'Додаткові вихідні',
-                                        'sage',
+                                        'Additional holidays',
+                                        'sage-back',
                                     ); ?>
                                 </label>
                             </th>
@@ -155,8 +155,8 @@ class DeliveryTimerSettingsPage
                                 ); ?></textarea>
                                 <p class="description">
                                     <?php echo esc_html__(
-                                        'Формат: YYYY-MM-DD, через кому.',
-                                        'sage',
+                                        'Format: YYYY-MM-DD, separated by commas.',
+                                        'sage-back',
                                     ); ?>
                                 </p>
                             </td>
@@ -164,7 +164,7 @@ class DeliveryTimerSettingsPage
                     </tbody>
                 </table>
 
-                <?php submit_button(__('Зберегти', 'sage')); ?>
+                <?php submit_button(__('Save', 'sage-back')); ?>
             </form>
         </div>
         <?php

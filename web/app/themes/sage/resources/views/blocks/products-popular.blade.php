@@ -1,6 +1,6 @@
 <section
   @if (!empty($attributes->anchor)) id="{{ $attributes->anchor }}" @endif
-  class="{{ trim('bg-[#E5EFDE] py-12 '.($attributes->className ?? '')) }}"
+  class="{{ trim('bg-[#E5EFDE] py-12 bx-container'.($attributes->className ?? '')) }}"
 >
   <div class="flex flex-col gap-y-6 pt-1.5">
     @if (!empty($texts->title))

@@ -1,22 +1,15 @@
 import type { ProductPurchaseConfig } from '@/types/ProductPurchaseConfig'
-import { addProductToCart } from './api'
+import { addProductToCart, configureProductWooStoreApi } from './api'
+import { formatMoney, type MoneyFormatConfig } from '../money'
 import type {
     CartPayload,
     ProductPlugin,
     ProductPurchaseAddition,
     ProductPurchaseStore
 } from './types'
+import { __ } from '@wordpress/i18n'
 import type { ProductVariation } from '@/types/ProductVariations'
 import { animateCSS } from '../animate'
-
-function formatPrice(amount: number, currencySymbol: string): string {
-    const hasFraction = !Number.isInteger(amount)
-
-    return `${new Intl.NumberFormat('pl-PL', {
-        minimumFractionDigits: hasFraction ? 2 : 0,
-        maximumFractionDigits: 2,
-    }).format(amount)} ${currencySymbol}`
-}
 
 export class ProductStore implements ProductPurchaseStore {
     _basePrice: number
@@ -24,11 +17,14 @@ export class ProductStore implements ProductPurchaseStore {
     isSubmitting = false
     productId: number
     currencySymbol: string
+    moneyFormat: MoneyFormatConfig
     isVariable: boolean
     quantity = 1
     additions: ProductPurchaseAddition[] = []
     deliveryDate = ''
     deliveryTime = ''
+    deliveryDateError = ''
+    deliveryTimeError = ''
     cardMessage = ''
     _variation: ProductVariation | null = null
 
@@ -39,7 +35,16 @@ export class ProductStore implements ProductPurchaseStore {
         this.productId = config.productId
         this._basePrice = config.basePrice
         this.currencySymbol = config.currencySymbol
+        this.moneyFormat = {
+            currencySymbol: config.currencySymbol,
+            currencyPrefix: config.currencyPrefix,
+            currencySuffix: config.currencySuffix,
+            currencyDecimalSeparator: config.currencyDecimalSeparator,
+            currencyThousandSeparator: config.currencyThousandSeparator,
+            currencyMinorUnit: config.currencyMinorUnit,
+        }
         this.isVariable = config.isVariable
+        configureProductWooStoreApi(config.storeApiNonce)
     }
 
     get basePrice(): number {
@@ -73,7 +78,7 @@ export class ProductStore implements ProductPurchaseStore {
     }
 
     get formattedTotal(): string {
-        return formatPrice(this.totalPrice, this.currencySymbol)
+        return formatMoney(this.totalPrice, this.moneyFormat)
     }
 
     get canSubmit(): boolean {
@@ -103,10 +108,18 @@ export class ProductStore implements ProductPurchaseStore {
 
     setDeliveryDate(value: string): void {
         this.deliveryDate = value
+
+        if (value.trim() !== '') {
+            this.deliveryDateError = ''
+        }
     }
 
     setDeliveryTime(value: string): void {
         this.deliveryTime = value
+
+        if (value.trim() !== '') {
+            this.deliveryTimeError = ''
+        }
     }
 
     setCardMessage(value: string): void {
@@ -122,7 +135,9 @@ export class ProductStore implements ProductPurchaseStore {
             deliveryDate: this.deliveryDate,
             deliveryTime: this.deliveryTime,
             cardMessage: this.cardMessage,
-            additionIds: this.additions.map((addition) => addition.id),
+            additionIds: this.additions
+                .filter((addition) => addition.includeInPayload !== false)
+                .map((addition) => addition.id),
         }
     }
 
@@ -148,8 +163,32 @@ export class ProductStore implements ProductPurchaseStore {
         this.#plugins.clear()
     }
 
+    private validateBeforeSubmit(): boolean {
+        let isValid = true
+
+        if (this.deliveryDate.trim() === '') {
+            this.deliveryDateError = __('Choose a delivery date', 'sage-front')
+            isValid = false
+        } else {
+            this.deliveryDateError = ''
+        }
+
+        if (this.deliveryTime.trim() === '') {
+            this.deliveryTimeError = __('Choose a delivery time', 'sage-front')
+            isValid = false
+        } else {
+            this.deliveryTimeError = ''
+        }
+
+        return isValid
+    }
+
     async submit(): Promise<void> {
         if (this.isSubmitting || !this.canSubmit) {
+            return
+        }
+
+        if (!this.validateBeforeSubmit()) {
             return
         }
 

@@ -2,6 +2,7 @@ import Alpine from 'alpinejs'
 import { ProductStore } from './product-core/ProductStore'
 import { AdditionsPlugin } from './product-core/plugins/AdditionsPlugin'
 import { DeliveryPlugin } from './product-core/plugins/DeliveryPlugin'
+import { PaidCardMessagePlugin } from './product-core/plugins/PaidCardMessagePlugin'
 import { VariationsPlugin } from './product-core/plugins/VariationsPlugin'
 
 function init(): void {
@@ -18,6 +19,10 @@ function init(): void {
 
     store.registerPlugin(new DeliveryPlugin())
     store.registerPlugin(new AdditionsPlugin())
+
+    if (document.querySelector('#card_message_payed')) {
+        store.registerPlugin(new PaidCardMessagePlugin())
+    }
 
     if (window.product.isVariable) {
         store.registerPlugin(new VariationsPlugin())

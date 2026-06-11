@@ -11,9 +11,7 @@ class Comments extends Composer
      *
      * @var array
      */
-    protected static $views = [
-        'partials.comments',
-    ];
+    protected static $views = ['partials.comments'];
 
     /**
      * The comment title.
@@ -22,9 +20,17 @@ class Comments extends Composer
     {
         return sprintf(
             /* translators: %1$s is replaced with the number of comments and %2$s with the post title */
-            _nx('%1$s response to &ldquo;%2$s&rdquo;', '%1$s responses to &ldquo;%2$s&rdquo;', get_comments_number(), 'comments title', 'sage'),
-            get_comments_number() === 1 ? _x('One', 'comments title', 'sage') : number_format_i18n(get_comments_number()),
-            get_the_title()
+            _nx(
+                '%1$s response to &ldquo;%2$s&rdquo;',
+                '%1$s responses to &ldquo;%2$s&rdquo;',
+                get_comments_number(),
+                'comments title',
+                'sage-front',
+            ),
+            get_comments_number() === 1
+                ? _x('One', 'comments title', 'sage-front')
+                : number_format_i18n(get_comments_number()),
+            get_the_title(),
         );
     }
 
@@ -33,7 +39,7 @@ class Comments extends Composer
      */
     public function responses(): ?string
     {
-        if (! have_comments()) {
+        if (!have_comments()) {
             return null;
         }
 
@@ -49,12 +55,12 @@ class Comments extends Composer
      */
     public function previous(): ?string
     {
-        if (! get_previous_comments_link()) {
+        if (!get_previous_comments_link()) {
             return null;
         }
 
         return get_previous_comments_link(
-            __('&larr; Older comments', 'sage')
+            __('&larr; Older comments', 'sage-front'),
         );
     }
 
@@ -63,12 +69,12 @@ class Comments extends Composer
      */
     public function next(): ?string
     {
-        if (! get_next_comments_link()) {
+        if (!get_next_comments_link()) {
             return null;
         }
 
         return get_next_comments_link(
-            __('Newer comments &rarr;', 'sage')
+            __('Newer comments &rarr;', 'sage-front'),
         );
     }
 
@@ -85,6 +91,8 @@ class Comments extends Composer
      */
     public function closed(): bool
     {
-        return ! comments_open() && get_comments_number() != '0' && post_type_supports(get_post_type(), 'comments');
+        return !comments_open() &&
+            get_comments_number() != '0' &&
+            post_type_supports(get_post_type(), 'comments');
     }
 }

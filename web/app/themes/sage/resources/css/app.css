@@ -41,6 +41,7 @@
 
   /* Shadows */
   --shadow-100: 0px 1px 4px rgba(12, 12, 13, 0.05);
+  --shadow-card: 0px 2px 32px rgba(0, 0, 0, 0.08);
 }
 
 /* Base styles */
@@ -53,6 +54,7 @@
     --swiper-pagination-bullet-border-radius: 12px;
     --swiper-pagination-bullet-inactive-opacity: 1;
     --swiper-pagination-bullet-inactive-color: var(--color-purple-easy);
+    --header-bottom-height: 48px;
   }
 
   body {
@@ -70,9 +72,40 @@
   .woocommerce-breadcrumb {
     @apply sr-only;
   }
+  .woocommerce-notices-wrapper {
+    @apply empty:hidden;
+  }
+  .term-description {
+    @apply prose prose-a:text-[#0885CD] prose-a:no-underline prose-a:hover:underline;
+  }
+
+  [x-cloak] {
+    display: none !important;
+  }
+
+  .iti {
+    @apply w-full;
+  }
+
+  .pbl-error {
+    @apply mt-1 text-sm text-red-500;
+  }
 }
 
 @layer components {
+  .cart-checkout-step-panel {
+    will-change: transform, opacity;
+    transform-origin: top center;
+  }
+
+  .cart-checkout-step-tab {
+    @apply transform-gpu duration-300 ease-out;
+  }
+
+  .cart-checkout-step-tab:not(:disabled):hover {
+    transform: translateY(-1px);
+  }
+
   .single-product-order-panel form.cart {
     @apply flex flex-col gap-4;
   }
@@ -127,4 +160,59 @@
   .single-product-order-panel .woocommerce-product-details__short-description {
     @apply text-body-13 text-green-default;
   }
+
+  .card {
+    @apply shadow-card rounded-xl bg-white px-3 py-4;
+  }
+}
+
+@utility bx-container {
+  @apply -mx-3 px-3;
+}
+
+@utility px-break-out {
+  @apply px-3;
+}
+
+@utility mx-break-out {
+  @apply -mx-3;
+}
+
+.woocommerce-products-header {
+  @apply py-5;
+}
+.woocommerce-products-header__title {
+  @apply text-h2;
+}
+
+#app {
+  .payu-list-banks {
+    @apply mt-2 grid grid-cols-4 gap-1.5;
+  }
+
+  .payu-accept-conditions .payu-conditions-description a {
+    @apply text-[#0885CD];
+  }
+
+  .payu-bank {
+    @apply p-0;
+    &:has(.active) {
+      @apply ring-green-dark rounded-xl ring-2 ring-offset-0;
+    }
+    label {
+      @apply w-full rounded-xl border-[#E0E0D7] bg-[#FCF9F6] p-2;
+      &.active {
+        @apply bg-[#FCF9F6];
+        box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.25);
+      }
+    }
+  }
+}
+
+.pay-method > p:first-child {
+  @apply text-h4;
+}
+
+.lg-backdrop {
+  @apply bg-background;
 }

@@ -29,7 +29,7 @@ class Blocks
     {
         array_unshift($categories, [
             'slug' => 'kwiaty-bukiety',
-            'title' => __('Kwiaty Bukiety', 'sage'),
+            'title' => __('Kwiaty Bukiety', 'sage-back'),
             'icon' => null,
         ]);
 
@@ -41,7 +41,7 @@ class Blocks
         foreach (self::$blocks as $slug => $config) {
             register_block_type("sage/{$slug}", [
                 'api_version' => 3,
-                'title' => __($config['title'], 'sage'),
+                'title' => __($config['title'], 'sage-back'),
                 'render_callback' => fn(
                     array $attributes = [],
                     string $content = '',

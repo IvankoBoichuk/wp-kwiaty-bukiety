@@ -5,7 +5,7 @@
    * @var Product $item
    */
 @endphp
-<div class="swiper-slide flex flex-col justify-center items-start">
+<div class="swiper-slide flex flex-col items-start justify-center">
   <div class="relative w-full">
     <img
       src="{{ $item->image->src() }}"
@@ -14,10 +14,10 @@
       @if ($item->image->height() > 0) height="{{ $item->image->height() }}" @endif
       @if ($item->image->srcset() !== '') srcset="{{ $item->image->srcset() }}" @endif
       @if ($item->image->sizes() !== '') sizes="{{ $item->image->sizes() }}" @endif
-      class="size-full object-cover aspect-15/13"
+      class="aspect-15/13 size-full object-cover"
     />
 
-    @if (! empty($item->badges))
+    @if (!empty($item->badges))
       <div class="absolute top-1.25 left-1.25 flex flex-wrap gap-1.5">
         @foreach ($item->badges as $badge)
           <span class="{{ Blocks::badgeClasses((string) $badge) }}">{{ $badge }}</span>

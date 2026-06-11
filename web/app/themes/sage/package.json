@@ -44,11 +44,15 @@
   },
   "dependencies": {
     "@alpinejs/collapse": "^3.15.11",
+    "@alpinejs/mask": "^3.15.12",
     "@types/alpinejs": "^3.13.11",
     "@types/wordpress__server-side-render": "^6.15.0",
+    "@wordpress/i18n": "^6.20.0",
     "alpinejs": "^3.15.11",
     "animate.css": "^4.1.1",
+    "intl-tel-input": "^28.1.0",
     "lightgallery": "^2.9.0",
-    "swiper": "^12.1.0"
+    "swiper": "^12.1.0",
+    "yup": "^1.7.1"
   }
 }

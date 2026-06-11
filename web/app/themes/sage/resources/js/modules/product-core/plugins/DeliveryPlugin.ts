@@ -69,7 +69,7 @@ function isTimeSlotAvailable(slotKey: string, deliveryDate: Date): boolean {
 
 export class DeliveryPlugin implements ProductPlugin {
     pluginName = 'delivery'
-    private selectedDate = new Date()
+    private selectedDate: Date | null = null
 
     init(store: ProductPurchaseStore): void {
         const dateOptions = document.querySelectorAll<HTMLButtonElement>('.delivery-date-option')
@@ -79,10 +79,10 @@ export class DeliveryPlugin implements ProductPlugin {
         const cardMessageField = document.querySelector<HTMLTextAreaElement>('[name="card-message"]')
         const timeOptions = document.querySelectorAll<HTMLButtonElement>('.delivery-time-option')
 
-        setHiddenValue('[data-delivery-date-hidden]', formatDateValue(this.selectedDate))
+        setHiddenValue('[data-delivery-date-hidden]', '')
         setHiddenValue('[data-delivery-time-hidden]', '')
         setHiddenValue('[data-card-message-hidden]', cardMessageField?.value ?? '')
-        store.setDeliveryDate(formatDateValue(this.selectedDate))
+        store.setDeliveryDate('')
         store.setDeliveryTime('')
         store.setCardMessage(cardMessageField?.value ?? '')
 
@@ -90,7 +90,7 @@ export class DeliveryPlugin implements ProductPlugin {
             dateInput.min = new Date().toISOString().split('T')[0]
         }
 
-        this.updateTimeSlotAvailability(this.selectedDate)
+        this.updateTimeSlotAvailability(store, this.selectedDate)
 
         dateOptions.forEach((btn) => {
             btn.addEventListener('click', () => {
@@ -162,15 +162,30 @@ export class DeliveryPlugin implements ProductPlugin {
     }
 
     private syncSelectedDate(store: ProductPurchaseStore, selectedDate: Date): void {
-        this.updateTimeSlotAvailability(selectedDate)
+        this.updateTimeSlotAvailability(store, selectedDate)
 
         const value = formatDateValue(selectedDate)
         setHiddenValue('[data-delivery-date-hidden]', value)
         store.setDeliveryDate(value)
     }
 
-    private updateTimeSlotAvailability(selectedDate: Date): void {
+    private updateTimeSlotAvailability(store: ProductPurchaseStore, selectedDate: Date | null): void {
         const timeOptions = document.querySelectorAll<HTMLButtonElement>('.delivery-time-option')
+
+        if (!selectedDate) {
+            timeOptions.forEach((btn) => {
+                btn.disabled = true
+                btn.classList.add('opacity-50', 'cursor-not-allowed', 'pointer-events-none')
+                btn.classList.remove('bg-green-easy', 'text-white')
+                btn.classList.add('bg-[#F7F7F6]', 'text-green-dark')
+            })
+
+            setHiddenValue('[data-delivery-time-hidden]', '')
+            store.setDeliveryTime('')
+
+            return
+        }
+
         let activeSlotStillAvailable = false
 
         timeOptions.forEach((btn) => {
@@ -201,6 +216,7 @@ export class DeliveryPlugin implements ProductPlugin {
 
         if (!activeSlotStillAvailable) {
             setHiddenValue('[data-delivery-time-hidden]', '')
+            store.setDeliveryTime('')
         }
     }
 }

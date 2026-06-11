@@ -14,13 +14,10 @@
       class="aspect-15/13 size-full object-cover"
     />
 
-    @if (! empty($item->badges))
+    @if (!empty($item->badges))
       <div class="absolute top-1.25 left-1.25 flex flex-wrap gap-1.5">
         @foreach ($item->badges as $badge)
-          <span
-            class="{{ Blocks::badgeClasses((string) $badge) }}"
-            >{{ $badge }}</span
-          >
+          <span class="{{ Blocks::badgeClasses((string) $badge) }}">{{ $badge }}</span>
         @endforeach
       </div>
     @endif

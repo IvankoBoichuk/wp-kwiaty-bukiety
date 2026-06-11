@@ -4,6 +4,7 @@ export interface ProductPurchaseAddition {
     id: number
     name: string
     price: number
+    includeInPayload?: boolean
 }
 
 export interface ProductPurchaseStore {
@@ -20,6 +21,8 @@ export interface ProductPurchaseStore {
     additions: ProductPurchaseAddition[]
     deliveryDate: string
     deliveryTime: string
+    deliveryDateError: string
+    deliveryTimeError: string
     cardMessage: string
     unitPrice: number
     totalPrice: number

@@ -6,7 +6,6 @@ use App\Admin\ContactSettingsPage;
 use App\Admin\DeliveryTimerSettingsPage;
 use App\Api\Categories;
 use App\Api\Healthcheck;
-use App\Api\ProductCart;
 use App\Blocks\Blocks;
 use App\Media\ImageHelper;
 use App\Support\Context;
@@ -39,7 +38,6 @@ class ThemeServiceProvider extends SageServiceProvider
         parent::boot();
         Categories::boot();
         Healthcheck::boot();
-        ProductCart::boot();
         Blocks::boot();
         ContactSettingsPage::boot();
         DeliveryTimerSettingsPage::boot();

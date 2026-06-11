@@ -47,6 +47,25 @@ add_action('admin_head', function () {
     echo Vite::withEntryPoints(['resources/js/editor.ts'])->toHtml();
 });
 
+add_filter(
+    'wp_enqueue_scripts',
+    function () {
+        if (is_admin()) {
+            return;
+        }
+
+        $dependencies = ['wp-i18n'];
+        foreach ($dependencies as $dependency) {
+            if (!wp_script_is($dependency)) {
+                wp_enqueue_script($dependency);
+            }
+        }
+
+        echo Vite::withEntryPoints(['resources/js/app.ts'])->toHtml();
+    },
+    100,
+);
+
 /**
  * Use the generated theme.json file.
  *
@@ -119,6 +138,24 @@ add_action(
             wp_dequeue_script('sourcebuster-js');
             wp_dequeue_script('wc-order-attribution');
         }
+
+        $cartPageId = function_exists('wc_get_page_id')
+            ? wc_get_page_id('cart')
+            : 0;
+        $checkoutPageId = function_exists('wc_get_page_id')
+            ? wc_get_page_id('checkout')
+            : 0;
+        $customCartCheckoutPageIds = array_filter([
+            $cartPageId,
+            $checkoutPageId,
+        ]);
+
+        if (
+            $customCartCheckoutPageIds !== [] &&
+            is_page($customCartCheckoutPageIds)
+        ) {
+            wp_dequeue_script('wc-checkout');
+        }
     },
     100,
 );
@@ -162,13 +199,13 @@ add_action(
          * @link https://developer.wordpress.org/reference/functions/register_nav_menus/
          */
         register_nav_menus([
-            'primary_navigation' => __('Primary Navigation', 'sage'),
-            'footer_navigation' => __('Footer Navigation', 'sage'),
+            'primary_navigation' => __('Primary Navigation', 'sage-back'),
+            'footer_navigation' => __('Footer Navigation', 'sage-back'),
             'footer_secondary_navigation' => __(
                 'Footer Secondary Navigation',
-                'sage',
+                'sage-back',
             ),
-            'social_navigation' => __('Social Navigation', 'sage'),
+            'social_navigation' => __('Social Navigation', 'sage-back'),
         ]);
 
         /**
@@ -239,14 +276,14 @@ add_action('widgets_init', function () {
 
     register_sidebar(
         [
-            'name' => __('Primary', 'sage'),
+            'name' => __('Primary', 'sage-back'),
             'id' => 'sidebar-primary',
         ] + $config,
     );
 
     register_sidebar(
         [
-            'name' => __('Footer', 'sage'),
+            'name' => __('Footer', 'sage-back'),
             'id' => 'sidebar-footer',
         ] + $config,
     );
