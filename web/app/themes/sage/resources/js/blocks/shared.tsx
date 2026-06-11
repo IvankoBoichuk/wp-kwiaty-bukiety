@@ -57,8 +57,9 @@ type SageBlockSaveProps<TSchema extends SageAttributeSchema> = {
 };
 
 type RegisterSageBlockArgs<TSchema extends SageAttributeSchema> =
-  Partial<Omit<BlockType, 'attributes' | 'edit' | 'save' | 'icon'>> & {
+  Partial<Omit<BlockType, 'title' | 'attributes' | 'edit' | 'save' | 'icon'>> & {
     slug: string;
+    title: string;
     icon?: string;
     attributes?: TSchema;
     includeBaseAttributes?: boolean;

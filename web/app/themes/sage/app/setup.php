@@ -257,6 +257,16 @@ add_action(
          * @link https://developer.wordpress.org/reference/functions/add_theme_support/#customize-selective-refresh-widgets
          */
         add_theme_support('customize-selective-refresh-widgets');
+
+        /**
+         * Load the theme's translated strings.
+         *
+         * @link https://developer.wordpress.org/reference/functions/load_theme_textdomain/
+         */
+        load_theme_textdomain(
+            'sage-front',
+            get_template_directory() . '/languages/front',
+        );
     },
     20,
 );

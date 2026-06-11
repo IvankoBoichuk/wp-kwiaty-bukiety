@@ -54,15 +54,15 @@ export class WooStoreApiClient {
     }
 
     async post<TResponse, TBody = undefined>(path: string, body?: TBody, options: StoreApiRequestOptions = {}): Promise<TResponse> {
-        return this.request<TResponse>('POST', path, body, options)
+        return this.request<TResponse, TBody>('POST', path, body, options)
     }
 
     async put<TResponse, TBody = undefined>(path: string, body?: TBody, options: StoreApiRequestOptions = {}): Promise<TResponse> {
-        return this.request<TResponse>('PUT', path, body, options)
+        return this.request<TResponse, TBody>('PUT', path, body, options)
     }
 
     async delete<TResponse, TBody = undefined>(path: string, body?: TBody, options: StoreApiRequestOptions = {}): Promise<TResponse> {
-        return this.request<TResponse>('DELETE', path, body, options)
+        return this.request<TResponse, TBody>('DELETE', path, body, options)
     }
 
     protected async request<TResponse, TBody = undefined>(
