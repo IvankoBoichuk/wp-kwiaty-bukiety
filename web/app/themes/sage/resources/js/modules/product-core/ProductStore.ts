@@ -163,6 +163,12 @@ export class ProductStore implements ProductPurchaseStore {
         this.#plugins.clear()
     }
 
+    private scrollToDeliveryDate(): void {
+        document
+            .querySelector<HTMLElement>('[data-delivery-date-section]')
+            ?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    }
+
     private validateBeforeSubmit(): boolean {
         let isValid = true
 
@@ -178,6 +184,10 @@ export class ProductStore implements ProductPurchaseStore {
             isValid = false
         } else {
             this.deliveryTimeError = ''
+        }
+
+        if (!isValid) {
+            this.scrollToDeliveryDate()
         }
 
         return isValid
