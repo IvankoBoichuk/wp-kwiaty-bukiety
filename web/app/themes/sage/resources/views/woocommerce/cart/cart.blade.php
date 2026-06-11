@@ -51,19 +51,21 @@
       window.cartCheckoutConfig = @json($cartCheckout['config'] ?? []);
     </script>
 
-    <div class="shadow-card mb-4 grid grid-cols-3 gap-2 rounded-full bg-white/80 p-1">
+    <div
+      class="shadow-card mb-4 grid grid-cols-3 gap-2 overflow-hidden rounded-xl border border-[#C7C7C7] bg-white/80 p-1"
+    >
       <button
         type="button"
-        class="cart-checkout-step-tab rounded-full px-3 py-2 text-[13px] font-semibold transition"
-        :class="$store.cartCheckout.currentStep === 1 ? 'bg-green-dark text-white' : 'text-green-default'"
+        class="cart-checkout-step-tab rounded-lg px-3 py-2 text-[13px] font-semibold transition"
+        :class="$store.cartCheckout.currentStep === 1 ? 'bg-[#6E8F7E] text-white' : 'text-green-default'"
         @click="$store.cartCheckout.goToStep(1)"
       >
         Cart
       </button>
       <button
         type="button"
-        class="cart-checkout-step-tab rounded-full px-3 py-2 text-[13px] font-semibold transition"
-        :class="$store.cartCheckout.currentStep === 2 ? 'bg-green-dark text-white' : 'text-green-default'"
+        class="cart-checkout-step-tab rounded-lg px-3 py-2 text-[13px] font-semibold transition"
+        :class="$store.cartCheckout.currentStep === 2 ? 'bg-[#6E8F7E] text-white' : 'text-green-default'"
         :disabled="$store.cartCheckout.isCartEmpty"
         @click="$store.cartCheckout.goToStep(2)"
       >
@@ -71,8 +73,8 @@
       </button>
       <button
         type="button"
-        class="cart-checkout-step-tab rounded-full px-3 py-2 text-[13px] font-semibold transition"
-        :class="$store.cartCheckout.currentStep === 3 ? 'bg-green-dark text-white' : 'text-green-default'"
+        class="cart-checkout-step-tab rounded-lg px-3 py-2 text-[13px] font-semibold transition"
+        :class="$store.cartCheckout.currentStep === 3 ? 'bg-[#6E8F7E] text-white' : 'text-green-default'"
         :disabled="$store.cartCheckout.isCartEmpty"
         @click="$store.cartCheckout.goToStep(3)"
       >
@@ -116,7 +118,7 @@
           </header>
           @if (!empty($cartCheckout['deliverySummary']))
             <p class="text-green-default/75 mb-4 text-[14px] leading-5" x-show="!$store.cartCheckout.isCartEmpty">
-              {{ $cartCheckout['deliverySummary'] }}
+              {!! wp_kses_post($cartCheckout['deliverySummary']) !!}
             </p>
           @endif
 
@@ -134,7 +136,11 @@
                 <div class="min-w-0 flex-1">
                   <div class="mb-3 flex items-start gap-3">
                     <div class="min-w-0 flex-1">
-                      <h2 class="text-green-default mb-1 text-[16px] leading-5 font-semibold" x-text="item.name"></h2>
+                      <a
+                        :href="item.url || '#'"
+                        class="text-green-default mb-1 text-[16px] leading-5 font-semibold"
+                        x-text="item.name"
+                      ></a>
                       <p
                         class="text-green-default/75 text-[14px] leading-5"
                         x-show="item.summary"

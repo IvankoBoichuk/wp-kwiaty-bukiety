@@ -1,4 +1,7 @@
-<div class="card flex flex-col gap-8">
+<div
+  class="card flex flex-col gap-8"
+  data-delivery-schedule="{!! esc_attr(wp_json_encode($deliverySchedule, JSON_UNESCAPED_UNICODE)) !!}"
+>
   {{-- Delivery date --}}
   <div class="flex flex-col gap-3" data-delivery-date-section>
     <div class="text-green-default flex items-center gap-2">
@@ -15,32 +18,27 @@
       class="flex gap-1.5"
       :class="$store.productPurchase.deliveryDateError ? 'rounded-2xl ring-1 ring-[#D54C4C] p-1' : ''"
     >
+      @foreach ($deliverySchedule['dateOptions'] as $dateOption)
+        <button
+          type="button"
+          class="delivery-date-option text-green-dark text-body-13 hover:bg-green-easy flex flex-1 items-center justify-center gap-1 rounded-xl bg-[#F7F7F6] px-4 py-2.5 transition-all hover:text-white"
+          data-date-value="{{ $dateOption['value'] }}"
+        >
+          {{ $dateOption['label'] }}
+        </button>
+      @endforeach
       <button
         type="button"
-        class="delivery-date-option text-green-dark text-body-13 hover:bg-green-easy flex flex-1 items-center justify-center gap-1 rounded-xl bg-[#F7F7F6] px-4 py-2.5 transition-all hover:text-white"
-        data-date-option="today"
-      >
-        {{ __('Today', 'sage-front') }}
-      </button>
-      <button
-        type="button"
-        class="delivery-date-option text-green-dark text-body-13 hover:bg-green-easy flex flex-1 items-center justify-center gap-1 rounded-xl bg-[#F7F7F6] px-4 py-2.5 transition-all hover:text-white"
-        data-date-option="tomorrow"
-      >
-        {{ __('Tomorrow', 'sage-front') }}
-      </button>
-      <button
-        type="button"
-        class="delivery-date-option delivery-date-custom text-green-dark text-body-13 hover:bg-green-easy flex flex-none items-center justify-center gap-1 rounded-xl bg-[#F7F7F6] px-4 py-2.5 transition-all hover:text-white"
+        class="delivery-date-option delivery-date-custom group text-green-dark text-body-13 hover:bg-green-easy flex flex-none items-center justify-center gap-1 rounded-xl bg-[#F7F7F6] px-4 py-2.5 transition-all hover:text-white"
         data-date-option="custom"
       >
         <span class="delivery-date-label">{{ __('Custom date', 'sage-front') }}</span>
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7.5 15L12.5 10L7.5 5" stroke="#828282" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+        <svg class="stroke-gray-3 group-hover:stroke-white group-[.active]:stroke-white" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7.5 15L12.5 10L7.5 5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
         <input
           type="date"
           class="delivery-date-input pointer-events-none absolute hidden opacity-0"
           data-date-input
-          min="{{ date('Y-m-d') }}"
+          min="{{ ($deliverySchedule['dateOptions'][0]['value'] ?? date('Y-m-d')) }}"
         />
       </button>
     </div>
@@ -66,13 +64,15 @@
       class="flex flex-wrap gap-2"
       :class="$store.productPurchase.deliveryTimeError ? 'rounded-2xl ring-1 ring-[#D54C4C] p-1' : ''"
     >
-      @foreach (['08-12', '12-15', '15-18', '18-21'] as $timeSlot)
+      @foreach ($deliverySchedule['timeOptions'] ?? [] as $timeSlot)
         <button
           type="button"
           class="delivery-time-option text-body-13 text-green-dark hover:bg-green-easy flex-1 rounded-xl bg-[#F7F7F6] px-4 py-2.5 transition-all hover:text-white"
-          data-time-slot="{{ $timeSlot }}"
+          data-time-slot="{{ $timeSlot['value'] }}"
+          data-slot-start="{{ $timeSlot['start'] }}"
+          data-slot-end="{{ $timeSlot['end'] }}"
         >
-          {{ $timeSlot }}
+          {{ $timeSlot['label'] }}
         </button>
       @endforeach
     </div>

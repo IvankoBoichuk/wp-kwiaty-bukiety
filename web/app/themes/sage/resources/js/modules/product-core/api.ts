@@ -28,6 +28,9 @@ export async function addProductToCart(payload: CartPayload): Promise<CartRespon
         variation: normalizeVariation(payload.attributes),
         deliveryDate: payload.deliveryDate,
         deliveryTime: payload.deliveryTime,
+        deliveryLocation: payload.deliveryLocation,
+        deliveryType: payload.deliveryType,
+        deceasedFullName: payload.deceasedFullName,
         cardMessage: payload.cardMessage,
         additionIds: payload.additionIds,
     })

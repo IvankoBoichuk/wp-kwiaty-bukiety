@@ -3,10 +3,13 @@
 namespace App\Support;
 
 use DateTimeImmutable;
+use DateTimeZone;
 
 class DeliveryTimer
 {
     public const OPTION_NAME = 'sage_delivery_timer_settings';
+    public const ORDER_LEAD_HOURS = 2;
+    public const PURCHASE_DAYS_AHEAD = 60;
 
     /**
      * @var array<string, string>|null
@@ -38,6 +41,7 @@ class DeliveryTimer
         return [
             'weekday_hours' => '9-17',
             'weekend_hours' => '9-14',
+            'time_slots' => '08-12, 12-15, 15-18, 18-21',
             'holidays' => '',
         ];
     }
@@ -60,6 +64,11 @@ class DeliveryTimer
                 (string) ($input['weekend_hours'] ??
                     self::defaultOptions()['weekend_hours']),
                 self::defaultOptions()['weekend_hours'],
+            ),
+            'time_slots' => $this->sanitizeTimeSlots(
+                (string) ($input['time_slots'] ??
+                    self::defaultOptions()['time_slots']),
+                self::defaultOptions()['time_slots'],
             ),
             'holidays' => implode(
                 ', ',
@@ -84,20 +93,57 @@ class DeliveryTimer
     /**
      * @return array{
      *     timezone: string,
-     *     weekdayHours: array{start: int, end: int},
-     *     weekendHours: array{start: int, end: int},
-     *     holidays: array<int, string>
+     *     holidays: array<int, string>,
+     *     leadTimeHours: int,
+     *     timeSlots: array<int, array{value: string, label: string, start: int, end: int}>
      * }
      */
     public function viewData(): array
     {
         $settings = $this->settings();
+        $timeSlots = $this->normalizeTimeSlotList($settings['time_slots']);
 
         return [
             'timezone' => $this->timezone(),
-            'weekdayHours' => $this->parseHourRange($settings['weekday_hours']),
-            'weekendHours' => $this->parseHourRange($settings['weekend_hours']),
             'holidays' => $this->normalizeHolidayList($settings['holidays']),
+            'leadTimeHours' => self::ORDER_LEAD_HOURS,
+            'timeSlots' => $timeSlots,
+        ];
+    }
+
+    /**
+     * @return array{
+     *     timezone: string,
+     *     holidays: array<int, string>,
+     *     leadTimeHours: int,
+     *     dateOptions: array<int, array{value: string, label: string}>,
+     *     timeSlots: array<int, array{value: string, label: string, start: int, end: int}>,
+     *     timeOptions: array<int, array{value: string, label: string, start: int, end: int}>,
+     *     timeOptionsByDate: array<string, array<int, array{value: string, label: string, start: int, end: int}>>
+     * }
+     */
+    public function purchaseOptions(): array
+    {
+        $viewData = $this->viewData();
+        $timeSlots = $viewData['timeSlots'];
+        $availableTimeOptionsByDate = $this->buildAvailableTimeOptionsByDate(
+            $viewData,
+            $timeSlots,
+        );
+        $dateOptions = $this->buildDateOptions(
+            array_keys($availableTimeOptionsByDate),
+            new DateTimeImmutable(
+                'now',
+                new DateTimeZone($viewData['timezone']),
+            ),
+            new DateTimeZone($viewData['timezone']),
+        );
+
+        return [
+            ...$viewData,
+            'dateOptions' => $dateOptions,
+            'timeOptions' => $timeSlots,
+            'timeOptionsByDate' => $availableTimeOptionsByDate,
         ];
     }
 
@@ -129,6 +175,129 @@ class DeliveryTimer
             : 'Europe/Warsaw';
     }
 
+    /**
+     * @param array<int, string> $availableDates
+     * @return array<int, array{value: string, label: string}>
+     */
+    protected function buildDateOptions(
+        array $availableDates,
+        DateTimeImmutable $today,
+        DateTimeZone $timezone,
+    ): array {
+        $options = [];
+
+        foreach (array_slice($availableDates, 0, 2) as $availableDate) {
+            $date = DateTimeImmutable::createFromFormat(
+                '!Y-m-d',
+                $availableDate,
+                $timezone,
+            );
+
+            if ($date === false) {
+                continue;
+            }
+
+            $options[] = [
+                'value' => $availableDate,
+                'label' => $this->dateOptionLabel($date, $today, $timezone),
+            ];
+        }
+
+        return $options;
+    }
+
+    /**
+     * @param array{timezone: string, holidays: array<int, string>, leadTimeHours: int, timeSlots: array<int, array{value: string, label: string, start: int, end: int}>} $config
+     * @param array<int, array{value: string, label: string, start: int, end: int}> $timeSlots
+     * @return array<string, array<int, array{value: string, label: string, start: int, end: int}>>
+     */
+    protected function buildAvailableTimeOptionsByDate(
+        array $config,
+        array $timeSlots,
+    ): array {
+        $timezone = new DateTimeZone($config['timezone']);
+        $today = new DateTimeImmutable('now', $timezone);
+        $candidate = $today->setTime(0, 0, 0);
+        $availableTimeOptionsByDate = [];
+
+        for ($index = 0; $index < self::PURCHASE_DAYS_AHEAD; $index++) {
+            $availableSlots = $this->availableTimeSlotsForDate(
+                $candidate,
+                $today,
+                $config,
+                $timeSlots,
+            );
+
+            if ($availableSlots !== []) {
+                $availableTimeOptionsByDate[
+                    $candidate->format('Y-m-d')
+                ] = $availableSlots;
+            }
+
+            $candidate = $candidate->modify('+1 day');
+        }
+
+        return $availableTimeOptionsByDate;
+    }
+
+    /**
+     * @param array{timezone: string, holidays: array<int, string>, leadTimeHours: int, timeSlots: array<int, array{value: string, label: string, start: int, end: int}>} $config
+     * @param array<int, array{value: string, label: string, start: int, end: int}> $timeSlots
+     * @return array<int, array{value: string, label: string, start: int, end: int}>
+     */
+    protected function availableTimeSlotsForDate(
+        DateTimeImmutable $candidate,
+        DateTimeImmutable $today,
+        array $config,
+        array $timeSlots,
+    ): array {
+        $candidateKey = $candidate->format('Y-m-d');
+
+        if (in_array($candidate->format('Y-m-d'), $config['holidays'], true)) {
+            return [];
+        }
+
+        if ($candidateKey !== $today->format('Y-m-d')) {
+            return $timeSlots;
+        }
+
+        $minimumTime = $today->modify('+' . self::ORDER_LEAD_HOURS . ' hours');
+
+        if ($minimumTime->format('Y-m-d') !== $candidateKey) {
+            return [];
+        }
+
+        $minimumMinutes =
+            (int) $minimumTime->format('G') * 60 +
+            (int) $minimumTime->format('i');
+
+        return array_values(
+            array_filter(
+                $timeSlots,
+                static fn(array $timeSlot): bool => $minimumMinutes <=
+                    $timeSlot['start'] * 60,
+            ),
+        );
+    }
+
+    protected function dateOptionLabel(
+        DateTimeImmutable $date,
+        DateTimeImmutable $today,
+        DateTimeZone $timezone,
+    ): string {
+        $daysDiff = (int) $today->setTime(0, 0, 0)->diff($date)->format('%a');
+
+        if ($daysDiff === 0) {
+            return __('Today', 'sage-front');
+        }
+
+        if ($daysDiff === 1) {
+            return __('Tomorrow', 'sage-front');
+        }
+
+        return wp_date('d.m', $date->getTimestamp(), $timezone);
+    }
+
     protected function sanitizeHourRange(
         string $value,
         string $fallback,
@@ -140,6 +309,19 @@ class DeliveryTimer
         }
 
         return sprintf('%d-%d', $parsed['start'], $parsed['end']);
+    }
+
+    protected function sanitizeTimeSlots(
+        string $value,
+        string $fallback,
+    ): string {
+        $slots = $this->normalizeTimeSlotList($value);
+
+        if ($slots === []) {
+            return $fallback;
+        }
+
+        return implode(', ', array_column($slots, 'value'));
     }
 
     /**
@@ -181,6 +363,42 @@ class DeliveryTimer
         }
 
         return sprintf('%02d:00-%02d:00', $hours['start'], $hours['end']);
+    }
+
+    /**
+     * @return array<int, array{value: string, label: string, start: int, end: int}>
+     */
+    protected function normalizeTimeSlotList(string $value): array
+    {
+        $parts = preg_split('/[\r\n,]+/', $value) ?: [];
+        $timeSlots = [];
+
+        foreach ($parts as $part) {
+            $slot = $this->parseHourRange(trim($part));
+
+            if ($slot === null) {
+                continue;
+            }
+
+            $formattedValue = sprintf(
+                '%02d-%02d',
+                $slot['start'],
+                $slot['end'],
+            );
+
+            if (isset($timeSlots[$formattedValue])) {
+                continue;
+            }
+
+            $timeSlots[$formattedValue] = [
+                'value' => $formattedValue,
+                'label' => $formattedValue,
+                'start' => $slot['start'],
+                'end' => $slot['end'],
+            ];
+        }
+
+        return array_values($timeSlots);
     }
 
     /**

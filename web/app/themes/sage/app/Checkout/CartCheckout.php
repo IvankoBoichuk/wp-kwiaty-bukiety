@@ -181,6 +181,9 @@ class CartCheckout
                 'quantity' => $quantity,
                 'lineTotal' => $this->money($lineTotal),
                 'unitPrice' => $this->money($unitTotal),
+                'url' => function_exists('get_permalink')
+                    ? (string) get_permalink($product->get_id())
+                    : '',
                 'image' =>
                     $imageId > 0
                         ? (string) wp_get_attachment_image_url(
@@ -216,7 +219,7 @@ class CartCheckout
         if ($deliveryDate !== '') {
             $parts[] = sprintf(
                 '%s: %s',
-                'delivery_date',
+                __('Delivery date', 'sage-front'),
                 wc_clean($deliveryDate),
             );
         }
@@ -224,12 +227,12 @@ class CartCheckout
         if ($deliveryTime !== '') {
             $parts[] = sprintf(
                 '%s: %s',
-                'delivery_time',
+                __('Delivery time', 'sage-front'),
                 wc_clean($deliveryTime),
             );
         }
 
-        return $parts !== [] ? implode(' ', $parts) : '';
+        return $parts !== [] ? implode('<br>', $parts) : '';
     }
 
     protected function itemName(WC_Product $product): string

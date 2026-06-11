@@ -23,6 +23,9 @@ export interface ProductPurchaseStore {
     deliveryTime: string
     deliveryDateError: string
     deliveryTimeError: string
+    deliveryLocation: string
+    deliveryType: string
+    deceasedFullName: string
     cardMessage: string
     unitPrice: number
     totalPrice: number
@@ -47,6 +50,9 @@ export interface CartPayload {
     attributes: Record<string, string>
     deliveryDate: string
     deliveryTime: string
+    deliveryLocation: string
+    deliveryType: string
+    deceasedFullName: string
     cardMessage: string
     additionIds: number[]
 }

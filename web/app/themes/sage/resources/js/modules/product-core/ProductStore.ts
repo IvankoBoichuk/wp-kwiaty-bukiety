@@ -25,6 +25,9 @@ export class ProductStore implements ProductPurchaseStore {
     deliveryTime = ''
     deliveryDateError = ''
     deliveryTimeError = ''
+    deliveryLocation = ''
+    deliveryType = ''
+    deceasedFullName = ''
     cardMessage = ''
     _variation: ProductVariation | null = null
 
@@ -126,7 +129,26 @@ export class ProductStore implements ProductPurchaseStore {
         this.cardMessage = value
     }
 
+    private getFieldValue(name: string): string {
+        const field = document.querySelector<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>(`[name="${name}"]`)
+
+        return field?.value.trim() ?? ''
+    }
+
+    private getCheckedFieldValue(name: string): string {
+        return document.querySelector<HTMLInputElement>(`input[name="${name}"]:checked`)?.value.trim() ?? ''
+    }
+
+    private syncFuneralFieldsFromInputs(): void {
+        this.deliveryLocation = this.getFieldValue('deliveryLocation')
+        this.deliveryType = this.getCheckedFieldValue('deliveryType')
+        this.deceasedFullName = this.getFieldValue('deceasedFullName')
+    }
+
     getCartPayload(): CartPayload {
+        this.syncDeliveryFieldsFromInputs()
+        this.syncFuneralFieldsFromInputs()
+
         return {
             productId: this.productId,
             quantity: this.quantity,
@@ -134,6 +156,9 @@ export class ProductStore implements ProductPurchaseStore {
             attributes: {},
             deliveryDate: this.deliveryDate,
             deliveryTime: this.deliveryTime,
+            deliveryLocation: this.deliveryLocation,
+            deliveryType: this.deliveryType,
+            deceasedFullName: this.deceasedFullName,
             cardMessage: this.cardMessage,
             additionIds: this.additions
                 .filter((addition) => addition.includeInPayload !== false)
@@ -165,12 +190,47 @@ export class ProductStore implements ProductPurchaseStore {
 
     private scrollToDeliveryDate(): void {
         document
-            .querySelector<HTMLElement>('[data-delivery-date-section]')
+            .querySelector<HTMLElement>('[data-delivery-date-section], [data-funeral-delivery-date-section]')
             ?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    }
+
+    private syncDeliveryFieldsFromInputs(): void {
+        const deliveryDateInput = document.querySelector<HTMLInputElement>('[name="deliveryDate"]')
+        const deliveryTimeInput = document.querySelector<HTMLInputElement>('[name="deliveryTime"]')
+
+        if (this.deliveryDate.trim() === '' && deliveryDateInput?.value.trim()) {
+            this.setDeliveryDate(deliveryDateInput.value)
+        }
+
+        if (this.deliveryTime.trim() === '' && deliveryTimeInput?.value.trim()) {
+            this.setDeliveryTime(deliveryTimeInput.value)
+        }
+    }
+
+    private reportDeliveryInputError(selector: string, message: string): void {
+        const input = document.querySelector<HTMLInputElement>(selector)
+
+        if (!input) {
+            return
+        }
+
+        input.setCustomValidity(message)
+        input.reportValidity()
+
+        const clearError = (): void => {
+            input.setCustomValidity('')
+            input.removeEventListener('input', clearError)
+            input.removeEventListener('change', clearError)
+        }
+
+        input.addEventListener('input', clearError)
+        input.addEventListener('change', clearError)
     }
 
     private validateBeforeSubmit(): boolean {
         let isValid = true
+
+        this.syncDeliveryFieldsFromInputs()
 
         if (this.deliveryDate.trim() === '') {
             this.deliveryDateError = __('Choose a delivery date', 'sage-front')
@@ -188,6 +248,12 @@ export class ProductStore implements ProductPurchaseStore {
 
         if (!isValid) {
             this.scrollToDeliveryDate()
+
+            if (this.deliveryDate.trim() === '') {
+                this.reportDeliveryInputError('[name="deliveryDate"]', this.deliveryDateError)
+            } else if (this.deliveryTime.trim() === '') {
+                this.reportDeliveryInputError('[name="deliveryTime"]', this.deliveryTimeError)
+            }
         }
 
         return isValid

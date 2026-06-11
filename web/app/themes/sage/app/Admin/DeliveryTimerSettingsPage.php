@@ -63,7 +63,7 @@ class DeliveryTimerSettingsPage
             ); ?></h1>
             <p class="description">
                 <?php echo esc_html__(
-                    'Set the working hours for weekdays, weekends, and the list of additional holidays.',
+                    'Set the working hours, delivery time slots, and the list of additional holidays.',
                     'sage-back',
                 ); ?>
             </p>
@@ -128,6 +128,34 @@ class DeliveryTimerSettingsPage
                                 <p class="description">
                                     <?php echo esc_html__(
                                         'Format: 9-14. Applies on Saturday and Sunday.',
+                                        'sage-back',
+                                    ); ?>
+                                </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">
+                                <label for="sage-delivery-timer-time-slots">
+                                    <?php echo esc_html__(
+                                        'Delivery time slots',
+                                        'sage-back',
+                                    ); ?>
+                                </label>
+                            </th>
+                            <td>
+                                <textarea
+                                    id="sage-delivery-timer-time-slots"
+                                    name="<?php echo esc_attr(
+                                        DeliveryTimer::OPTION_NAME,
+                                    ); ?>[time_slots]"
+                                    rows="4"
+                                    class="large-text"
+                                ><?php echo esc_textarea(
+                                    $options['time_slots'],
+                                ); ?></textarea>
+                                <p class="description">
+                                    <?php echo esc_html__(
+                                        'Format: 08-12, 12-15, 15-18, 18-21. You can separate values by commas or new lines.',
                                         'sage-back',
                                     ); ?>
                                 </p>

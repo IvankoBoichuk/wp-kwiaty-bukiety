@@ -4,6 +4,7 @@ namespace App\View\Composers;
 
 use App\Catalog\ProductData;
 use App\Catalog\SingleProductView;
+use App\Support\DeliveryTimer;
 use Roots\Acorn\View\Composer;
 use WC_Product;
 
@@ -32,6 +33,9 @@ class SingleProduct extends Composer
                     'woocommerce.content-single-product',
                 'productView' => null,
                 'relatedProducts' => [],
+                'deliverySchedule' => app(
+                    DeliveryTimer::class,
+                )->purchaseOptions(),
             ];
         }
 
@@ -44,6 +48,7 @@ class SingleProduct extends Composer
                 : 'woocommerce.content-single-product',
             'productView' => $productView->toArray(),
             'relatedProducts' => $productView->relatedProducts(),
+            'deliverySchedule' => app(DeliveryTimer::class)->purchaseOptions(),
         ];
     }
 }

@@ -1,13 +1,15 @@
-type HourRange = {
+type TimeSlot = {
+    value: string;
+    label: string;
     start: number;
     end: number;
 };
 
 type DeliveryTimerConfig = {
     timezone: string;
-    weekdayHours: HourRange;
-    weekendHours: HourRange;
     holidays: string[];
+    leadTimeHours: number;
+    timeSlots: TimeSlot[];
 };
 
 type TimerState =
@@ -23,8 +25,6 @@ type TimerState =
 type ZonedNow = {
     date: Date;
     dateKey: string;
-    dayIndex: number;
-    hour: number;
 };
 
 const SELECTOR = '[data-delivery-timer]';
@@ -62,18 +62,7 @@ const getZonedNow = (timeZone: string): ZonedNow => {
     return {
         date,
         dateKey: `${values.year}-${values.month}-${values.day}`,
-        dayIndex: date.getDay(),
-        hour,
     };
-};
-
-const getHoursForDay = (
-    config: DeliveryTimerConfig,
-    dayIndex: number,
-): HourRange => {
-    return dayIndex === 0 || dayIndex === 6
-        ? config.weekendHours
-        : config.weekdayHours;
 };
 
 const isHoliday = (dateKey: string, holidays: Set<string>): boolean => {
@@ -99,7 +88,6 @@ const formatDuration = (milliseconds: number): string => {
     return `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
 };
 
-
 const nextWorkingDate = (
     currentDate: Date,
     holidays: Set<string>,
@@ -118,30 +106,66 @@ const toDateKey = (date: Date): string => {
     return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
 };
 
+const slotStartDate = (date: Date, slot: TimeSlot): Date => {
+    const start = new Date(date);
+    start.setHours(slot.start, 0, 0, 0);
+
+    return start;
+};
+
+const todayCutoffTime = (config: DeliveryTimerConfig, now: Date): Date | null => {
+    if (config.timeSlots.length === 0) {
+        return null;
+    }
+
+    const leadMs = config.leadTimeHours * 60 * 60 * 1000;
+    const nowWithLead = new Date(now.getTime() + leadMs);
+    let latestAvailableSlotStartMs: number | null = null;
+
+    config.timeSlots.forEach((slot) => {
+        const start = slotStartDate(now, slot);
+
+        if (nowWithLead <= start) {
+            latestAvailableSlotStartMs = start.getTime();
+        }
+    });
+
+    if (latestAvailableSlotStartMs === null) {
+        return null;
+    }
+
+    return new Date(latestAvailableSlotStartMs - leadMs);
+};
+
+const firstSlotStart = (config: DeliveryTimerConfig, date: Date): Date | null => {
+    const firstSlot = config.timeSlots[0];
+
+    if (!firstSlot) {
+        return null;
+    }
+
+    return slotStartDate(date, firstSlot);
+};
+
 const nextDeliveryMessage = (
     config: DeliveryTimerConfig,
     now: ZonedNow,
     holidays: Set<string>,
-    mode: 'today' | 'next',
 ): string => {
-    if (mode === 'today') {
-        const hours = getHoursForDay(config, now.dayIndex);
-        return `Najbliższa dostawa dziś od <span>${formatHour(hours.start)}</span>`;
-    }
-
     const nextDate = nextWorkingDate(now.date, holidays);
-    const nextDayIndex = nextDate.getDay();
-    const nextHours = getHoursForDay(config, nextDayIndex);
+    const nextSlotStart = firstSlotStart(config, nextDate);
     const tomorrow = new Date(now.date);
 
     tomorrow.setHours(0, 0, 0, 0);
     tomorrow.setDate(tomorrow.getDate() + 1);
 
+    const formattedStart = formatHour(nextSlotStart?.getHours() ?? 0);
+
     if (toDateKey(nextDate) === toDateKey(tomorrow)) {
-        return `Najbliższa dostawa jutro od <span>${formatHour(nextHours.start)}</span>`;
+        return `Najbliższa dostawa jutro od <span>${formattedStart}</span>`;
     }
 
-    return `Najbliższa dostawa ${formatDate(nextDate)} od <span>${formatHour(nextHours.start)}</span>`;
+    return `Najbliższa dostawa ${formatDate(nextDate)} od <span>${formattedStart}</span>`;
 };
 
 const resolveState = (
@@ -149,37 +173,26 @@ const resolveState = (
     holidays: Set<string>,
 ): TimerState => {
     const now = getZonedNow(config.timezone);
-    const dayHours = getHoursForDay(config, now.dayIndex);
-    const openingTime = new Date(now.date);
-    const closingTime = new Date(now.date);
-
-    openingTime.setHours(dayHours.start, 0, 0, 0);
-    closingTime.setHours(dayHours.end, 0, 0, 0);
 
     if (isHoliday(now.dateKey, holidays)) {
         return {
             type: 'message',
-            value: nextDeliveryMessage(config, now, holidays, 'next'),
+            value: nextDeliveryMessage(config, now, holidays),
         };
     }
 
-    if (now.date < openingTime) {
-        return {
-            type: 'message',
-            value: nextDeliveryMessage(config, now, holidays, 'today'),
-        };
-    }
+    const cutoffTime = todayCutoffTime(config, now.date);
 
-    if (now.date >= closingTime) {
+    if (!cutoffTime || now.date > cutoffTime) {
         return {
             type: 'message',
-            value: nextDeliveryMessage(config, now, holidays, 'next'),
+            value: nextDeliveryMessage(config, now, holidays),
         };
     }
 
     return {
         type: 'countdown',
-        value: formatDuration(closingTime.getTime() - now.date.getTime()),
+        value: formatDuration(cutoffTime.getTime() - now.date.getTime()),
     };
 };
 

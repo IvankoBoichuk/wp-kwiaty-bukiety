@@ -178,15 +178,7 @@ function variationSummary(item: WooStoreApiCartResponse['items'][number]): strin
         return variationLines.join(', ')
     }
 
-    return (item.item_data || [])
-        .map((entry) => {
-            const label = stripHtml(entry.key)
-            const value = stripHtml(entry.value)
-
-            return label && value ? `${label}: ${value}` : ''
-        })
-        .filter(Boolean)
-        .join(', ')
+    return ''
 }
 
 function mapStoreApiCart(cart: CartCheckoutStoreApiCartResponse) {
@@ -195,6 +187,7 @@ function mapStoreApiCart(cart: CartCheckoutStoreApiCartResponse) {
             key: item.key,
             productId: item.id,
             name: item.name,
+            url: item.permalink || '',
             quantity: item.quantity,
             lineTotal: formatStoreApiMoney(item.totals?.line_total || '0', item.totals),
             unitPrice: formatStoreApiMoney(item.prices?.price || '0', item.prices),

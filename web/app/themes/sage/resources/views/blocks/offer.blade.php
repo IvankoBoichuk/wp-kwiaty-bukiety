@@ -13,18 +13,10 @@
   $mediaFile = is_array($media['file'] ?? null) ? $media['file'] : [];
   $mediaEmbed = is_array($media['embed'] ?? null) ? $media['embed'] : [];
 
-  $heroImageSrc = '';
+  $heroImageSrc = $media['file']['url'] ?? '';
   $heroImageAlt = 'Hero Image';
-
   if ($mediaType === 'img') {
-    $heroImageSrc = $mediaOrigin === 'embed' ? (string) ($mediaEmbed['url'] ?? '') : (string) ($mediaFile['url'] ?? '');
-
     $heroImageAlt = (string) ($mediaFile['alt'] ?? ($mediaFile['title'] ?? 'Hero Image'));
-  }
-
-  if ($heroImageSrc === '') {
-    $heroImageSrc = (string) ($legacyImage['src'] ?? '');
-    $heroImageAlt = (string) ($legacyImage['alt'] ?? $heroImageAlt);
   }
 @endphp
 

@@ -1,27 +1,45 @@
 @use('App\Catalog\Settings')
-<div class="flex flex-col gap-8">
+<div
+  class="flex flex-col gap-8"
+  data-delivery-schedule="{!! esc_attr(wp_json_encode($deliverySchedule, JSON_UNESCAPED_UNICODE)) !!}"
+>
   <div class="grid grid-cols-2 gap-x-3 gap-y-6">
     {{-- Delivery date --}}
-    @include('elements.input-date-1',
-      [
-        'name' => 'delivery_date',
-        'min' => date('Y-m-d'),
-        'label' => __('Delivery date', 'sage-front'),
-        'icon' => 'calendar'
-      ])
+    <div data-funeral-delivery-date-section>
+      @include('elements.input-date-1',
+        [
+          'name' => 'deliveryDate',
+          'min' => $deliverySchedule['dateOptions'][0]['value'] ?? date('Y-m-d'),
+          'label' => __('Delivery date', 'sage-front'),
+          'icon' => 'calendar'
+        ])
 
-    {{-- Delivery time --}}
-    @include('elements.input-time-1',
-      [
-        'name' => 'delivery_time',
-        'label' => __('Delivery time', 'sage-front'),
-        'icon' => 'clock'
-      ])
+      <p
+        x-show="$store.productPurchase.deliveryDateError"
+        x-text="$store.productPurchase.deliveryDateError"
+        class="text-[12px] leading-4 text-[#D54C4C]"
+      ></p>
+    </div>
+
+    <div class="flex flex-col gap-3">
+      @include('elements.input-time-1',
+        [
+          'name' => 'deliveryTime',
+          'label' => __('Delivery time', 'sage-front'),
+          'icon' => 'clock'
+        ])
+
+      <p
+        x-show="$store.productPurchase.deliveryTimeError"
+        x-text="$store.productPurchase.deliveryTimeError"
+        class="text-[12px] leading-4 text-[#D54C4C]"
+      ></p>
+    </div>
 
     {{-- Delivery location --}}
     @include('elements.input-select-1',
       [
-        'name' => 'delivery_location',
+        'name' => 'deliveryLocation',
         'label' => __('Delivery location', 'sage-front'),
         'icon' => 'location',
         'options' => Settings::locationsOptions(),
@@ -31,7 +49,7 @@
     {{-- Delivery type --}}
     @include('elements.input-radio-btns-1',
       [
-        'name' => 'delivery_type',
+        'name' => 'deliveryType',
         'label' => __('Delivery type', 'sage-front'),
         'icon' => 'opened-box',
         'options' => Settings::deliveryOptions(),
@@ -41,7 +59,7 @@
     {{-- Deceased's full name --}}
     @include('elements.input-text-1',
       [
-        'name' => 'deceased_full_name',
+        'name' => 'deceasedFullName',
         'label' => __('Deceased\'s full name', 'sage-front'),
         'icon' => 'account',
         'class' => 'col-span-2'
@@ -51,7 +69,7 @@
     @include('elements.input-text-1',
       [
         'id' => 'card_message_payed',
-        'name' => 'card_message',
+        'name' => 'cardMessage',
         'label' => __('Ribbon message (20 PLN)', 'sage-front'),
         'icon' => 'message',
         'class' => 'col-span-2'
@@ -60,7 +78,7 @@
     {{-- Add-ons --}}
     @include('elements.input-checkboxes-products-1',
       [
-        'name' => 'addition_ids',
+        'name' => 'additionIds',
         'label' => __('Add-ons', 'sage-front'),
         'icon' => 'plus',
         'items' => Settings::funeralAdditionsProducts(),

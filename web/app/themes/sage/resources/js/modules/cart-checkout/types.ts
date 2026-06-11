@@ -14,6 +14,7 @@ export interface CartCheckoutItem {
     key: string
     productId: number
     name: string
+    url: string
     quantity: number
     lineTotal: CartCheckoutMoney
     unitPrice: CartCheckoutMoney

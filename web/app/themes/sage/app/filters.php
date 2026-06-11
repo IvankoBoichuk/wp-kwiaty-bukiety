@@ -361,14 +361,17 @@ add_filter(
     20,
 );
 
-function getAddToCartRequestPayload(?\WP_REST_Request $request = null): array
-{
+function getAddToCartRequestPayload(
+    \WP_REST_Request|array|null $request = null,
+): array {
     static $jsonPayload;
 
     $source = [];
 
     if ($request instanceof \WP_REST_Request) {
         $source = $request->get_params();
+    } elseif (is_array($request)) {
+        $source = $request;
     } elseif ($_POST !== []) {
         $source = wp_unslash($_POST);
     } else {
@@ -393,6 +396,18 @@ function getAddToCartRequestPayload(?\WP_REST_Request $request = null): array
             (string) ($source['delivery_time'] ??
                 ($source['deliveryTime'] ?? '')),
         ),
+        'delivery_location' => sanitize_text_field(
+            (string) ($source['delivery_location'] ??
+                ($source['deliveryLocation'] ?? '')),
+        ),
+        'delivery_type' => sanitize_text_field(
+            (string) ($source['delivery_type'] ??
+                ($source['deliveryType'] ?? '')),
+        ),
+        'deceased_full_name' => sanitize_text_field(
+            (string) ($source['deceased_full_name'] ??
+                ($source['deceasedFullName'] ?? '')),
+        ),
         'card_message' => sanitize_textarea_field(
             (string) ($source['card_message'] ??
                 ($source['cardMessage'] ?? '')),
@@ -409,37 +424,120 @@ function getAddToCartRequestPayload(?\WP_REST_Request $request = null): array
     ];
 }
 
+function formatDeliveryLocationValue(string $value): string
+{
+    return Settings::locationsOptions()[$value] ?? $value;
+}
+
+function formatDeliveryTypeValue(string $value): string
+{
+    return Settings::deliveryOptions()[$value] ?? $value;
+}
+
+function formatPurchaseMetaValue(string $metaKey, string $value): string
+{
+    $formatters = [
+        'delivery_location' => 'formatDeliveryLocationValue',
+        __('Delivery location', 'sage-front') => 'formatDeliveryLocationValue',
+        'delivery_type' => 'formatDeliveryTypeValue',
+        __('Delivery type', 'sage-front') => 'formatDeliveryTypeValue',
+    ];
+
+    $formatter = $formatters[$metaKey] ?? null;
+
+    if (
+        !is_string($formatter) ||
+        !function_exists(__NAMESPACE__ . '\\' . $formatter)
+    ) {
+        return $value;
+    }
+
+    return call_user_func(__NAMESPACE__ . '\\' . $formatter, $value);
+}
+
+function purchaseSessionKeys(): array
+{
+    return [
+        'delivery_date',
+        'delivery_time',
+        'delivery_location',
+        'delivery_type',
+        'deceased_full_name',
+        'card_message',
+        'addition_ids',
+    ];
+}
+
+function setPurchaseSessionData(array $payload): void
+{
+    if (!(function_exists('WC') && WC()->session)) {
+        return;
+    }
+
+    foreach (purchaseSessionKeys() as $key) {
+        WC()->session->set(
+            $key,
+            $payload[$key] ?? ($key === 'addition_ids' ? [] : ''),
+        );
+    }
+}
+
+function getPurchaseSessionData(): array
+{
+    if (!(function_exists('WC') && WC()->session)) {
+        return [
+            'delivery_date' => '',
+            'delivery_time' => '',
+            'delivery_location' => '',
+            'delivery_type' => '',
+            'deceased_full_name' => '',
+            'card_message' => '',
+            'addition_ids' => [],
+        ];
+    }
+
+    return [
+        'delivery_date' => (string) WC()->session->get('delivery_date'),
+        'delivery_time' => (string) WC()->session->get('delivery_time'),
+        'delivery_location' => (string) WC()->session->get('delivery_location'),
+        'delivery_type' => (string) WC()->session->get('delivery_type'),
+        'deceased_full_name' => (string) WC()->session->get(
+            'deceased_full_name',
+        ),
+        'card_message' => (string) WC()->session->get('card_message'),
+        'addition_ids' => array_values(
+            array_filter(
+                array_map(
+                    'absint',
+                    (array) WC()->session->get('addition_ids', []),
+                ),
+            ),
+        ),
+    ];
+}
+
+function clearPurchaseSessionData(): void
+{
+    if (!(function_exists('WC') && WC()->session)) {
+        return;
+    }
+
+    foreach (purchaseSessionKeys() as $key) {
+        WC()->session->set($key, $key === 'addition_ids' ? [] : '');
+    }
+}
+
 add_filter(
     'woocommerce_add_cart_item_data',
     function ($cartItemData, $productId) {
+        if (!empty($cartItemData['is_sage_addition'])) {
+            return $cartItemData;
+        }
+
         $payload = getAddToCartRequestPayload();
-        $deliveryDate = $payload['delivery_date'];
-        $deliveryTime = $payload['delivery_time'];
-        $cardMessage = $payload['card_message'];
-        $additionIds = $payload['addition_ids'];
+        unset($productId);
 
-        if (function_exists('WC') && WC()->session) {
-            WC()->session->set('delivery_date', $deliveryDate);
-            WC()->session->set('delivery_time', $deliveryTime);
-        }
-
-        if ($cardMessage !== '') {
-            $cartItemData['card_message'] = $cardMessage;
-        }
-
-        if ($additionIds !== []) {
-            $cartItemData['addition_ids'] = $additionIds;
-        }
-
-        if ($additionIds !== [] || $cardMessage !== '') {
-            $cartItemData['unique_key'] = md5(
-                (string) wp_json_encode([
-                    $productId,
-                    $additionIds,
-                    $cardMessage,
-                ]),
-            );
-        }
+        setPurchaseSessionData($payload);
 
         return $cartItemData;
     },
@@ -451,39 +549,8 @@ add_filter(
     'woocommerce_store_api_add_to_cart_data',
     function ($add_to_cart_data, \WP_REST_Request $request) {
         $payload = getAddToCartRequestPayload($request);
-        $deliveryDate = $payload['delivery_date'];
-        $deliveryTime = $payload['delivery_time'];
-        $cardMessage = $payload['card_message'];
-        $additionIds = $payload['addition_ids'];
 
-        $cartItemData = is_array($add_to_cart_data['cart_item_data'] ?? null)
-            ? $add_to_cart_data['cart_item_data']
-            : [];
-
-        if (function_exists('WC') && WC()->session) {
-            WC()->session->set('delivery_date', $deliveryDate);
-            WC()->session->set('delivery_time', $deliveryTime);
-        }
-
-        if ($cardMessage !== '') {
-            $cartItemData['card_message'] = $cardMessage;
-        }
-
-        if ($additionIds !== []) {
-            $cartItemData['addition_ids'] = $additionIds;
-        }
-
-        if ($cardMessage !== '' || $additionIds !== []) {
-            $cartItemData['unique_key'] = md5(
-                (string) wp_json_encode([
-                    $add_to_cart_data['id'] ?? 0,
-                    $additionIds,
-                    $cardMessage,
-                ]),
-            );
-        }
-
-        $add_to_cart_data['cart_item_data'] = $cartItemData;
+        setPurchaseSessionData($payload);
 
         return $add_to_cart_data;
     },
@@ -491,10 +558,86 @@ add_filter(
     2,
 );
 
+$maybeClearCartForNewMainProduct = static function (
+    int $requestedProductId,
+    \WP_REST_Request|array|null $request = null,
+): void {
+    if (
+        $requestedProductId <= 0 ||
+        !(function_exists('WC') && WC()->cart instanceof \WC_Cart)
+    ) {
+        return;
+    }
+
+    foreach (WC()->cart->get_cart() as $cartItem) {
+        if (!empty($cartItem['is_sage_addition'])) {
+            continue;
+        }
+
+        $existingProductId = absint($cartItem['variation_id'] ?? 0);
+
+        if ($existingProductId <= 0) {
+            $existingProductId = absint($cartItem['product_id'] ?? 0);
+        }
+
+        if (
+            $existingProductId > 0 &&
+            $existingProductId !== $requestedProductId
+        ) {
+            $currentPayload = getAddToCartRequestPayload($request);
+
+            WC()->cart->empty_cart();
+            clearPurchaseSessionData();
+
+            if (
+                array_filter(
+                    $currentPayload,
+                    static fn($value) => $value !== [] && $value !== '',
+                )
+            ) {
+                setPurchaseSessionData($currentPayload);
+            }
+
+            return;
+        }
+    }
+};
+
+add_filter(
+    'woocommerce_add_to_cart_validation',
+    function (
+        $passed,
+        $productId,
+        $quantity,
+        $variationId = 0,
+        $variations = [],
+        $cartItemData = [],
+    ) use ($maybeClearCartForNewMainProduct) {
+        unset($quantity, $variations);
+
+        if (!empty($cartItemData['is_sage_addition'])) {
+            return $passed;
+        }
+
+        if ($passed !== false) {
+            $maybeClearCartForNewMainProduct(
+                absint($variationId) ?: absint($productId),
+                null,
+            );
+        }
+
+        return $passed;
+    },
+    10,
+    6,
+);
+
 add_action(
     'woocommerce_store_api_validate_add_to_cart',
-    function ($product, $request) {
+    function ($product, $request) use ($maybeClearCartForNewMainProduct) {
         unset($product);
+
+        $maybeClearCartForNewMainProduct(absint($request['id'] ?? 0), $request);
 
         $additionIds = array_values(
             array_filter(
@@ -515,6 +658,11 @@ add_action(
 );
 
 add_action(
+    'woocommerce_cart_emptied',
+    __NAMESPACE__ . '\\clearPurchaseSessionData',
+);
+
+add_action(
     'woocommerce_add_to_cart',
     function (
         $cartItemKey,
@@ -526,11 +674,15 @@ add_action(
     ) {
         unset($productId, $variationId, $variation);
 
+        if (!empty($cartItemData['is_sage_addition'])) {
+            return;
+        }
+
+        $purchaseData = getPurchaseSessionData();
+        $additionIds = $purchaseData['addition_ids'];
+
         if (
-            !is_array($cartItemData) ||
-            !empty($cartItemData['is_sage_addition']) ||
-            empty($cartItemData['addition_ids']) ||
-            !is_array($cartItemData['addition_ids']) ||
+            $additionIds === [] ||
             !(function_exists('WC') && WC()->cart instanceof \WC_Cart)
         ) {
             return;
@@ -538,7 +690,7 @@ add_action(
 
         $addedItemKeys = [];
 
-        foreach ($cartItemData['addition_ids'] as $additionId) {
+        foreach ($additionIds as $additionId) {
             $additionCartItemKey = WC()->cart->add_to_cart(
                 absint($additionId),
                 max(1, (int) $quantity),
@@ -570,6 +722,10 @@ add_action(
 
             break;
         }
+
+        if (WC()->session) {
+            WC()->session->set('addition_ids', []);
+        }
     },
     10,
     6,
@@ -578,34 +734,7 @@ add_action(
 add_filter(
     'woocommerce_get_item_data',
     function ($itemData, $cartItem) {
-        if (!empty($cartItem['card_message'])) {
-            $itemData[] = [
-                'key' => __('Card message content', 'sage-front'),
-                'value' => wc_clean((string) $cartItem['card_message']),
-            ];
-        }
-
-        if (
-            !empty($cartItem['addition_ids']) &&
-            is_array($cartItem['addition_ids'])
-        ) {
-            $additionNames = [];
-
-            foreach ($cartItem['addition_ids'] as $additionId) {
-                $addition = wc_get_product(absint($additionId));
-
-                if ($addition instanceof \WC_Product) {
-                    $additionNames[] = $addition->get_name();
-                }
-            }
-
-            if ($additionNames !== []) {
-                $itemData[] = [
-                    'key' => __('Add-ons', 'sage-front'),
-                    'value' => wc_clean(implode(', ', $additionNames)),
-                ];
-            }
-        }
+        unset($cartItem);
 
         return $itemData;
     },
@@ -613,29 +742,39 @@ add_filter(
     2,
 );
 
-add_action(
-    'woocommerce_checkout_create_order_line_item',
-    function ($item, $cartItemKey, $values) {
-        unset($cartItemKey);
+function getOrderPurchaseMetaFromCart(): array
+{
+    $purchaseData = getPurchaseSessionData();
+    $meta = [];
 
-        if (!empty($values['card_message'])) {
-            $item->add_meta_data(
-                __('Card message content', 'sage-front'),
-                wc_clean((string) $values['card_message']),
-                true,
-            );
-        }
+    if ($purchaseData['delivery_location'] !== '') {
+        $meta[__('Delivery location', 'sage-front')] = wc_clean(
+            $purchaseData['delivery_location'],
+        );
+    }
 
-        if (
-            empty($values['addition_ids']) ||
-            !is_array($values['addition_ids'])
-        ) {
-            return;
-        }
+    if ($purchaseData['delivery_type'] !== '') {
+        $meta[__('Delivery type', 'sage-front')] = wc_clean(
+            $purchaseData['delivery_type'],
+        );
+    }
 
+    if ($purchaseData['deceased_full_name'] !== '') {
+        $meta[__('Deceased\'s full name', 'sage-front')] = wc_clean(
+            $purchaseData['deceased_full_name'],
+        );
+    }
+
+    if ($purchaseData['card_message'] !== '') {
+        $meta[__('Card message content', 'sage-front')] = wc_clean(
+            $purchaseData['card_message'],
+        );
+    }
+
+    if ($purchaseData['addition_ids'] !== []) {
         $additionNames = [];
 
-        foreach ($values['addition_ids'] as $additionId) {
+        foreach ($purchaseData['addition_ids'] as $additionId) {
             $addition = wc_get_product(absint($additionId));
 
             if ($addition instanceof \WC_Product) {
@@ -644,12 +783,26 @@ add_action(
         }
 
         if ($additionNames !== []) {
-            $item->add_meta_data(
-                __('Add-ons', 'sage-front'),
-                wc_clean(implode(', ', $additionNames)),
-                true,
+            $meta[__('Add-ons', 'sage-front')] = wc_clean(
+                implode(', ', $additionNames),
             );
         }
+    }
+
+    return $meta;
+}
+
+function addOrderPurchaseMeta(\WC_Order $order): void
+{
+    foreach (getOrderPurchaseMetaFromCart() as $metaLabel => $metaValue) {
+        $order->update_meta_data($metaLabel, $metaValue);
+    }
+}
+
+add_action(
+    'woocommerce_checkout_create_order_line_item',
+    function ($item, $cartItemKey, $values) {
+        unset($item, $cartItemKey, $values);
     },
     10,
     3,
@@ -680,24 +833,23 @@ add_action(
             );
         }
 
-        if (function_exists('WC') && WC()->session) {
-            $deliveryDate = (string) WC()->session->get('delivery_date');
-            $deliveryTime = (string) WC()->session->get('delivery_time');
+        $purchaseData = getPurchaseSessionData();
 
-            if ($deliveryDate !== '') {
-                $order->update_meta_data(
-                    'delivery_date',
-                    wc_clean($deliveryDate),
-                );
-            }
-
-            if ($deliveryTime !== '') {
-                $order->update_meta_data(
-                    'delivery_time',
-                    wc_clean($deliveryTime),
-                );
-            }
+        if ($purchaseData['delivery_date'] !== '') {
+            $order->update_meta_data(
+                'delivery_date',
+                wc_clean($purchaseData['delivery_date']),
+            );
         }
+
+        if ($purchaseData['delivery_time'] !== '') {
+            $order->update_meta_data(
+                'delivery_time',
+                wc_clean($purchaseData['delivery_time']),
+            );
+        }
+
+        addOrderPurchaseMeta($order);
     },
     10,
     2,
@@ -755,27 +907,83 @@ add_action(
             );
         }
 
-        if (function_exists('WC') && WC()->session) {
-            $deliveryDate = (string) WC()->session->get('delivery_date');
-            $deliveryTime = (string) WC()->session->get('delivery_time');
+        $purchaseData = getPurchaseSessionData();
 
-            if ($deliveryDate !== '') {
-                $order->update_meta_data(
-                    'delivery_date',
-                    wc_clean($deliveryDate),
-                );
-            }
-
-            if ($deliveryTime !== '') {
-                $order->update_meta_data(
-                    'delivery_time',
-                    wc_clean($deliveryTime),
-                );
-            }
+        if ($purchaseData['delivery_date'] !== '') {
+            $order->update_meta_data(
+                'delivery_date',
+                wc_clean($purchaseData['delivery_date']),
+            );
         }
+
+        if ($purchaseData['delivery_time'] !== '') {
+            $order->update_meta_data(
+                'delivery_time',
+                wc_clean($purchaseData['delivery_time']),
+            );
+        }
+
+        addOrderPurchaseMeta($order);
     },
     10,
     2,
+);
+
+add_action(
+    'woocommerce_admin_order_data_after_shipping_address',
+    function (\WC_Order $order) {
+        $metaFields = [
+            'delivery_date' => __('Delivery date', 'sage-front'),
+            'delivery_time' => __('Delivery time', 'sage-front'),
+            __('Delivery location', 'sage-front') => __(
+                'Delivery location',
+                'sage-front',
+            ),
+            __('Delivery type', 'sage-front') => __(
+                'Delivery type',
+                'sage-front',
+            ),
+            __('Deceased\'s full name', 'sage-front') => __(
+                'Deceased\'s full name',
+                'sage-front',
+            ),
+            __('Card message content', 'sage-front') => __(
+                'Card message content',
+                'sage-front',
+            ),
+            __('Add-ons', 'sage-front') => __('Add-ons', 'sage-front'),
+        ];
+
+        $rows = [];
+
+        foreach ($metaFields as $metaKey => $metaLabel) {
+            $metaValue = $order->get_meta($metaKey, true);
+
+            if ($metaValue === '') {
+                continue;
+            }
+
+            $formattedValue = is_scalar($metaValue)
+                ? formatPurchaseMetaValue($metaKey, (string) $metaValue)
+                : wp_json_encode($metaValue);
+
+            $rows[] = sprintf(
+                '<p><strong>%s:</strong> %s</p>',
+                esc_html($metaLabel),
+                esc_html((string) $formattedValue),
+            );
+        }
+
+        if ($rows === []) {
+            return;
+        }
+
+        echo '<div class="address-order-meta">' .
+            wp_kses_post(implode('', $rows)) .
+            '</div>';
+    },
+    10,
+    1,
 );
 
 add_action('woocommerce_before_add_to_cart_button', function () {

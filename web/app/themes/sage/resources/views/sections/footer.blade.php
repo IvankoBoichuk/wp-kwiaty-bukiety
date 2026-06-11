@@ -109,7 +109,7 @@
           class="flex flex-col gap-14 text-[13px] leading-3.75 font-semibold uppercase"
         >
           @if (!empty($footerMenus['main']))
-            <ul class="columns-1 space-y-5">
+            <ul class="columns-2 space-y-5">
               @foreach ($footerMenus['main'] as $item)
                 <li><a href="{{ $item['url'] }}">{{ $item['label'] }}</a></li>
               @endforeach
@@ -212,7 +212,7 @@
       x-data
       {{-- x-show="$store.productPurchase && $store.productPurchase.isReady" --}}
       x-cloak
-      class="bg-background flex items-center justify-between gap-5 py-3"
+      class="bg-background bx-container flex items-center justify-between gap-5 py-3"
     >
       <div class="flex shrink-0 items-center gap-3">
         <button

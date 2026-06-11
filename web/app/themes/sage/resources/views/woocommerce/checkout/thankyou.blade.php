@@ -58,7 +58,7 @@
             }}
           </p>
           @if ($deliveryDate || $deliveryTimeLabel !== '')
-            <div class="flex flex-col gap-1">
+            <div class="mb-6 flex flex-col gap-1">
               <div class="text-3.5 text-green-easy text-center font-normal">
                 {{ __('Expected delivery', 'sage-front') }}
               </div>
