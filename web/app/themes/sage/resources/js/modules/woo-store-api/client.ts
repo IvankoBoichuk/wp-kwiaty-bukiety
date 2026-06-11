@@ -27,7 +27,8 @@ export class WooStoreApiClient {
     protected cartToken: string
 
     constructor(options: StoreApiClientOptions = {}) {
-        this.fetchImpl = options.fetch || fetch
+        const defaultFetchOwner = typeof window !== 'undefined' ? window : globalThis
+        this.fetchImpl = options.fetch || defaultFetchOwner.fetch.bind(defaultFetchOwner)
         this.baseUrl = (options.baseUrl || '/wp-json/wc/store/v1').replace(/\/+$/, '')
         this.nonce = options.nonce || ''
         this.cartToken = options.cartToken || ''
