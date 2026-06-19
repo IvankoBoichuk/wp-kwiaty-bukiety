@@ -1,6 +1,6 @@
 @if (!empty($deliveryTimer))
   <div
-    class="delivery-timer bg-primary flex items-center justify-between gap-4 py-2 pr-11.5 pl-4"
+    class="delivery-timer bg-primary bx-container flex items-center justify-between gap-4 py-2"
     data-delivery-timer="{!! esc_attr(wp_json_encode($deliveryTimer, JSON_UNESCAPED_UNICODE)) !!}"
   >
     <div class="delivery-timer__prompt flex flex-col">

@@ -1,7 +1,7 @@
-<header id="header" class="bg-background mx-break-out sticky top-0 z-50 border-b border-[#426E59]">
+<header id="header" class="bg-background sticky top-0 z-50 border-b border-[#426E59]">
   @include('partials.delivery-timer', ['deliveryTimer' => $deliveryTimer])
 
-  <div class="bg-background flex items-center justify-between gap-4 p-3">
+  <div class="bg-background bx-container flex items-center justify-between gap-4 py-3">
     @if (!empty($logos?->dark))
       <a href="{{ home_url('/') }}" class="text-lg font-semibold tracking-[0.16em] text-[#244734] uppercase">
         <img src="{{ $logos->dark->src() }}" alt="{{ $logos->dark->alt() ?? $siteName }}" width="66" height="31" />

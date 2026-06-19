@@ -19,7 +19,7 @@
   @if (post_password_required())
     {!! get_the_password_form() !!}
   @else
-    <section class="bg-background mx-break-out">
+    <section class="bg-background">
       <div class="relative w-full">
         <div class="swiper product-gallery-swiper">
           <div class="swiper-wrapper">

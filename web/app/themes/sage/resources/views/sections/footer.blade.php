@@ -255,7 +255,7 @@
       </button>
     </div>
   @endif
-  <nav class="mx-break-out bg-[#072114] px-6 py-3 md:hidden" aria-label="Bottom navigation">
+  <nav class="bg-[#072114] px-6 py-3 md:hidden" aria-label="Bottom navigation">
     <ul class="flex items-center justify-between">
       @foreach ($bottomNavigation as $item)
         <li>

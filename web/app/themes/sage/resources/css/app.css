@@ -167,15 +167,22 @@
 }
 
 @utility bx-container {
-  @apply -mx-3 px-3;
+  @apply mx-0 px-3 md:px-8 lg:px-[max(120px,calc((100%-1680px)/2))];
 }
 
-@utility px-break-out {
-  @apply px-3;
+@utility mx-container {
+  @apply mx-3 md:mx-8 lg:mx-[max(120px,calc((100%-1680px)/2))];
 }
 
-@utility mx-break-out {
-  @apply -mx-3;
+@utility sage-container {
+  @apply mx-auto px-3 md:px-8 lg:px-[max(120px,calc((100%-1680px)/2))];
+  /* lg:px-[calc((100vw-1680px)/2)]; */
+}
+
+@layer base {
+  section {
+    @apply mx-container;
+  }
 }
 
 .woocommerce-products-header {

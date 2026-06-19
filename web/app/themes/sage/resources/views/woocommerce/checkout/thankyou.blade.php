@@ -40,7 +40,7 @@
         </div>
       </div>
     @else
-      <section class="mx-break-out">
+      <section>
         <img
           src="{{ get_template_directory_uri() . '/resources/images/flowers-on-the-table.jpg' }}"
           alt="{{ esc_attr__('Order Confirmation', 'sage-front') }}"
