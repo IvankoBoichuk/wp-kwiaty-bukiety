@@ -3,9 +3,11 @@ import Alpine from 'alpinejs';
 export function initMenu() {
   Alpine.data('mobileMenu', () => ({
     isOpen: false,
+    activeDesktopMenu: null as string | null,
 
     toggleMenu() {
       this.isOpen = !this.isOpen;
+      this.activeDesktopMenu = null;
 
       // Prevent body scroll when menu is open
       if (this.isOpen) {
@@ -17,7 +19,28 @@ export function initMenu() {
 
     closeMenu() {
       this.isOpen = false;
+      this.activeDesktopMenu = null;
       document.body.style.overflow = '';
+    },
+
+    openDesktopMenu(id: string) {
+      if (!window.matchMedia('(min-width: 1024px)').matches) {
+        return;
+      }
+
+      this.activeDesktopMenu = id;
+    },
+
+    closeDesktopMenu() {
+      this.activeDesktopMenu = null;
+    },
+
+    isDesktopMenuActive(id: string) {
+      return this.activeDesktopMenu === id;
+    },
+
+    hasDesktopMenuOpen() {
+      return this.activeDesktopMenu !== null;
     },
 
     search() {

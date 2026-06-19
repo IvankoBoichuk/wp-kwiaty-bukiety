@@ -23,6 +23,17 @@
   @php(wp_body_open())
 
   @include('sections.header')
+  <div
+    x-show="hasDesktopMenuOpen()"
+    x-transition:enter="transition-opacity ease-out duration-200"
+    x-transition:enter-start="opacity-0"
+    x-transition:enter-end="opacity-100"
+    x-transition:leave="transition-opacity ease-in duration-150"
+    x-transition:leave-start="opacity-100"
+    x-transition:leave-end="opacity-0"
+    class="pointer-events-none fixed inset-0 z-50 hidden bg-black/30 lg:block"
+    x-cloak
+  ></div>
   <main id="main" class="flex grow flex-col gap-12 bg-[#FCF9F6] pt-2.5 pb-12 md:pt-4 lg:gap-25 lg:pt-8 lg:pb-25">
     <a class="sr-only focus:not-sr-only" href="#main"> {{ __('Skip to content', 'sage-front') }} </a>
     @yield('content')
