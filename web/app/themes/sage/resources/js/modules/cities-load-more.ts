@@ -34,7 +34,7 @@ function createCityItem(city: CityRecord, index: number): HTMLLIElement {
 
     const link = document.createElement('a')
     link.href = city.link
-    link.className = 'text-h4 flex h-full items-center justify-center rounded-2xl bg-[#E5EFDE] px-4 py-4.5 text-center capitalize'
+    link.className = 'bg-green-easy text-h4 flex h-full items-center justify-center rounded-2xl px-4 py-4.5 text-center text-white lg:px-20'
     link.textContent = city.name
 
     item.append(link)
