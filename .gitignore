@@ -33,3 +33,5 @@ wp-cli.local.yml
 
 /wp-includes
 composer.lock
+
+/layout
