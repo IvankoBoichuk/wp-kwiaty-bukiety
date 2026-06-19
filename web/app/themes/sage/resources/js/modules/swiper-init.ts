@@ -14,7 +14,7 @@ function initEventsSwipers(): void {
 
     swipers.forEach((swiperEl) => {
         new Swiper(swiperEl, {
-            modules: [Pagination],
+            modules: [Pagination, Navigation],
             spaceBetween: 12,
             slidesPerView: 1.3,
             slidesPerGroup: 1,
@@ -22,17 +22,19 @@ function initEventsSwipers(): void {
                 640: {
                     slidesPerView: 2,
                     slidesPerGroup: 2,
-                    spaceBetween: 24,
                 },
                 1024: {
-                    slidesPerView: 3,
-                    slidesPerGroup: 3,
-                    spaceBetween: 24,
+                    slidesPerView: 4,
+                    slidesPerGroup: 4,
                 },
             },
             pagination: {
                 el: swiperEl.querySelector('.swiper-pagination') as HTMLElement,
                 clickable: true,
+            },
+            navigation: {
+                prevEl: `#${swiperEl.id}-prev`,
+                nextEl: `#${swiperEl.id}-next`,
             },
         })
     })

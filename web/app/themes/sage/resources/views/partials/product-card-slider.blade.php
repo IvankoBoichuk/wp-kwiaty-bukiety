@@ -5,7 +5,7 @@
   $wrapperAttributes = $wrapperAttributes ?? [];
   $wrapperClass = trim(
     (string) ($wrapperClass ??
-      'swiper-slide border-background bg-background shadow-100 flex flex-col items-start justify-center border'),
+      'product-card-slider swiper-slide border-background bg-background max-lg:shadow-100 flex flex-col items-start justify-center border'),
   );
 @endphp
 
@@ -39,10 +39,10 @@
     <a
       href="{{ esc_url($item->link) }}"
       target="{{ esc_attr($item->target) }}"
-      class="text-body-13 truncate font-bold text-wrap uppercase before:absolute before:inset-0"
+      class="truncate text-sm font-bold text-wrap uppercase before:absolute before:inset-0 md:text-lg lg:font-semibold"
     >
       {{ $item->name }}
     </a>
-    <p class="text-body-15">{!! $item->price !!}</p>
+    <p class="text-body-13 md:text-body-15">{!! $item->price !!}</p>
   </div>
 </{{ $wrapperTag }}>

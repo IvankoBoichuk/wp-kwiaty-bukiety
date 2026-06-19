@@ -14,7 +14,7 @@
 >
   <div class="grid auto-rows-auto grid-cols-12 gap-6">
     @if (!empty($texts->title))
-      <h2 class="text-h2 text-green-default col-span-7">{{ $texts->title }}</h2>
+      <h2 class="h2-mobile text-green-default col-span-7">{{ $texts->title }}</h2>
     @endif
 
     @if ($imageSrc !== '')

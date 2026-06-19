@@ -11,7 +11,7 @@
           {{ $texts->subtitle }}
         </div>
       @endif
-      <h2 class="text-h2 relative z-10">{{ $texts->title }}</h2>
+      <h2 class="h2-mobile relative z-10">{{ $texts->title }}</h2>
     </div>
   @endif
 

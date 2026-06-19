@@ -146,7 +146,7 @@ add_filter('sage/blocks/reviews', function ($reviews) {
 add_filter(
     'woocommerce_format_price_range',
     fn($price, $from, $to) => \sprintf(
-        __('From: %s', 'sage-front'),
+        __('from %s', 'sage-front'),
         wc_price($from),
     ),
     10,

@@ -1,18 +1,17 @@
 @php use App\Blocks\Blocks; @endphp
-
 <section
   @if (!empty($attributes->anchor)) id="{{ $attributes->anchor }}" @endif
   class="{{ trim('text-dark-text '.($attributes->className ?? '')) }}"
   data-counter-section
 >
-  @if ($texts->title)
-    <div class="mb-8 text-center">
-      <h2 class="text-h2">{{ $texts->title }}</h2>
-    </div>
-  @endif
+  <div class="mx-auto flex w-full grow flex-col">
+    @if ($texts->title)
+      <div class="mb-8.5 text-center lg:text-left">
+        <h2 class="h2-mobile md:h2-desktop">{{ $texts->title }}</h2>
+      </div>
+    @endif
 
-  @if ($list !== [])
-    <div class="space-y-4">
+    <div class="space-y-4 md:grid md:grid-cols-2 md:gap-8 lg:grid-cols-4">
       @foreach ($list as $item)
         @php
           $icon = is_array($item['icon'] ?? null) ? $item['icon'] : null;
@@ -21,14 +20,18 @@
           $legacyIcon = is_string($item['icon'] ?? null) ? trim((string) $item['icon']) : '';
           $hasSvgIcon = $legacyIcon !== '' && str_starts_with($legacyIcon, '<svg');
         @endphp
-        <div class="flex flex-col items-center gap-2 border-b border-[#C7C7C7] pb-4 text-center">
+        <div
+          class="flex h-max flex-col items-center gap-2 border-b border-[#C7C7C7] pb-4 text-center lg:border-b-0 lg:border-l lg:last:border-r"
+        >
           <div
-            class="text-green-default w-full text-5xl leading-14 font-medium"
+            class="text-green-default text-5xl leading-14 font-medium"
             data-counter="{{ esc_attr($item['number'] ?? '0') }}"
           >
             0
           </div>
-          <div class="text-body-15 text-gray-1 flex items-center justify-center gap-1 font-semibold">
+          <div
+            class="text-body-15 text-gray-1 flex items-center justify-center gap-1 leading-normal font-semibold lg:text-[22px]"
+          >
             @if ($iconUrl !== '')
               <div class="flex-none">
                 <img src="{{ $iconUrl }}" alt="{{ $iconAlt }}" class="size-5 object-contain" />
@@ -41,5 +44,5 @@
         </div>
       @endforeach
     </div>
-  @endif
+  </div>
 </section>

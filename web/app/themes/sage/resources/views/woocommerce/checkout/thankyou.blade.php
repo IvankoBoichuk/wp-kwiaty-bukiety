@@ -48,7 +48,7 @@
         />
 
         <div class="px-3 py-8 text-center">
-          <h1 class="text-h2 text-dark-text mb-4">{{ __('Order Successful!', 'sage-front') }}</h1>
+          <h1 class="h2-mobile text-dark-text mb-4">{{ __('Order Successful!', 'sage-front') }}</h1>
           <p class="mb-6 text-[#426E59]">
             {{
               implode(' ', [
@@ -93,7 +93,7 @@
   @else
     <section class="bg-background">
       <div class="mx-auto flex w-full max-w-md flex-col gap-4 px-3 py-8 text-center">
-        <h2 class="text-h2 text-dark-text">{{ __('Thank You for Your Order', 'sage-front') }}</h2>
+        <h2 class="h2-mobile text-dark-text">{{ __('Thank You for Your Order', 'sage-front') }}</h2>
         <p class="text-3.5 font-normal text-[#426E59]">{{
           __(
             'Your order confirmation has been saved.',

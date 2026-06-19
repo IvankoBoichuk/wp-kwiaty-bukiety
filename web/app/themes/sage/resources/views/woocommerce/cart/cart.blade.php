@@ -114,7 +114,7 @@
           x-transition:leave-end="-translate-y-3 scale-[0.99] opacity-0"
         >
           <header class="mb-5 flex items-center justify-between">
-            <h1 class="text-h2">Koszyk (<span x-text="$store.cartCheckout.cartCount"></span>)</h1>
+            <h1 class="h2-mobile">Koszyk (<span x-text="$store.cartCheckout.cartCount"></span>)</h1>
           </header>
           @if (!empty($cartCheckout['deliverySummary']))
             <p class="text-green-default/75 mb-4 text-[14px] leading-5" x-show="!$store.cartCheckout.isCartEmpty">
@@ -216,7 +216,7 @@
           x-transition:leave-end="-translate-y-3 scale-[0.99] opacity-0"
         >
           <header class="mb-5">
-            <h1 class="text-h2">Złożenie zamówienia</h1>
+            <h1 class="h2-mobile">Złożenie zamówienia</h1>
           </header>
 
           <div
@@ -257,7 +257,7 @@
           x-transition:leave-end="-translate-y-3 scale-[0.99] opacity-0"
         >
           <header class="mb-5">
-            <h1 class="text-h2">Twoje zamówienie</h1>
+            <h1 class="h2-mobile">Twoje zamówienie</h1>
           </header>
 
           @if ($canUseCoupons)

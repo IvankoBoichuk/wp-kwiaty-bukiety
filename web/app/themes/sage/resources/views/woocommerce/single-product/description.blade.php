@@ -5,7 +5,7 @@
     @click="open = !open"
     :aria-expanded="open"
   >
-    <h2 class="text-h2 text-green-default">{{ __('Product description', 'sage-front') }}</h2>
+    <h2 class="h2-mobile text-green-default">{{ __('Product description', 'sage-front') }}</h2>
     <svg
       class="transition-transform duration-300"
       :class="{

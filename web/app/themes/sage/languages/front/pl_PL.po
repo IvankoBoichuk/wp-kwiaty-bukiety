@@ -442,8 +442,8 @@ msgstr "xs"
 
 #: app/filters.php:149
 #, php-format
-msgid "From: %s"
-msgstr "Od: %s"
+msgid "from %s"
+msgstr "od %s"
 
 #: app/filters.php:184
 msgid "Full name"

@@ -441,7 +441,7 @@ msgstr ""
 
 #: app/filters.php:149
 #, php-format
-msgid "From: %s"
+msgid "from %s"
 msgstr ""
 
 #: app/filters.php:184

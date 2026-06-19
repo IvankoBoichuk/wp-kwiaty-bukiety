@@ -41,7 +41,7 @@
 
   @if ($texts->title !== '')
     <div class="mb-6">
-      <h2 class="text-h2 mb-2">{{ $texts->title }}</h2>
+      <h2 class="h2-mobile mb-2">{{ $texts->title }}</h2>
 
       @if ($texts->text !== '')
         <p class="text-body-15">{{ $texts->text }}</p>

@@ -116,7 +116,7 @@
     </section>
     @if (!empty($relatedProducts))
       <section class="bx-container bg-[#E5EFDE] py-12">
-        <h2 class="text-h2 text-green-default mb-6">{{ __('Similar products', 'sage-front') }}</h2>
+        <h2 class="h2-mobile text-green-default mb-6">{{ __('Similar products', 'sage-front') }}</h2>
         <div class="grid auto-rows-auto grid-cols-2 gap-x-2.75 gap-y-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
           @foreach ($relatedProducts as $item)
             @include('partials.product-card-3', ['item' => $item])

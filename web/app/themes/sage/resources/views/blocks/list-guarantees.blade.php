@@ -1,7 +1,7 @@
 <section @id($attributes->anchor) class="{{ trim('text-dark-text '.($attributes->className ?? '')) }}">
   @if (!empty($texts->title))
     <div class="mb-6">
-      <h2 class="text-h2">{{ $texts->title }}</h2>
+      <h2 class="h2-mobile">{{ $texts->title }}</h2>
     </div>
   @endif
 
