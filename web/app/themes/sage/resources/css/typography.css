@@ -12,8 +12,11 @@
 @utility h2-desktop {
   @apply text-[40px] leading-11.75 font-bold normal-case;
 }
-@utility text-h3 {
+@utility h3-mobile {
   @apply text-[16px] leading-4.75 font-semibold;
+}
+@utility h4-desktop {
+  @apply text-[22px] leading-6.5 font-bold;
 }
 @utility text-h4 {
   @apply text-[14px] leading-4 font-semibold;

@@ -197,7 +197,7 @@ class Blocks
         return \sprintf(
             collect([
                 '<span class="font-heading font-semibold text-[38px] leading-11.5 -mb-1.25 md:text-[56px] md:mb-3 lg:m-0 lg:text-[99px] lg:leading-21.5">%s</span>',
-                '<span class="text-h3 -mb-2.5 md:text-[22px] lg:text-[99px] lg:font-heading lg:leading-21.5 lg:m-0 block lg:inline lg:ml-2">%s</span>',
+                '<span class="h3-mobile -mb-2.5 md:text-[22px] lg:text-[99px] lg:font-heading lg:leading-21.5 lg:m-0 block lg:inline lg:ml-2">%s</span>',
                 '<span class="font-heading font-medium italic text-[42px] leading-[1.2] md:text-[64px] lg:text-[115px] lg:leading-[1.2] -mt-4 block">%s</span>',
             ])->implode(''),
             ...$lines,

@@ -21,6 +21,7 @@
         @include('partials.product-card-grid', ['item' => $item])
       @endforeach
     </div>
+    {{-- TODO: Не виводяться кнопки --}}
     @if (!empty($buttons))
       <div class="flex min-w-max flex-1 flex-wrap justify-center">
         @foreach ($buttons as $button)

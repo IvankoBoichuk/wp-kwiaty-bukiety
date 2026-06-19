@@ -33,7 +33,7 @@
       >
         <h3>
           <span class="mr-2 text-[16px]">0{{ $loop->iteration }}</span
-          ><span class="text-h3">{{ $item['title'] ?? '' }}</span>
+          ><span class="h3-mobile">{{ $item['title'] ?? '' }}</span>
         </h3>
         <p class="text-body-13">{{ $item['text'] ?? '' }}</p>
       </div>

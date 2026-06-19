@@ -14,6 +14,7 @@
     <div class="space-y-4 md:grid md:grid-cols-2 md:gap-8 lg:grid-cols-4">
       @foreach ($list as $item)
         @php
+          // TODO: Не працюють іконки
           $icon = is_array($item['icon'] ?? null) ? $item['icon'] : null;
           $iconUrl = is_array($icon) ? (string) ($icon['url'] ?? '') : '';
           $iconAlt = is_array($icon) ? (string) ($icon['alt'] ?? ($icon['title'] ?? ($item['text'] ?? ''))) : '';

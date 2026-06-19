@@ -226,7 +226,7 @@
           </svg>
         </button>
 
-        <span class="text-gray-1 text-h3 text-center" x-text="$store.productPurchase.quantity"></span>
+        <span class="text-gray-1 h3-mobile text-center" x-text="$store.productPurchase.quantity"></span>
 
         <button
           type="button"

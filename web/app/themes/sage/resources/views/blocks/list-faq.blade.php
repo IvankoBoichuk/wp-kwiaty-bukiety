@@ -2,22 +2,27 @@
 
 <section @id($attributes->anchor) class="{{ trim('text-dark-text '.($attributes->className ?? '')) }}">
   @if (!empty($texts->title))
-    <div class="mb-6">
-      <h2 class="h2-mobile">{{ $texts->title }}</h2>
+    <div class="mb-8 lg:mb-16">
+      <h2 class="h2-mobile md:h2-desktop">{{ $texts->title }}</h2>
     </div>
   @endif
 
   @if (!empty($list) && is_array($list))
-    <div x-data="accordion" class="space-y-4 divide-y divide-[#E0E0D7]">
+    <div x-data="accordion" class="space-y-4 divide-y divide-[#E0E0D7] lg:space-y-7 lg:border-b lg:border-[#E0E0D7]">
       @foreach ($list as $item)
-        <div class="overflow-hidden pb-3 last:pb-0">
+        <div class="overflow-hidden pb-3 last:max-lg:pb-0 lg:pb-7">
           <button
             @click="toggle('faq-{{ $loop->index }}')"
             type="button"
             :aria-expanded="isActive('faq-{{ $loop->index }}')"
-            class="flex w-full items-center justify-between text-left"
+            class="flex w-full cursor-pointer items-center justify-between text-left"
           >
-            <span class="text-h3 text-green-default pr-6.5">{{ $item['title'] ?? '' }}</span>
+            <span class="text-body-16 font-bold max-lg:hidden">{{ sprintf('%02d', $loop->iteration) }}</span>
+            <span
+              class="h3-mobile md:h4-desktop md:text-green-dark text-green-default w-full pr-6.5 lg:ml-auto lg:max-w-202.5 lg:pr-45"
+            >
+              {{ $item['title'] ?? '' }}
+            </span>
             <div class="relative size-6 shrink-0">
               <!-- Horizontal line (always visible) -->
               <span
@@ -32,7 +37,11 @@
             </div>
           </button>
           <div x-show="isActive('faq-{{ $loop->index }}')" x-collapse>
-            <div class="text-body-13 text-green-dark pt-2">{{ $item['text'] ?? '' }}</div>
+            <div
+              class="text-body-13 text-green-dark md:text-body-16 ml-auto w-full pt-2 md:pt-4 lg:max-w-208.5 lg:pr-51"
+            >
+              {{ $item['text'] ?? '' }}
+            </div>
           </div>
         </div>
       @endforeach
