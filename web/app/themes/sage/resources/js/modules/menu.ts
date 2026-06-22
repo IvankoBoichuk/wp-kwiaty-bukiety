@@ -43,6 +43,11 @@ export function initMenu() {
       return this.activeDesktopMenu !== null;
     },
 
+    getDesktopMenuTop() {
+      const header = document.getElementById('header');
+      return header ? header.getBoundingClientRect().bottom : 0;
+    },
+
     search() {
       // Placeholder for search functionality
       console.log('Search triggered');
