@@ -19,8 +19,8 @@
   @if (post_password_required())
     {!! get_the_password_form() !!}
   @else
-    <section class="bg-background">
-      <div class="relative w-full">
+    <section class="bg-background bx-container items-start gap-x-8 gap-y-6 lg:grid lg:auto-rows-max lg:grid-cols-2">
+      <div class="relative -mx-3 md:-mx-8 lg:col-start-1 lg:row-start-1 lg:mx-0">
         <div class="swiper product-gallery-swiper">
           <div class="swiper-wrapper">
             @foreach ($productData['gallery'] as $image)
@@ -75,7 +75,8 @@
         </button>
       </div>
 
-      <div class="px-3">
+      {{-- Product Details --}}
+      <div class="lg:col-start-2 lg:row-span-3 lg:row-start-1">
         <h1 class="text-green-default mb-5 py-1.25 text-[20px] leading-5.75 font-semibold uppercase">
           {{ $productData['title'] }}
         </h1>
@@ -88,31 +89,31 @@
         @endif
 
         {{-- Order Options --}}
-        <div class="mb-12">
+        <div class="mb-12 lg:mb-0">
           @include($orderOptionsView)
         </div>
 
         {{-- Cross-sell products --}}
         @if (!empty($productData['additions']))
-          <div class="mb-12">
+          <div class="mb-12 lg:mb-0">
             @include('woocommerce.single-product.cross-sell-products', ['additions' => $productData['additions']])
           </div>
         @endif
-
-        {{-- Product Description --}}
-        @if ($productData['description'])
-          <div class="mb-12">
-            @include('woocommerce.single-product.description', ['description' => $productData['description']])
-          </div>
-        @endif
-
-        {{-- Products Reviews --}}
-        @if (!empty($productData['reviews']))
-          <div class="mb-12">
-            @include('woocommerce.single-product.reviews', ['reviews' => $productData['reviews']])
-          </div>
-        @endif
       </div>
+
+      {{-- Product Description --}}
+      @if ($productData['description'])
+        <div class="mb-12 lg:col-start-1 lg:row-start-2 lg:mb-0">
+          @include('woocommerce.single-product.description', ['description' => $productData['description']])
+        </div>
+      @endif
+
+      {{-- Products Reviews --}}
+      @if (!empty($productData['reviews']))
+        <div class="mb-12 lg:col-start-1 lg:row-start-3 lg:mb-0">
+          @include('woocommerce.single-product.reviews', ['reviews' => $productData['reviews']])
+        </div>
+      @endif
     </section>
     @if (!empty($relatedProducts))
       <section class="bx-container bg-[#E5EFDE] py-12">

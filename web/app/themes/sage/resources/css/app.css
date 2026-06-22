@@ -76,7 +76,7 @@
     @apply empty:hidden;
   }
   .term-description {
-    @apply prose prose-a:text-[#0885CD] prose-a:no-underline prose-a:hover:underline;
+    @apply prose prose-a:text-[#0885CD] prose-a:no-underline prose-a:hover:underline max-w-full;
   }
 
   [x-cloak] {
@@ -187,13 +187,16 @@
   section {
     @apply mx-container;
   }
+  .content-area {
+    @apply mx-container;
+  }
 }
 
 .woocommerce-products-header {
-  @apply py-5;
+  @apply py-5 md:py-6 lg:py-8;
 }
 .woocommerce-products-header__title {
-  @apply h2-mobile;
+  @apply h2-mobile md:h2-desktop;
 }
 
 #app {

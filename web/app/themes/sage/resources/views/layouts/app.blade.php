@@ -23,7 +23,7 @@
   @php(wp_body_open())
 
   @include('sections.header')
-  <main id="main" class="flex grow flex-col gap-12 bg-[#FCF9F6] pt-2.5 pb-12 md:pt-4 lg:gap-25 lg:pt-8 lg:pb-25">
+  <main id="main" class="flex grow flex-col gap-12 bg-[#FCF9F6] pb-12 lg:gap-25 lg:pb-25">
     <a class="sr-only focus:not-sr-only" href="#main"> {{ __('Skip to content', 'sage-front') }} </a>
     @yield('content')
   </main>

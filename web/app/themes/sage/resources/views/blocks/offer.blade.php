@@ -22,7 +22,7 @@
 
 <section
   @if (!empty($attributes->anchor)) id="{{ $attributes->anchor }}" @endif
-  class="{{ trim((string) ($attributes->className ?? '')) }}"
+  class="{{ trim((string) ($attributes->className ?? '')) }} mt-2.5 md:mt-4 lg:mt-8"
 >
   <div
     class="lg:border-green-easy relative z-0 w-full overflow-hidden rounded-2xl p-3 pb-1.5 lg:flex lg:gap-14 lg:rounded-none lg:border-b lg:p-0 lg:pb-8.5"
