@@ -18,7 +18,7 @@ jobs:
   deploy-dev:
     runs-on: ubuntu-latest
     if: github.ref_name == 'dev'
-    environment: development
+    environment: devolopment
     env:
       DEPLOY_PATH: ${{ vars.DEPLOY_PATH }}
       SSH_HOST: ${{ vars.SSH_HOST }}
