@@ -583,7 +583,7 @@ msgid "Recipient phone"
 msgstr ""
 
 #: app/Catalog/ProductData.php:32
-msgid "Recommended"
+msgid "Bestseller"
 msgstr ""
 
 #. Author of the theme

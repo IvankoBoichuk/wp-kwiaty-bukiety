@@ -14,7 +14,7 @@ final class ProductData
     public function __construct(private readonly WC_Product $product) {}
 
     /**
-     * @return array<int, string>
+     * @return array<string, string>
      */
     public function badges(): array
     {
@@ -25,11 +25,15 @@ final class ProductData
         $badges = [];
 
         if ($this->product->is_on_sale()) {
-            $badges[] = __('Promotion', 'sage-front');
+            $badges['promotion'] = __('Promotion', 'sage-front');
         }
 
         if ($this->product->is_featured()) {
-            $badges[] = __('Recommended', 'sage-front');
+            $badges['bestseller'] = __('Bestseller', 'sage-front');
+        }
+
+        if ($this->product->get_shipping_class() === 'free-delivery') {
+            $badges['free-delivery'] = __('Free delivery', 'sage-front');
         }
 
         $this->cache['badges'] = $badges;

@@ -284,26 +284,6 @@ class Blocks
         };
     }
 
-    public static function badgeClasses(string $badge): string
-    {
-        $classes = [
-            'flex',
-            'items-center',
-            'px-3',
-            'py-1',
-            'backdrop-blur-md',
-            'text-white',
-            'text-[10px]',
-            'uppercase',
-            'rounded-full',
-            'whitespace-nowrap',
-        ];
-        $classes[] =
-            $badge === 'Dostawa Gratis' ? 'bg-purple-dark' : 'bg-purple';
-
-        return implode(' ', $classes);
-    }
-
     public static function sanitizeSvg(?string $svg): string
     {
         if (!$svg) {

@@ -156,7 +156,7 @@ return [
         'Product description' => 'Opis produktu',
         'Promotion' => 'Promocja',
         'Recipient phone' => 'Telefon odbiorcy',
-        'Recommended' => 'Polecane',
+        'Bestseller' => 'Bestseller',
         'Roots' => 'Korzenie',
         'Sage is a WordPress starter theme.' =>
             'Sage to motyw startowy WordPress.',

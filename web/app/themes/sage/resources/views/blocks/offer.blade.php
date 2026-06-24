@@ -109,9 +109,7 @@
 
   <div class="mt-6 grid auto-rows-fr grid-cols-2 gap-1.25 md:gap-3 lg:mt-8.5 lg:grid-cols-3">
     @if (!empty($featuredCategory->link))
-      <div
-        class="relative row-span-2 cursor-pointer overflow-hidden rounded-2xl transition hover:brightness-105 lg:rounded-4xl"
-      >
+      <div class="relative row-span-2 overflow-hidden rounded-2xl transition hover:brightness-105 lg:rounded-4xl">
         <img
           src="{{ $featuredCategory->image->src() ?: $productPlaceholderImage }}"
           class="absolute inset-0 size-full object-cover lg:rounded-4xl"
@@ -131,7 +129,7 @@
       @foreach ($secondaryCategories as $item)
         @if (!empty($item->link))
           <div
-            class="relative flex cursor-pointer items-center overflow-hidden rounded-2xl bg-[#F2EDE1] transition-colors hover:bg-[#F2EDE1]/80 lg:rounded-4xl"
+            class="relative flex items-center overflow-hidden rounded-2xl bg-[#F2EDE1] transition-colors hover:bg-[#F2EDE1]/80 lg:rounded-4xl"
           >
             <img
               src="{{ $item->image->src() }}"

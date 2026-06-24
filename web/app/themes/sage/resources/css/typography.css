@@ -7,13 +7,16 @@
   @apply text-[24px] leading-[1.3] font-bold;
 }
 @utility h2-mobile {
-  @apply text-[20px] leading-5.75 font-extrabold uppercase;
+  @apply text-[20px] leading-5.75 font-extrabold;
 }
 @utility h2-desktop {
   @apply text-[40px] leading-11.75 font-bold normal-case;
 }
 @utility h3-mobile {
   @apply text-[16px] leading-4.75 font-semibold;
+}
+@utility h3-desktop {
+  @apply text-[32px] leading-9.5 font-semibold;
 }
 @utility h4-desktop {
   @apply text-[22px] leading-6.5 font-bold;

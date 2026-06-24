@@ -78,7 +78,7 @@ export class DeliveryPlugin implements ProductPlugin {
         const scheduleHost = document.querySelector<HTMLElement>('[data-delivery-schedule]')
         const dateOptions = document.querySelectorAll<HTMLButtonElement>('.delivery-date-option')
         const customDateBtn = document.querySelector<HTMLButtonElement>('.delivery-date-custom')
-        const dateInput = document.querySelector<HTMLInputElement>('[data-date-input]')
+        const dateInput = document.getElementById('delivery-date-input') as HTMLInputElement | null
         const dateLabel = document.querySelector<HTMLSpanElement>('.delivery-date-label')
         const funeralDateInput = document.querySelector<HTMLInputElement>('[data-funeral-delivery-date-input]')
             ?? document.querySelector<HTMLInputElement>('[name="deliveryDate"]')
@@ -121,12 +121,10 @@ export class DeliveryPlugin implements ProductPlugin {
         dateOptions.forEach((btn) => {
             btn.addEventListener('click', () => {
                 dateOptions.forEach((button) => {
-                    button.classList.remove('active', 'bg-green-easy', 'text-white')
-                    button.classList.add('bg-[#F7F7F6]', 'text-green-dark')
+                    button.classList.remove('active')
                 })
 
-                btn.classList.remove('bg-[#F7F7F6]', 'text-green-dark')
-                btn.classList.add('active', 'bg-green-easy', 'text-white')
+                btn.classList.add('active')
 
                 const dateValue = btn.dataset.dateValue
                 const dateOption = btn.dataset.dateOption
@@ -165,12 +163,10 @@ export class DeliveryPlugin implements ProductPlugin {
                 }
 
                 timeOptions.forEach((button) => {
-                    button.classList.remove('active', 'bg-green-easy', 'text-white')
-                    button.classList.add('bg-[#F7F7F6]', 'text-green-dark')
+                    button.classList.remove('active')
                 })
 
-                btn.classList.remove('bg-[#F7F7F6]', 'text-green-dark')
-                btn.classList.add('active', 'bg-green-easy', 'text-white')
+                btn.classList.add('active')
 
                 const value = btn.dataset.timeSlot ?? ''
                 setHiddenValue('[data-delivery-time-hidden]', value)
@@ -252,7 +248,6 @@ export class DeliveryPlugin implements ProductPlugin {
                 btn.disabled = true
                 btn.classList.add('opacity-50', 'cursor-not-allowed', 'pointer-events-none')
                 btn.classList.remove('active', 'bg-green-easy', 'text-white')
-                btn.classList.add('bg-[#F7F7F6]', 'text-green-dark')
             })
 
             setHiddenValue('[data-delivery-time-hidden]', '')
@@ -287,8 +282,7 @@ export class DeliveryPlugin implements ProductPlugin {
 
             btn.disabled = true
             btn.classList.add('opacity-50', 'cursor-not-allowed', 'pointer-events-none')
-            btn.classList.remove('active', 'bg-green-easy', 'text-white')
-            btn.classList.add('bg-[#F7F7F6]', 'text-green-dark')
+            btn.classList.remove('active')
         })
 
         if (!activeSlotStillAvailable) {

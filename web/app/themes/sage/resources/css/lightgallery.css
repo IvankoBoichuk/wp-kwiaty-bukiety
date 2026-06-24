@@ -1,3 +1,29 @@
 @import 'lightgallery/css/lightgallery.css';
 @import 'lightgallery/css/lg-zoom.css';
 @import 'lightgallery/css/lg-thumbnail.css';
+
+.lg-outer .lg-thumb-outer,
+.lg-backdrop {
+  background-color: var(--color-background);
+}
+
+.lg-sub-html {
+  color: var(--color-dark-text);
+}
+.lg-next,
+.lg-prev {
+  color: var(--color-dark-text);
+  background-color: var(--color-background);
+  border: 1px solid var(--color-dark-text);
+  border-radius: 8px;
+}
+
+.lg-next:hover:not(.disabled),
+.lg-prev:hover:not(.disabled) {
+  color: var(--color-dark-text);
+}
+
+.lg-outer .lg-thumb-item.active,
+.lg-outer .lg-thumb-item:hover {
+  border-color: var(--color-purple);
+}

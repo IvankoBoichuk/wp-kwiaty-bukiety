@@ -1,8 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-  {{-- <main id="product" class="flex flex-col grow gap-12 pb-12 md:pt-4 lg:gap-25 lg:pt-8 lg:pb-25 bg-[#FCF9F6]"> --}}
-  {{-- </main> --}}
   @php
     global $product;
     if (!isset($singleProductContentView)) {

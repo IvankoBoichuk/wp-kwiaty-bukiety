@@ -55,6 +55,7 @@
     --swiper-pagination-bullet-inactive-opacity: 1;
     --swiper-pagination-bullet-inactive-color: var(--color-purple-easy);
     --header-bottom-height: 48px;
+    --header-top-height: 103px;
   }
 
   body {
@@ -89,6 +90,11 @@
 
   .pbl-error {
     @apply mt-1 text-sm text-red-500;
+  }
+
+  a,
+  button {
+    @apply cursor-pointer;
   }
 }
 
@@ -164,22 +170,32 @@
   .card {
     @apply shadow-card rounded-xl bg-white px-3 py-4;
   }
+
+  .single-product-settings-option {
+    @apply disabled:text-gray-3 cursor-pointer rounded-xl border border-[#E0E0D7] bg-white px-3 py-2 text-nowrap transition-all disabled:cursor-not-allowed disabled:bg-[#F4F3EE] disabled:opacity-60;
+    &.active {
+      @apply border-green-easy bg-green-easy text-white;
+    }
+    &:has(*:checked) {
+      @apply border-green-easy bg-green-easy text-white;
+    }
+  }
 }
 
 @utility bx-container {
-  @apply mx-0 px-3 md:px-8 lg:px-[max(120px,calc((100%-1680px)/2))];
+  @apply mx-0 px-3 md:px-8 lg:px-[max(20px,calc((100%-1680px)/2))];
 }
 
 @utility mx-container {
-  @apply mx-3 md:mx-8 lg:mx-[max(120px,calc((100%-1680px)/2))];
+  @apply mx-3 md:mx-8 lg:mx-[max(20px,calc((100%-1680px)/2))];
 }
 
 @utility -mx-container {
-  @apply -mx-3 md:-mx-8 lg:-mx-[max(120px,calc((100%-1680px)/2))];
+  @apply -mx-3 md:-mx-8 lg:-mx-[max(20px,calc((100%-1680px)/2))];
 }
 
 @utility sage-container {
-  @apply mx-auto px-3 md:px-8 lg:px-[max(120px,calc((100%-1680px)/2))];
+  @apply mx-auto px-3 md:px-8 lg:px-[max(20px,calc((100%-1680px)/2))];
   /* lg:px-[calc((100vw-1680px)/2)]; */
 }
 
@@ -227,10 +243,7 @@
   @apply text-h4;
 }
 
-.lg-backdrop {
-  @apply bg-background;
-}
-
-.product-card-slider .woocommerce-Price-amount {
+.product-card-slider .woocommerce-Price-amount,
+.product-card-3 .woocommerce-Price-amount {
   @apply text-base font-bold md:text-lg;
 }

@@ -34,7 +34,7 @@
             ></div>
             <div class="text-green-default flex flex-col">
               <h3>
-                <span class="text-h3 lg:h4-desktop lg:mb-3"
+                <span class="h3-mobile lg:h4-desktop lg:mb-3"
                   ><span
                     class="mr-2 hidden text-2xl font-semibold lg:inline"
                     >{{ sprintf('%02d', $loop->iteration) }}</span

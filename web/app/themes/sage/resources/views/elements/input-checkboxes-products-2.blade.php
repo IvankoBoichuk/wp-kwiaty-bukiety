@@ -43,19 +43,12 @@
   }
 @endphp
 
-<div @class(['flex flex-col gap-3', $class])>
+<div @class($class)>
   @if ($label)
-    <div class="text-green-default flex items-center gap-2">
-      @if ($icon)
-        <svg width="20" height="20" aria-hidden="true">
-          <use href="{{ get_template_directory_uri() . '/resources/icon/sprite-base.svg' }}#{{ $icon }}"></use>
-        </svg>
-      @endif
-      <span class="text-body-14">{{ $label }}</span>
-    </div>
+    @include('elements.label-product-setting')
   @endif
 
-  <div class="grid grid-cols-2 gap-3">
+  <div class="grid grid-cols-2 gap-3 lg:grid-cols-3">
     @foreach ($products as $item)
       @php
         $optionId = ($id ?: $name ?: 'addition-checkboxes') . '-' . $item->id;
@@ -63,7 +56,7 @@
       @endphp
       <label
         for="{{ $optionId }}"
-        class="text-gray-1 group has-checked:border-green-easy has-checked:bg-green-easy flex cursor-pointer flex-col overflow-hidden rounded-xl border border-[#E0E0D7] bg-white transition-colors has-checked:text-white"
+        class="group single-product-settings-option flex grid-cols-[80px_1fr] flex-col overflow-hidden p-0 lg:grid lg:gap-3 lg:rounded-2xl lg:p-3"
       >
         <input
           id="{{ $optionId }}"
@@ -82,14 +75,20 @@
           alt="{{ $item->image->alt() }}"
           @if ($item->image->width() > 0) width="{{ $item->image->width() }}" @endif
           @if ($item->image->height() > 0) height="{{ $item->image->height() }}" @endif
-          class="h-38.5 w-full object-cover"
+          class="h-38.5 w-full rounded-xl object-cover lg:aspect-square lg:h-auto"
         />
 
-        <div class="flex flex-1 flex-col justify-between gap-2 p-2">
-          <h3 class="text-body-15 mb-2 font-semibold">{{ $item->name }}</h3>
+        <div class="flex flex-1 flex-col justify-between gap-2 p-2 lg:p-0">
+          <span
+            class="text-body-15 text-gray-1 leading-4.5 font-semibold text-wrap group-has-checked:text-white"
+            >{{ $item->name }}</span
+          >
 
           <div class="flex items-center justify-between gap-2">
-            <span class="pl-1 text-[16px] font-bold">{!! $item->price !!}</span>
+            <span
+              class="text-gray-1 pl-1 text-[16px] font-bold group-has-checked:text-white"
+              >{!! $item->price !!}</span
+            >
 
             <span
               class="text-green-default flex items-center justify-center rounded-xl border border-current bg-[#A5AB5F]/25 p-2 transition-all group-has-checked:text-white"

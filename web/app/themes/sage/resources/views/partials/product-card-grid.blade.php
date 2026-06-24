@@ -1,7 +1,3 @@
-@php
-  use App\Blocks\Blocks;
-@endphp
-
 <div class="swiper-slide flex flex-col items-start justify-center">
   <div class="relative w-full">
     <img
@@ -14,13 +10,7 @@
       class="aspect-15/13 size-full object-cover"
     />
 
-    @if (!empty($item->badges))
-      <div class="absolute top-1.25 left-1.25 flex flex-wrap gap-1.5">
-        @foreach ($item->badges as $badge)
-          <span class="{{ Blocks::badgeClasses((string) $badge) }}">{{ $badge }}</span>
-        @endforeach
-      </div>
-    @endif
+    @include('elements.badges', ['badges' => $item->badges])
   </div>
 
   <div class="text-dark-text pt-2">

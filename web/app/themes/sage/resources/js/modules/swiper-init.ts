@@ -4,7 +4,7 @@
  */
 
 import Swiper from 'swiper'
-import { Pagination, Navigation } from 'swiper/modules'
+import { Pagination, Navigation, Thumbs } from 'swiper/modules'
 import 'swiper/css'
 import 'swiper/css/pagination'
 import 'swiper/css/navigation'
@@ -44,14 +44,37 @@ function initProductGallery(): void {
     const swipers = document.querySelectorAll<HTMLElement>('.product-gallery-swiper')
 
     swipers.forEach((swiperEl) => {
+        const galleryEl = swiperEl.closest<HTMLElement>('.product-gallery')
+        const prevEl = galleryEl?.querySelector<HTMLElement>('.product-gallery-prev')
+        const nextEl = galleryEl?.querySelector<HTMLElement>('.product-gallery-next')
+        const thumbsEl = galleryEl?.querySelector<HTMLElement>('.product-gallery-thumbs')
+        const thumbsSwiper = thumbsEl
+            ? new Swiper(thumbsEl, {
+                spaceBetween: 12,
+                slidesPerView: 5.2,
+                watchSlidesProgress: true,
+                slideToClickedSlide: true,
+                breakpoints: {
+                    1024: {
+                        slidesPerView: 6.2,
+                    },
+                },
+            })
+            : undefined
+
         new Swiper(swiperEl, {
-            modules: [Navigation],
+            modules: [Navigation, Thumbs],
             spaceBetween: 16,
             slidesPerView: 1,
             navigation: {
-                nextEl: '.product-gallery-next',
-                prevEl: '.product-gallery-prev',
+                nextEl,
+                prevEl,
             },
+            thumbs: thumbsSwiper
+                ? {
+                    swiper: thumbsSwiper,
+                }
+                : undefined,
         })
     })
 }

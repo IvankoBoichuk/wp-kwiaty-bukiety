@@ -1,4 +1,4 @@
-<div class="relative" @focusout="if (!$el.contains($event.relatedTarget)) closeDesktopMenu();">
+<div class="relative max-lg:hidden" @focusout="if (!$el.contains($event.relatedTarget)) closeDesktopMenu();">
   <nav aria-label="{{ wp_get_nav_menu_name('primary_navigation') }}">
     <ul class="flex items-center justify-center gap-8 text-[13px] font-semibold text-[#244734] uppercase">
       @foreach ($menu as $item)

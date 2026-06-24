@@ -35,7 +35,9 @@
   ];
 @endphp
 <footer class="bx-container grid gap-12 bg-[#03130B] py-5 pt-8 text-white">
-  <div class="grid gap-14 md:grid-cols-2 lg:flex lg:items-start lg:justify-between lg:gap-5">
+  <div
+    class="grid gap-14 md:grid-cols-[auto_auto] md:gap-x-10.5 md:gap-y-12 lg:flex lg:items-start lg:justify-between lg:gap-5"
+  >
     <div class="order-1 flex items-center gap-8.75 md:flex-col md:items-start md:gap-3.5 lg:w-47">
       @if (!empty($logos->light))
         <a href="{{ home_url('/') }}" aria-label="{{ $siteName }}">
@@ -60,9 +62,9 @@
       <p class="text-gray-4 text-[15px] leading-4.5 text-balance">Kwiaty Bukiety - dostawa na terenie calej Polski</p>
     </div>
 
-    <ul class="order-2 grid w-max gap-5 md:grid-cols-[1fr_auto] lg:order-4">
+    <ul class="order-2 grid w-max items-center gap-5 md:grid-cols-[1fr_auto] lg:order-4">
       @foreach ($contacts as $item)
-        <li class="font-semibold {{ $item['type'] === 'text' ? 'lg:row-span-2 lg:col-start-2 lg:row-start-1' : '' }}">
+        <li class="font-semibold {{ $item['type'] === 'text' ? 'md:row-span-2 md:col-start-2 md:row-start-1' : '' }}">
           <div class="text-gray-4 flex items-center gap-3 text-[15px] leading-4.5">
             @switch ($item['type'])
               @case ('phone')
@@ -181,84 +183,8 @@
 </footer>
 
 <div class="sticky inset-x-0 bottom-0 z-50 w-full md:hidden">
-  @if (is_product())
-    @php
-      // TODO: Перемістити це в контекст і замість data-атрибута виводити @script
-      $product = wc_get_product(get_the_ID());
-      $currencySymbol = function_exists('get_woocommerce_currency_symbol')
-        ? html_entity_decode((string) get_woocommerce_currency_symbol(), ENT_QUOTES | ENT_HTML5, 'UTF-8')
-        : 'zł';
-      $priceFormat = function_exists('get_woocommerce_price_format') ? (string) get_woocommerce_price_format() : '%2$s %1$s';
-      $formattedPriceTemplate = str_replace('%1$s', $currencySymbol, $priceFormat);
-      [$currencyPrefix, $currencySuffix] = array_pad(explode('%2$s', $formattedPriceTemplate, 2), 2, '');
-      $productPayload = [
-        'productId' => $product->get_id(),
-        'basePrice' => (float) wc_get_price_to_display($product),
-        'currencySymbol' => $currencySymbol,
-        'currencyPrefix' => $currencyPrefix,
-        'currencySuffix' => $currencySuffix,
-        'currencyDecimalSeparator' => function_exists('wc_get_price_decimal_separator')
-          ? (string) wc_get_price_decimal_separator()
-          : ',',
-        'currencyThousandSeparator' => function_exists('wc_get_price_thousand_separator')
-          ? (string) wc_get_price_thousand_separator()
-          : ' ',
-        'currencyMinorUnit' => function_exists('wc_get_price_decimals') ? (int) wc_get_price_decimals() : 2,
-        'isVariable' => $product->is_type('variable'),
-        'storeApiNonce' => (string) wp_create_nonce('wc_store_api'),
-      ];
-    @endphp
-    @push('scripts')
-      <script>
-        window.product = @json($productPayload);
-      </script>
-    @endpush
-    <div
-      x-data
-      {{-- x-show="$store.productPurchase && $store.productPurchase.isReady" --}}
-      x-cloak
-      class="bg-background bx-container flex items-center justify-between gap-5 py-3"
-    >
-      <div class="flex shrink-0 items-center gap-3">
-        <button
-          type="button"
-          class="text-green-default border-green-easy flex size-9 items-center justify-center rounded-xl border transition-all disabled:opacity-50"
-          aria-label="Zmniejsz ilosc"
-          @click="$store.productPurchase.decrement()"
-        >
-          <svg width="20" height="20" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M7 14H21" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
-          </svg>
-        </button>
-
-        <span class="text-gray-1 h3-mobile text-center" x-text="$store.productPurchase.quantity"></span>
-
-        <button
-          type="button"
-          class="text-green-default border-green-easy flex size-9 items-center justify-center rounded-xl border transition-all"
-          aria-label="Zwieksz ilosc"
-          @click="$store.productPurchase.increment()"
-        >
-          <svg width="20" height="20" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M14 7V21" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
-            <path d="M7 14H21" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
-          </svg>
-        </button>
-      </div>
-
-      <button
-        type="button"
-        class="text-gray-6 flex flex-1 items-center justify-between gap-2.5 rounded-full bg-[#484D6F] px-6 py-3 text-left transition-all disabled:cursor-not-allowed disabled:opacity-60"
-        :disabled="!$store.productPurchase.canSubmit || $store.productPurchase.isSubmitting"
-        @click="$store.productPurchase.submit()"
-      >
-        <span
-          class="text-[13px] leading-none"
-          x-text="$store.productPurchase.isSubmitting ? 'Dodawanie...' : 'Dodaj do koszyka'"
-        ></span>
-        <span class="text-[16px] font-bold text-nowrap" x-text="$store.productPurchase.formattedTotal"></span>
-      </button>
-    </div>
+  @if (is_product() && wp_is_mobile())
+    @include('woocommerce.single-product.add-to-cart-bar.mobile')
   @endif
   <nav class="bg-[#072114] px-6 py-3 md:hidden" aria-label="Bottom navigation">
     <ul class="flex items-center justify-between">

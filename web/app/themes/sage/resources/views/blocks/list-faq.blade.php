@@ -15,7 +15,7 @@
             @click="toggle('faq-{{ $loop->index }}')"
             type="button"
             :aria-expanded="isActive('faq-{{ $loop->index }}')"
-            class="flex w-full cursor-pointer items-center justify-between text-left"
+            class="flex w-full items-center justify-between text-left"
           >
             <span class="text-body-16 font-bold max-lg:hidden">{{ sprintf('%02d', $loop->iteration) }}</span>
             <span

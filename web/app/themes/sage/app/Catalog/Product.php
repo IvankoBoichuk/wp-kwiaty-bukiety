@@ -15,6 +15,7 @@ final class Product
     public readonly string $name;
     public readonly string $link;
     public readonly string $target;
+    /** @var array<string, string> */
     public readonly array $badges;
     public readonly string $price;
     public readonly Image $image;

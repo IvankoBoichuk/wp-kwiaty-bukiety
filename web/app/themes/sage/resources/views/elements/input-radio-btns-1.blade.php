@@ -12,16 +12,9 @@
   $id = $id ?: $name;
 @endphp
 
-<div @class(['flex flex-col gap-3', $class])>
+<div @class($class)>
   @if ($label)
-    <div class="text-green-default flex items-center gap-2">
-      @if ($icon)
-        <svg width="20" height="20" aria-hidden="true">
-          <use href="{{ get_template_directory_uri() . '/resources/icon/sprite-base.svg' }}#{{ $icon }}"></use>
-        </svg>
-      @endif
-      <span class="text-body-14">{{ $label }}</span>
-    </div>
+    @include('elements.label-product-setting')
   @endif
 
   <div class="grid grid-cols-2 gap-1.5">

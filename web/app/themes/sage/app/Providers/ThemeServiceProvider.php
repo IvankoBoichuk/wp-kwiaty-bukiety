@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Admin\ContactSettingsPage;
 use App\Admin\DeliveryTimerSettingsPage;
+use App\Admin\ProductAttributeIcons;
 use App\Api\Categories;
 use App\Api\Healthcheck;
 use App\Blocks\Blocks;
@@ -41,6 +42,7 @@ class ThemeServiceProvider extends SageServiceProvider
         Blocks::boot();
         ContactSettingsPage::boot();
         DeliveryTimerSettingsPage::boot();
+        ProductAttributeIcons::boot();
         DeliveryTimer::boot();
         ImageHelper::boot();
         Blade::directive('id', function ($expression) {

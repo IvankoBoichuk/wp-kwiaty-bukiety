@@ -1,6 +1,4 @@
 @php
-  use App\Blocks\Blocks;
-
   $wrapperTag = $wrapperTag ?? 'div';
   $wrapperAttributes = $wrapperAttributes ?? [];
   $wrapperClass = trim(
@@ -26,13 +24,7 @@
       class="aspect-square size-full object-cover"
     />
 
-    @if (!empty($item->badges))
-      <div class="absolute top-1.25 left-1.25 flex flex-wrap gap-1.5">
-        @foreach ($item->badges as $badge)
-          <span class="{{ Blocks::badgeClasses((string) $badge) }}">{{ $badge }}</span>
-        @endforeach
-      </div>
-    @endif
+    @include('elements.badges', ['badges' => $item->badges])
   </div>
 
   <div class="text-dark-text px-1 pt-2 pb-3">

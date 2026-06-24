@@ -4,29 +4,24 @@
  */
 
 let lightGalleryLoaded = false
-const galleryInstances = new Map()
+const galleryInstances = new Map<HTMLElement, unknown>()
 
 async function loadLightGallery(gallery: HTMLElement): Promise<void> {
     if (galleryInstances.has(gallery)) {
         return
     }
 
-    // Lazy load lightGallery and plugins
     const [{ default: lightGallery }, { default: lgZoom }, { default: lgThumbnail }] = await Promise.all([
         import('lightgallery'),
         import('lightgallery/plugins/zoom'),
         import('lightgallery/plugins/thumbnail'),
     ])
 
-    // Load CSS only once
     if (!lightGalleryLoaded) {
-        await Promise.all([
-            import('../../css/lightgallery.css'),
-        ])
+        await import('../../css/lightgallery.css')
         lightGalleryLoaded = true
     }
 
-    // Initialize lightGallery
     const instance = lightGallery(gallery, {
         selector: '.lightgallery-item',
         plugins: [lgZoom, lgThumbnail],
@@ -50,18 +45,15 @@ export function initLightGallery(): void {
     galleries.forEach((gallery) => {
         const links = gallery.querySelectorAll<HTMLAnchorElement>('.lightgallery-item')
 
-        // Block default behavior on all links
         links.forEach((link) => {
-            link.addEventListener('click', async (e) => {
-                e.preventDefault()
+            link.addEventListener('click', async (event) => {
+                event.preventDefault()
 
-                // Load and initialize gallery on first click
                 if (!galleryInstances.has(gallery)) {
                     await loadLightGallery(gallery)
                 }
 
-                // Open gallery at clicked item
-                const instance = galleryInstances.get(gallery)
+                const instance = galleryInstances.get(gallery) as { openGallery: (index: number) => void } | undefined
                 if (instance) {
                     const index = Array.from(links).indexOf(link)
                     instance.openGallery(index)
@@ -71,7 +63,6 @@ export function initLightGallery(): void {
     })
 }
 
-// Initialize on DOM ready
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initLightGallery)
 } else {

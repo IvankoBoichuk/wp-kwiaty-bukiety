@@ -585,8 +585,8 @@ msgid "Recipient phone"
 msgstr "Telefon odbiorcy"
 
 #: app/Catalog/ProductData.php:32
-msgid "Recommended"
-msgstr "Polecane"
+msgid "Bestseller"
+msgstr "Bestseller"
 
 #. Author of the theme
 msgid "Roots"

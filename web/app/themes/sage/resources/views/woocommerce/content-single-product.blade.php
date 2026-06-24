@@ -1,6 +1,4 @@
 @php
-  use App\Blocks\Blocks;
-
   global $product;
 
   if (!($product instanceof \WC_Product)) {
@@ -8,6 +6,35 @@
   }
 
   $productData = $productView ?? null;
+  $productPayload = null;
+
+  if ($product instanceof \WC_Product) {
+    $currencySymbol = function_exists('get_woocommerce_currency_symbol')
+      ? html_entity_decode((string) get_woocommerce_currency_symbol(), ENT_QUOTES | ENT_HTML5, 'UTF-8')
+      : 'zł';
+    $priceFormat = function_exists('get_woocommerce_price_format')
+      ? (string) get_woocommerce_price_format()
+      : '%2$s %1$s';
+    $formattedPriceTemplate = str_replace('%1$s', $currencySymbol, $priceFormat);
+    [$currencyPrefix, $currencySuffix] = array_pad(explode('%2$s', $formattedPriceTemplate, 2), 2, '');
+
+    $productPayload = [
+      'productId' => $product->get_id(),
+      'basePrice' => (float) wc_get_price_to_display($product),
+      'currencySymbol' => $currencySymbol,
+      'currencyPrefix' => $currencyPrefix,
+      'currencySuffix' => $currencySuffix,
+      'currencyDecimalSeparator' => function_exists('wc_get_price_decimal_separator')
+        ? (string) wc_get_price_decimal_separator()
+        : ',',
+      'currencyThousandSeparator' => function_exists('wc_get_price_thousand_separator')
+        ? (string) wc_get_price_thousand_separator()
+        : ' ',
+      'currencyMinorUnit' => function_exists('wc_get_price_decimals') ? (int) wc_get_price_decimals() : 2,
+      'isVariable' => $product->is_type('variable'),
+      'storeApiNonce' => (string) wp_create_nonce('wc_store_api'),
+    ];
+  }
 
   $orderOptionsView = $orderOptionsView ?? 'woocommerce.single-product.order-options';
 @endphp
@@ -19,85 +46,45 @@
   @if (post_password_required())
     {!! get_the_password_form() !!}
   @else
-    <section class="bg-background bx-container items-start gap-x-8 gap-y-6 lg:grid lg:auto-rows-max lg:grid-cols-2">
-      <div class="relative -mx-3 md:-mx-8 lg:col-start-1 lg:row-start-1 lg:mx-0">
-        <div class="swiper product-gallery-swiper">
-          <div class="swiper-wrapper">
-            @foreach ($productData['gallery'] as $image)
-              <div class="swiper-slide">
-                <a href="{{ esc_url($image['src']) }}" class="lightgallery-item">
-                  <div class="relative w-full">
-                    <img
-                      src="{{ esc_url($image['src']) }}"
-                      alt="{{ esc_attr($image['alt'] ?: $productData['title']) }}"
-                      @if (($image['width'] ?? 0) > 0) width="{{ (int) $image['width'] }}" @endif
-                      @if (($image['height'] ?? 0) > 0) height="{{ (int) $image['height'] }}" @endif
-                      @if (!empty($image['srcset'])) srcset="{{ esc_attr($image['srcset']) }}" @endif
-                      @if (!empty($image['sizes'])) sizes="{{ esc_attr($image['sizes']) }}" @endif
-                      class="aspect-394/274 h-full w-full object-cover"
-                    />
-                  </div>
-                </a>
-              </div>
-            @endforeach
+    <section
+      class="bg-background bx-container relative items-start gap-x-8 gap-y-6 lg:grid lg:auto-rows-max lg:grid-cols-2 lg:gap-x-8 lg:gap-y-6 2xl:grid-cols-[minmax(0,1fr)_833px]"
+    >
+      {{-- Product Gallery --}}
+      @include('woocommerce.single-product.gallery', ['gallery' => $productData['gallery'], 'title' => $productData['title']])
+
+      {{-- Product Details --}}
+      <div
+        class="grid gap-8 lg:sticky lg:top-(--header-top-height) lg:col-start-2 lg:row-span-3 lg:row-start-1 lg:gap-6"
+      >
+        <div class="grid gap-4 md:gap-7 lg:gap-5">
+          <div class="pt-1 md:pt-3">
+            @include('elements.badges',
+              [
+                'badges' => $productData['badges'],
+                'wrapperClass' => 'max-lg:absolute mb-3 top-2 right-2 z-10 flex flex-wrap gap-1.5'
+              ])
+            <h1 class="text-green-default h2-mobile md:h3-desktop lg:h2-desktop">{{ $productData['title'] }}</h1>
           </div>
 
-          @if (!empty($productData['badges']))
-            <div class="absolute top-2 right-2 z-10 flex flex-wrap gap-1.5">
-              @foreach ($productData['badges'] as $badge)
-                <span class="{{ Blocks::badgeClasses((string) $badge) }}">{{ $badge }}</span>
-              @endforeach
-            </div>
+          {{-- Variations --}}
+          @if ($productData['isVariable'] &&
+            !empty($productData['variationAttributes']) &&
+            !empty($productData['availableVariations']))
+            @include('woocommerce.single-product.variations', ['attributeGroups' => $productData['variationAttributes']])
           @endif
         </div>
 
-        <button
-          type="button"
-          class="product-gallery-prev absolute top-1/2 left-3 z-10 -translate-y-1/2 cursor-pointer"
-          aria-label="{{ esc_attr__('Previous image', 'sage-front') }}"
-        >
-          <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M14 0.5C6.54416 0.5 0.5 6.54416 0.5 14C0.5 21.4558 6.54416 27.5 14 27.5C21.4558 27.5 27.5 21.4558 27.5 14C27.5 6.54416 21.4558 0.5 14 0.5Z" fill="white" fill-opacity="0.25" />
-            <path d="M14 0.5C6.54416 0.5 0.5 6.54416 0.5 14C0.5 21.4558 6.54416 27.5 14 27.5C21.4558 27.5 27.5 21.4558 27.5 14C27.5 6.54416 21.4558 0.5 14 0.5Z" stroke="#FCF9F6" />
-            <path d="M16.5 19L11.5 14L16.5 9" stroke="#FCF9F6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-          </svg>
-        </button>
-        <button
-          type="button"
-          class="product-gallery-next absolute top-1/2 right-3 z-10 -translate-y-1/2 cursor-pointer"
-          aria-label="{{ esc_attr__('Next image', 'sage-front') }}"
-        >
-          <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="0.5" y="0.5" width="27" height="27" rx="13.5" fill="white" fill-opacity="0.25" />
-            <rect x="0.5" y="0.5" width="27" height="27" rx="13.5" stroke="#FCF9F6" />
-            <path d="M11.5 19L16.5 14L11.5 9" stroke="#FCF9F6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-          </svg>
-        </button>
-      </div>
-
-      {{-- Product Details --}}
-      <div class="lg:col-start-2 lg:row-span-3 lg:row-start-1">
-        <h1 class="text-green-default mb-5 py-1.25 text-[20px] leading-5.75 font-semibold uppercase">
-          {{ $productData['title'] }}
-        </h1>
-
-        {{-- Variations --}}
-        @if ($productData['isVariable'] && !empty($productData['availableVariations']))
-          <div class="mb-8">
-            @include('woocommerce.single-product.variations', ['variations' => $productData['availableVariations']])
-          </div>
-        @endif
-
         {{-- Order Options --}}
-        <div class="mb-12 lg:mb-0">
-          @include($orderOptionsView)
-        </div>
+        @include($orderOptionsView)
 
         {{-- Cross-sell products --}}
         @if (!empty($productData['additions']))
-          <div class="mb-12 lg:mb-0">
-            @include('woocommerce.single-product.cross-sell-products', ['additions' => $productData['additions']])
-          </div>
+          @include('woocommerce.single-product.cross-sell-products', ['additions' => $productData['additions']])
+        @endif
+
+        {{-- Add to cart button --}}
+        @if (!wp_is_mobile())
+          @include('woocommerce.single-product.add-to-cart-bar.desktop')
         @endif
       </div>
 
@@ -116,8 +103,8 @@
       @endif
     </section>
     @if (!empty($relatedProducts))
-      <section class="bx-container bg-[#E5EFDE] py-12">
-        <h2 class="h2-mobile text-green-default mb-6">{{ __('Similar products', 'sage-front') }}</h2>
+      <section class="bx-container bg-[#E5EFDE] py-12 lg:py-25">
+        <h2 class="h2-mobile lg:h3-desktop text-green-default mb-6">{{ __('Similar products', 'sage-front') }}</h2>
         <div class="grid auto-rows-auto grid-cols-2 gap-x-2.75 gap-y-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
           @foreach ($relatedProducts as $item)
             @include('partials.product-card-3', ['item' => $item])
@@ -130,6 +117,11 @@
 @endif
 
 @push('scripts')
+  @if ($productPayload)
+    <script>
+      window.product = @json($productPayload);
+    </script>
+  @endif
   @if ($productData && $productData['isVariable'] && !empty($productData['availableVariations']))
     <script>
       window.productVariations = @json($productData['availableVariations']);

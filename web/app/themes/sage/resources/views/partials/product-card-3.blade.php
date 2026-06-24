@@ -1,11 +1,10 @@
 @use('App\Catalog\Product')
-@use('App\Blocks\Blocks')
 @php
   /**
    * @var Product $item
    */
 @endphp
-<div class="swiper-slide flex flex-col items-start justify-center">
+<div class="swiper-slide product-card-3 flex flex-col items-start justify-center">
   <div class="relative w-full">
     <img
       src="{{ $item->image->src() }}"
@@ -17,23 +16,17 @@
       class="aspect-15/13 size-full object-cover"
     />
 
-    @if (!empty($item->badges))
-      <div class="absolute top-1.25 left-1.25 flex flex-wrap gap-1.5">
-        @foreach ($item->badges as $badge)
-          <span class="{{ Blocks::badgeClasses((string) $badge) }}">{{ $badge }}</span>
-        @endforeach
-      </div>
-    @endif
+    @include('elements.badges', ['badges' => $item->badges])
   </div>
 
   <div class="text-dark-text pt-2">
     <a
       href="{{ $item->link }}"
       target="{{ $item->target }}"
-      class="text-body-13 truncate font-bold text-wrap uppercase before:absolute before:inset-0"
+      class="text-body-13 truncate font-bold text-wrap uppercase before:absolute before:inset-0 md:text-lg lg:font-semibold"
     >
       {{ $item->name }}
     </a>
-    <p class="text-body-15">{!! $item->price !!}</p>
+    <p class="text-body-13 md:text-body-15">{!! $item->price !!}</p>
   </div>
 </div>

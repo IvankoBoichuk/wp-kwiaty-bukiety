@@ -3,7 +3,7 @@
   class="flex flex-col gap-8"
   data-delivery-schedule="{!! esc_attr(wp_json_encode($deliverySchedule, JSON_UNESCAPED_UNICODE)) !!}"
 >
-  <div class="grid grid-cols-2 gap-x-3 gap-y-6">
+  <div class="grid grid-cols-2 gap-x-3 gap-y-6 lg:gap-6">
     {{-- Delivery date --}}
     <div data-funeral-delivery-date-section>
       @include('elements.input-date-1',
@@ -17,11 +17,11 @@
       <p
         x-show="$store.productPurchase.deliveryDateError"
         x-text="$store.productPurchase.deliveryDateError"
-        class="text-[12px] leading-4 text-[#D54C4C]"
+        class="mt-1 text-[12px] leading-4 text-[#D54C4C]"
       ></p>
     </div>
 
-    <div class="flex flex-col gap-3">
+    <div>
       @include('elements.input-time-1',
         [
           'name' => 'deliveryTime',
@@ -32,7 +32,7 @@
       <p
         x-show="$store.productPurchase.deliveryTimeError"
         x-text="$store.productPurchase.deliveryTimeError"
-        class="text-[12px] leading-4 text-[#D54C4C]"
+        class="mt-1 text-[12px] leading-4 text-[#D54C4C]"
       ></p>
     </div>
 
@@ -43,7 +43,7 @@
         'label' => __('Delivery location', 'sage-front'),
         'icon' => 'location',
         'options' => Settings::locationsOptions(),
-        'class' => 'col-span-2'
+        'class' => 'max-lg:col-span-2'
       ])
 
     {{-- Delivery type --}}
@@ -53,7 +53,7 @@
         'label' => __('Delivery type', 'sage-front'),
         'icon' => 'opened-box',
         'options' => Settings::deliveryOptions(),
-        'class' => 'col-span-2'
+        'class' => 'max-lg:col-span-2'
       ])
 
     {{-- Deceased's full name --}}
@@ -62,7 +62,7 @@
         'name' => 'deceasedFullName',
         'label' => __('Deceased\'s full name', 'sage-front'),
         'icon' => 'account',
-        'class' => 'col-span-2'
+        'class' => 'max-lg:col-span-2'
       ])
 
     {{-- Ribbon message (20 PLN) --}}
@@ -72,7 +72,7 @@
         'name' => 'cardMessage',
         'label' => __('Ribbon message (20 PLN)', 'sage-front'),
         'icon' => 'message',
-        'class' => 'col-span-2'
+        'class' => 'max-lg:col-span-2'
       ])
 
     {{-- Add-ons --}}
