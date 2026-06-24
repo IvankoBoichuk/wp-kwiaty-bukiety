@@ -20,10 +20,10 @@ jobs:
     if: github.ref_name == 'dev'
     environment: development
     env:
-      DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
-      SSH_HOST: ${{ secrets.SSH_HOST }}
-      SSH_PORT: ${{ secrets.SSH_PORT }}
-      SSH_USER: ${{ secrets.SSH_USER }}
+      DEPLOY_PATH: ${{ vars.DEPLOY_PATH }}
+      SSH_HOST: ${{ vars.SSH_HOST }}
+      SSH_PORT: ${{ vars.SSH_PORT }}
+      SSH_USER: ${{ vars.SSH_USER }}
       SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
     steps:
@@ -94,10 +94,10 @@ jobs:
     if: github.ref_name == 'main'
     environment: production
     env:
-      DEPLOY_PATH: ${{ secrets.PROD_DEPLOY_PATH }}
-      SSH_HOST: ${{ secrets.PROD_SSH_HOST }}
-      SSH_PORT: ${{ secrets.PROD_SSH_PORT }}
-      SSH_USER: ${{ secrets.PROD_SSH_USER }}
+      DEPLOY_PATH: ${{ vars.PROD_DEPLOY_PATH }}
+      SSH_HOST: ${{ vars.PROD_SSH_HOST }}
+      SSH_PORT: ${{ vars.PROD_SSH_PORT }}
+      SSH_USER: ${{ vars.PROD_SSH_USER }}
       SSH_PRIVATE_KEY: ${{ secrets.PROD_SSH_PRIVATE_KEY }}
 
     steps:
