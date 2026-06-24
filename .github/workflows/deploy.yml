@@ -78,6 +78,7 @@ jobs:
             --exclude=".github" \
             --exclude=".env" \
             --exclude=".env.*" \
+            --exclude=".htaccess" \
             --exclude="layout" \
             --exclude="node_modules" \
             --exclude="web/app/uploads" \
@@ -86,6 +87,7 @@ jobs:
             --exclude="web/app/upgrade" \
             --exclude="web/app/upgrade-temp-backup" \
             --exclude="web/app/languages" \
+            --exclude="web/.htaccess" \
             ./ \
             ${SSH_USER}@${SSH_HOST}:${DEPLOY_PATH}
 
@@ -152,6 +154,7 @@ jobs:
             --exclude=".github" \
             --exclude=".env" \
             --exclude=".env.*" \
+            --exclude=".htaccess" \
             --exclude="layout" \
             --exclude="node_modules" \
             --exclude="web/app/uploads" \
@@ -160,5 +163,6 @@ jobs:
             --exclude="web/app/upgrade" \
             --exclude="web/app/upgrade-temp-backup" \
             --exclude="web/app/languages" \
+            --exclude="web/.htaccess" \
             ./ \
             ${SSH_USER}@${SSH_HOST}:${DEPLOY_PATH}
