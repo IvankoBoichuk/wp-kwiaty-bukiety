@@ -2,6 +2,7 @@
 /vendor
 /public/*
 !/public/.gitkeep
+storage
 .env
 npm-debug.log
 bun.lock

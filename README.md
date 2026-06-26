@@ -55,3 +55,7 @@ mysqldump -h localhost -u 'u958399693_iedcP' -p --single-transaction --default-c
 tar -czf uploads-$(date +%F-%H%M).tar.gz web/app/uploads
 
 mysql -h database -u wordpress -ppassword wordpress < /roots/app/stage-2026-06-26-1830.sql
+
+wp search-replace 'https://dev.kwiaty-bukiety.com.pl/' 'http://localhost:8080/'
+
+tar -xzf uploads-2026-06-26-1835.tar.gz
