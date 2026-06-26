@@ -116,8 +116,8 @@ add_action(
             return;
         }
 
-        $isWooCommerceView =
-            is_woocommerce() || is_cart() || is_checkout() || is_account_page();
+        $isWooCommerceView
+            = is_woocommerce() || is_cart() || is_checkout() || is_account_page();
 
         if (!$isWooCommerceView) {
             wp_dequeue_script('jquery');
@@ -151,8 +151,8 @@ add_action(
         ]);
 
         if (
-            $customCartCheckoutPageIds !== [] &&
-            is_page($customCartCheckoutPageIds)
+            $customCartCheckoutPageIds !== []
+            && is_page($customCartCheckoutPageIds)
         ) {
             wp_dequeue_script('wc-checkout');
         }

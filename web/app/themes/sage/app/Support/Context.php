@@ -166,8 +166,8 @@ class Context
             $labels,
         ): array {
             return [
-                'label' =>
-                    $labels[$item['network']] ?? ucfirst($item['network']),
+                'label'
+                    => $labels[$item['network']] ?? ucfirst($item['network']),
                 'url' => $item['url'],
                 'target' => '_blank',
                 'classes' => [$item['network']],

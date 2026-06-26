@@ -119,7 +119,7 @@ final class ImageHelper
             return;
         }
 
-        $pattern = $directory.DIRECTORY_SEPARATOR.$filename.'--*';
+        $pattern = $directory . DIRECTORY_SEPARATOR . $filename . '--*';
         $files = glob($pattern);
 
         if ($files === false) {
@@ -175,8 +175,8 @@ final class ImageHelper
 
         if (in_array($size, ['thumbnail', 'medium', 'large'], true)) {
             return [
-                'width' => absint(get_option($size.'_size_w')),
-                'height' => absint(get_option($size.'_size_h')),
+                'width' => absint(get_option($size . '_size_w')),
+                'height' => absint(get_option($size . '_size_h')),
             ];
         }
 
@@ -247,7 +247,7 @@ final class ImageHelper
             return 0;
         }
 
-        return self::resolveAttachmentIdFromUrl(trailingslashit($baseUrl).$relative);
+        return self::resolveAttachmentIdFromUrl(trailingslashit($baseUrl) . $relative);
     }
 
     protected static function sourceString(int|string|Image $source): string

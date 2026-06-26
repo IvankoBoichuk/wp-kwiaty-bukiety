@@ -4,7 +4,6 @@ namespace App\Api;
 
 use WP_REST_Request;
 use WP_REST_Response;
-use WP_Term_Query;
 
 class Categories
 {
@@ -381,8 +380,8 @@ class Categories
             'validate_callback' => static function ($value) use (
                 $allowedValues,
             ): bool {
-                return in_array((string) $value, $allowedValues, true) ||
-                    in_array(strtoupper((string) $value), $allowedValues, true);
+                return in_array((string) $value, $allowedValues, true)
+                    || in_array(strtoupper((string) $value), $allowedValues, true);
             },
         ];
     }

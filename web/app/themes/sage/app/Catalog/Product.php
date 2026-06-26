@@ -5,7 +5,6 @@ namespace App\Catalog;
 use App\Media\Image;
 use WC_Product;
 use WC_Product_Variable;
-use WC_Product_Variation;
 
 final class Product
 {

@@ -57,12 +57,8 @@ jobs:
           PR_NUMBER: ${{ github.event.pull_request.number }}
           REPO: ${{ github.repository }}
 
-      - name: Validate Bedrock Composer configuration
-        run: composer validate --no-check-lock
-
-      - name: Validate theme Composer configuration
-        working-directory: ${{ env.THEME_PATH }}
-        run: composer validate --no-check-lock
+      - name: PHP Tests
+        run: composer lint
 
       - name: Run theme typecheck
         working-directory: ${{ env.THEME_PATH }}

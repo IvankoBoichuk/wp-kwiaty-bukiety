@@ -27,12 +27,12 @@ class CartCheckout
                     'removeItem' => '/wp-json/wc/store/v1/cart/remove-item',
                 ],
                 'storeApiNonce' => (string) wp_create_nonce('wc_store_api'),
-                'recipientFullName' =>
-                    (string) ($checkout?->get_value('shipping_first_name') ??
-                        ''),
-                'shippingFirstName' =>
-                    (string) ($checkout?->get_value('shipping_first_name') ??
-                        ''),
+                'recipientFullName'
+                    => (string) ($checkout?->get_value('shipping_first_name')
+                        ?? ''),
+                'shippingFirstName'
+                    => (string) ($checkout?->get_value('shipping_first_name')
+                        ?? ''),
                 'shippingLastName' => '',
             ],
             'fields' => $this->fields(),
@@ -168,9 +168,9 @@ class CartCheckout
             }
 
             $imageId = $product->get_image_id();
-            $lineTotal =
-                (float) ($cartItem['line_total'] ?? 0) +
-                (float) ($cartItem['line_tax'] ?? 0);
+            $lineTotal
+                = (float) ($cartItem['line_total'] ?? 0)
+                + (float) ($cartItem['line_tax'] ?? 0);
             $quantity = max(1, (int) ($cartItem['quantity'] ?? 1));
             $unitTotal = $quantity > 0 ? $lineTotal / $quantity : $lineTotal;
 
@@ -184,15 +184,15 @@ class CartCheckout
                 'url' => function_exists('get_permalink')
                     ? (string) get_permalink($product->get_id())
                     : '',
-                'image' =>
-                    $imageId > 0
+                'image'
+                    => $imageId > 0
                         ? (string) wp_get_attachment_image_url(
                             $imageId,
                             'woocommerce_thumbnail',
                         )
                         : '',
-                'imageAlt' =>
-                    $imageId > 0
+                'imageAlt'
+                    => $imageId > 0
                         ? (string) get_post_meta(
                             $imageId,
                             '_wp_attachment_image_alt',
@@ -344,8 +344,8 @@ class CartCheckout
 
     protected function normalizeSummary(string $summary): string
     {
-        return preg_replace('/\s+/', ' ', trim(wp_strip_all_tags($summary))) ?:
-            '';
+        return preg_replace('/\s+/', ' ', trim(wp_strip_all_tags($summary)))
+            ?: '';
     }
 
     protected function humanizeVariationLabel(string $label): string

@@ -58,8 +58,8 @@ final class Image
         return (string) (wp_get_attachment_image_url(
             $this->attachmentId,
             $this->size,
-        ) ?:
-        $this->fallbackSrc);
+        )
+        ?: $this->fallbackSrc);
     }
 
     public function alt(): string
@@ -68,8 +68,8 @@ final class Image
             $this->attachmentId,
             '_wp_attachment_image_alt',
             true,
-        ) ?:
-        $this->fallbackAlt);
+        )
+        ?: $this->fallbackAlt);
     }
 
     public function width(): ?int
@@ -92,8 +92,8 @@ final class Image
         return (string) (wp_get_attachment_image_srcset(
             $this->attachmentId,
             $this->size,
-        ) ?:
-        '');
+        )
+        ?: '');
     }
 
     public function sizes(): string
@@ -101,8 +101,8 @@ final class Image
         return (string) (wp_get_attachment_image_sizes(
             $this->attachmentId,
             $this->size,
-        ) ?:
-        '');
+        )
+        ?: '');
     }
 
     public function size(): ?int

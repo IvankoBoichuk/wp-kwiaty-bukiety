@@ -33,7 +33,7 @@ final class Resize extends AbstractOperation
             $width ?? 'auto',
             $height ?? 'auto',
             $this->crop ? 'crop' : 'fit',
-            $this->quality ?? 'default'
+            $this->quality ?? 'default',
         );
 
         $targetPath = $this->buildTargetPath($image, $signature);

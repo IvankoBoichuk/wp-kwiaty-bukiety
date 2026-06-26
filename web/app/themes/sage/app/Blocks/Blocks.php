@@ -132,8 +132,8 @@ class Blocks
         $layoutPath = "resources/views/blocks/{$slug}-{$layout}.blade.php";
 
         if (
-            $layout !== 'default' &&
-            file_exists(get_theme_file_path($layoutPath))
+            $layout !== 'default'
+            && file_exists(get_theme_file_path($layoutPath))
         ) {
             return "blocks.{$slug}-{$layout}";
         }
@@ -189,9 +189,9 @@ class Blocks
         }
 
         if (\count($lines) != 3) {
-            return '<span class="text-offer-ttl">' .
-                esc_html($lines[0]) .
-                '</span>';
+            return '<span class="text-offer-ttl">'
+                . esc_html($lines[0])
+                . '</span>';
         }
 
         return \sprintf(
@@ -330,8 +330,8 @@ class Blocks
         $items = array_values(
             array_filter(
                 $items,
-                static fn($item) => !empty($item['title']) &&
-                    !empty($item['text']),
+                static fn($item) => !empty($item['title'])
+                    && !empty($item['text']),
             ),
         );
 

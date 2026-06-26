@@ -18,7 +18,7 @@ final class ToWebp extends AbstractOperation
             return $image->src();
         }
 
-        $targetPath = $this->buildTargetPath($image, 'towebp-q'.($this->quality ?? 'default'), 'webp');
+        $targetPath = $this->buildTargetPath($image, 'towebp-q' . ($this->quality ?? 'default'), 'webp');
         $existing = $this->existingTargetUrl($image, $targetPath);
 
         if ($existing !== null) {

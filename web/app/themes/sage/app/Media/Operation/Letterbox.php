@@ -30,7 +30,7 @@ final class Letterbox extends AbstractOperation
         $targetPath = $this->buildTargetPath(
             $image,
             sprintf('letterbox-%dx%d-%s-q%d', $this->width, $this->height, strtolower($this->background), $this->quality),
-            $extension
+            $extension,
         );
         $existing = $this->existingTargetUrl($image, $targetPath);
 

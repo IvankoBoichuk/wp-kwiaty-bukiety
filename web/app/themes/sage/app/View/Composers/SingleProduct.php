@@ -29,8 +29,8 @@ class SingleProduct extends Composer
 
         if (!($product instanceof WC_Product)) {
             return [
-                'singleProductContentView' =>
-                    'woocommerce.content-single-product',
+                'singleProductContentView'
+                    => 'woocommerce.content-single-product',
                 'productView' => null,
                 'relatedProducts' => [],
                 'deliverySchedule' => app(

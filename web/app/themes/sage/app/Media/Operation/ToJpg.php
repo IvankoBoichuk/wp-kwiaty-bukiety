@@ -18,7 +18,7 @@ final class ToJpg extends AbstractOperation
             return $image->src();
         }
 
-        $targetPath = $this->buildTargetPath($image, 'tojpg-q'.($this->quality ?? 'default'), 'jpg');
+        $targetPath = $this->buildTargetPath($image, 'tojpg-q' . ($this->quality ?? 'default'), 'jpg');
         $existing = $this->existingTargetUrl($image, $targetPath);
 
         if ($existing !== null) {

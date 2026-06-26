@@ -22,9 +22,9 @@ final class Review
             'location',
             true,
         );
-        $rating =
-            (float) (get_comment_meta($comment->comment_ID, 'rating', true) ??
-                0);
+        $rating
+            = (float) (get_comment_meta($comment->comment_ID, 'rating', true)
+                ?? 0);
 
         return new self(
             reviewId: (int) $comment->comment_ID,

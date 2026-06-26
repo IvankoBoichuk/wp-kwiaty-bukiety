@@ -133,8 +133,8 @@ class ContactSettingsPage
                     $url = esc_url_raw($item['url'] ?? '');
 
                     if (
-                        $url === '' ||
-                        !array_key_exists($network, self::SOCIAL_NETWORKS)
+                        $url === ''
+                        || !array_key_exists($network, self::SOCIAL_NETWORKS)
                     ) {
                         return null;
                     }
@@ -254,60 +254,60 @@ class ContactSettingsPage
                         $options['phones'],
                     );
 
-                    self::renderRepeater(
-                        'emails',
-                        __('Emails', 'sage-back'),
-                        __(
-                            'Each item contains a label and email address.',
-                            'sage-back',
-                        ),
-                        [
-                            [
-                                'key' => 'label',
-                                'label' => __('Label', 'sage-back'),
-                                'type' => 'text',
-                                'placeholder' => __(
-                                    'Customer support',
-                                    'sage-back',
-                                ),
+        self::renderRepeater(
+            'emails',
+            __('Emails', 'sage-back'),
+            __(
+                'Each item contains a label and email address.',
+                'sage-back',
+            ),
+            [
+                [
+                    'key' => 'label',
+                    'label' => __('Label', 'sage-back'),
+                    'type' => 'text',
+                    'placeholder' => __(
+                        'Customer support',
+                        'sage-back',
+                    ),
+                ],
+                [
+                    'key' => 'email',
+                    'label' => __('Email', 'sage-back'),
+                    'type' => 'email',
+                    'placeholder' => __(
+                        'hello@example.com',
+                        'sage-back',
+                    ),
                             ],
-                            [
-                                'key' => 'email',
-                                'label' => __('Email', 'sage-back'),
-                                'type' => 'email',
-                                'placeholder' => __(
-                                    'hello@example.com',
-                                    'sage-back',
-                                ),
-                            ],
-                        ],
-                        $options['emails'],
-                    );
+            ],
+            $options['emails'],
+        );
 
-                    self::renderRepeater(
-                        'socials',
-                        __('Social Networks', 'sage-back'),
-                        __('Select the network and set its URL.', 'sage-back'),
-                        [
-                            [
-                                'key' => 'network',
-                                'label' => __('Network', 'sage-back'),
-                                'type' => 'select',
-                                'options' => self::SOCIAL_NETWORKS,
-                            ],
-                            [
-                                'key' => 'url',
-                                'label' => __('Link', 'sage-back'),
-                                'type' => 'url',
-                                'placeholder' => __(
-                                    'https://instagram.com/your-profile',
-                                    'sage-back',
-                                ),
-                            ],
-                        ],
-                        $options['socials'],
-                    );
-                    ?>
+        self::renderRepeater(
+            'socials',
+            __('Social Networks', 'sage-back'),
+            __('Select the network and set its URL.', 'sage-back'),
+            [
+                [
+                    'key' => 'network',
+                    'label' => __('Network', 'sage-back'),
+                    'type' => 'select',
+                    'options' => self::SOCIAL_NETWORKS,
+                ],
+                [
+                    'key' => 'url',
+                    'label' => __('Link', 'sage-back'),
+                    'type' => 'url',
+                    'placeholder' => __(
+                        'https://instagram.com/your-profile',
+                        'sage-back',
+                    ),
+                ],
+            ],
+            $options['socials'],
+        );
+        ?>
                 </div>
 
                 <div class="sage-contact-settings__submit">
@@ -503,8 +503,7 @@ class ContactSettingsPage
                 <div class="sage-repeater" data-repeater>
                     <div class="sage-repeater__items" data-repeater-items>
                         <?php foreach (
-                            array_values($items)
-                            as $index => $item
+                            array_values($items) as $index => $item
                         ): ?>
                             <?php self::renderRepeaterItem(
                                 $key,
@@ -586,15 +585,14 @@ class ContactSettingsPage
                         <?php if ($fieldType === 'select'): ?>
                             <select name="<?php echo esc_attr($fieldName); ?>">
                                 <?php foreach (
-                                    (array) ($field['options'] ?? [])
-                                    as $value => $label
+                                    (array) ($field['options'] ?? []) as $value => $label
                                 ): ?>
                                     <option value="<?php echo esc_attr(
                                         (string) $value,
                                     ); ?>" <?php selected(
-    $fieldValue,
-    (string) $value,
-); ?>>
+                                        $fieldValue,
+                                        (string) $value,
+                                    ); ?>>
                                         <?php echo esc_html((string) $label); ?>
                                     </option>
                                 <?php endforeach; ?>

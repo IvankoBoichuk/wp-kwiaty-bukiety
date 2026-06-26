@@ -64,9 +64,9 @@ add_filter('sage/blocks/products', function ($products) {
     $cacheKey = sprintf(
         'sage_blocks_products_%s',
         md5(
-            (string) get_option('sage_blocks_products_cache_version', '1') .
-                '|' .
-                wp_json_encode($productIds),
+            (string) get_option('sage_blocks_products_cache_version', '1')
+                . '|'
+                . wp_json_encode($productIds),
         ),
     );
     $cached = get_transient($cacheKey);
@@ -310,8 +310,7 @@ add_filter(
                 'shipping_country',
                 'shipping_state',
                 'shipping_address_2',
-            ]
-            as $fieldKey
+            ] as $fieldKey
         ) {
             if (str_starts_with($fieldKey, 'billing_')) {
                 unset($fields['billing'][$fieldKey]);
@@ -389,35 +388,35 @@ function getAddToCartRequestPayload(
 
     return [
         'delivery_date' => sanitize_text_field(
-            (string) ($source['delivery_date'] ??
-                ($source['deliveryDate'] ?? '')),
+            (string) ($source['delivery_date']
+                ?? ($source['deliveryDate'] ?? '')),
         ),
         'delivery_time' => sanitize_text_field(
-            (string) ($source['delivery_time'] ??
-                ($source['deliveryTime'] ?? '')),
+            (string) ($source['delivery_time']
+                ?? ($source['deliveryTime'] ?? '')),
         ),
         'delivery_location' => sanitize_text_field(
-            (string) ($source['delivery_location'] ??
-                ($source['deliveryLocation'] ?? '')),
+            (string) ($source['delivery_location']
+                ?? ($source['deliveryLocation'] ?? '')),
         ),
         'delivery_type' => sanitize_text_field(
-            (string) ($source['delivery_type'] ??
-                ($source['deliveryType'] ?? '')),
+            (string) ($source['delivery_type']
+                ?? ($source['deliveryType'] ?? '')),
         ),
         'deceased_full_name' => sanitize_text_field(
-            (string) ($source['deceased_full_name'] ??
-                ($source['deceasedFullName'] ?? '')),
+            (string) ($source['deceased_full_name']
+                ?? ($source['deceasedFullName'] ?? '')),
         ),
         'card_message' => sanitize_textarea_field(
-            (string) ($source['card_message'] ??
-                ($source['cardMessage'] ?? '')),
+            (string) ($source['card_message']
+                ?? ($source['cardMessage'] ?? '')),
         ),
         'addition_ids' => array_values(
             array_filter(
                 array_map(
                     'absint',
-                    (array) ($source['addition_ids'] ??
-                        ($source['additionIds'] ?? [])),
+                    (array) ($source['addition_ids']
+                        ?? ($source['additionIds'] ?? [])),
                 ),
             ),
         ),
@@ -446,8 +445,8 @@ function formatPurchaseMetaValue(string $metaKey, string $value): string
     $formatter = $formatters[$metaKey] ?? null;
 
     if (
-        !is_string($formatter) ||
-        !function_exists(__NAMESPACE__ . '\\' . $formatter)
+        !is_string($formatter)
+        || !function_exists(__NAMESPACE__ . '\\' . $formatter)
     ) {
         return $value;
     }
@@ -563,8 +562,8 @@ $maybeClearCartForNewMainProduct = static function (
     \WP_REST_Request|array|null $request = null,
 ): void {
     if (
-        $requestedProductId <= 0 ||
-        !(function_exists('WC') && WC()->cart instanceof \WC_Cart)
+        $requestedProductId <= 0
+        || !(function_exists('WC') && WC()->cart instanceof \WC_Cart)
     ) {
         return;
     }
@@ -581,8 +580,8 @@ $maybeClearCartForNewMainProduct = static function (
         }
 
         if (
-            $existingProductId > 0 &&
-            $existingProductId !== $requestedProductId
+            $existingProductId > 0
+            && $existingProductId !== $requestedProductId
         ) {
             $currentPayload = getAddToCartRequestPayload($request);
 
@@ -682,8 +681,8 @@ add_action(
         $additionIds = $purchaseData['addition_ids'];
 
         if (
-            $additionIds === [] ||
-            !(function_exists('WC') && WC()->cart instanceof \WC_Cart)
+            $additionIds === []
+            || !(function_exists('WC') && WC()->cart instanceof \WC_Cart)
         ) {
             return;
         }
@@ -820,8 +819,7 @@ add_action(
                 'shipping_place_name' => __('Place name', 'sage-front'),
                 'shipping_phone' => __('Recipient phone', 'sage-front'),
                 'billing_nip' => __('NIP', 'sage-front'),
-            ]
-            as $fieldKey => $metaLabel
+            ] as $fieldKey => $metaLabel
         ) {
             if (empty($data[$fieldKey])) {
                 continue;
@@ -866,9 +864,9 @@ add_action(
         );
 
         if (
-            $shippingTypeOfPlace === 'private-address' &&
-            $shippingPlaceName === '' &&
-            $errors instanceof \WP_Error
+            $shippingTypeOfPlace === 'private-address'
+            && $shippingPlaceName === ''
+            && $errors instanceof \WP_Error
         ) {
             $errors->add(
                 'shipping_place_name_required',
@@ -894,8 +892,7 @@ add_action(
                 'shipping_place_name' => __('Place name', 'sage-front'),
                 'shipping_phone' => __('Recipient phone', 'sage-front'),
                 'billing_nip' => __('NIP', 'sage-front'),
-            ]
-            as $fieldKey => $metaLabel
+            ] as $fieldKey => $metaLabel
         ) {
             if (empty($additionalFields[$fieldKey])) {
                 continue;
@@ -978,9 +975,9 @@ add_action(
             return;
         }
 
-        echo '<div class="address-order-meta">' .
-            wp_kses_post(implode('', $rows)) .
-            '</div>';
+        echo '<div class="address-order-meta">'
+            . wp_kses_post(implode('', $rows))
+            . '</div>';
     },
     10,
     1,

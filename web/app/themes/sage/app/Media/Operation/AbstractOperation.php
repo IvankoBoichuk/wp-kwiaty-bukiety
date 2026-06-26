@@ -3,7 +3,6 @@
 namespace App\Media\Operation;
 
 use App\Media\Image;
-use App\Media\Operation\InterfaceOperation;
 
 abstract class AbstractOperation implements InterfaceOperation
 {
@@ -37,14 +36,14 @@ abstract class AbstractOperation implements InterfaceOperation
         $filename = (string) ($info['filename'] ?? 'image');
         $directory = (string) ($info['dirname'] ?? '');
 
-        return $directory.DIRECTORY_SEPARATOR.$filename.'--'.$signature.'.'.$targetExtension;
+        return $directory . DIRECTORY_SEPARATOR . $filename . '--' . $signature . '.' . $targetExtension;
     }
 
     protected function targetUrl(Image $image, string $targetPath): string
     {
         $sourceUrl = $this->sourceUrl($image);
 
-        return trailingslashit(dirname($sourceUrl)).basename($targetPath);
+        return trailingslashit(dirname($sourceUrl)) . basename($targetPath);
     }
 
     protected function existingTargetUrl(Image $image, ?string $targetPath): ?string

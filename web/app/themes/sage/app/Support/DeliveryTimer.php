@@ -56,18 +56,18 @@ class DeliveryTimer
 
         return [
             'weekday_hours' => $this->sanitizeHourRange(
-                (string) ($input['weekday_hours'] ??
-                    self::defaultOptions()['weekday_hours']),
+                (string) ($input['weekday_hours']
+                    ?? self::defaultOptions()['weekday_hours']),
                 self::defaultOptions()['weekday_hours'],
             ),
             'weekend_hours' => $this->sanitizeHourRange(
-                (string) ($input['weekend_hours'] ??
-                    self::defaultOptions()['weekend_hours']),
+                (string) ($input['weekend_hours']
+                    ?? self::defaultOptions()['weekend_hours']),
                 self::defaultOptions()['weekend_hours'],
             ),
             'time_slots' => $this->sanitizeTimeSlots(
-                (string) ($input['time_slots'] ??
-                    self::defaultOptions()['time_slots']),
+                (string) ($input['time_slots']
+                    ?? self::defaultOptions()['time_slots']),
                 self::defaultOptions()['time_slots'],
             ),
             'holidays' => implode(
@@ -267,15 +267,15 @@ class DeliveryTimer
             return [];
         }
 
-        $minimumMinutes =
-            (int) $minimumTime->format('G') * 60 +
-            (int) $minimumTime->format('i');
+        $minimumMinutes
+            = (int) $minimumTime->format('G') * 60
+            + (int) $minimumTime->format('i');
 
         return array_values(
             array_filter(
                 $timeSlots,
-                static fn(array $timeSlot): bool => $minimumMinutes <=
-                    $timeSlot['start'] * 60,
+                static fn(array $timeSlot): bool => $minimumMinutes
+                    <= $timeSlot['start'] * 60,
             ),
         );
     }
@@ -339,11 +339,11 @@ class DeliveryTimer
         $end = (int) $matches[2];
 
         if (
-            $start < 0 ||
-            $start > 23 ||
-            $end < 1 ||
-            $end > 24 ||
-            $start >= $end
+            $start < 0
+            || $start > 23
+            || $end < 1
+            || $end > 24
+            || $start >= $end
         ) {
             return null;
         }

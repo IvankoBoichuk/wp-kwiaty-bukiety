@@ -190,8 +190,8 @@ final class SingleProductView
                     'price' => wp_strip_all_tags(
                         $this->product->get_price_html(),
                     ),
-                    'description' =>
-                        $this->product->get_short_description() !== ''
+                    'description'
+                        => $this->product->get_short_description() !== ''
                             ? wp_strip_all_tags(
                                 $this->product->get_short_description(),
                             )
@@ -201,7 +201,7 @@ final class SingleProductView
         }
 
         $variations = [];
-        
+
         foreach ($this->product->get_available_variations() as $variationData) {
             $variationId = absint($variationData['variation_id'] ?? 0);
 
@@ -222,16 +222,16 @@ final class SingleProductView
                 true,
             );
 
-            $description =
-                $variation->get_description() ?:
-                $variation->get_short_description();
+            $description
+                = $variation->get_description()
+                ?: $variation->get_short_description();
 
             $variations[] = [
                 'id' => $variationId,
                 'name' => $variation->get_name(),
                 'price' => wp_strip_all_tags($variation->get_price_html()),
-                'description' =>
-                    $description !== ''
+                'description'
+                    => $description !== ''
                         ? wp_strip_all_tags($description)
                         : wp_strip_all_tags((string) $attributeSummary),
             ];
@@ -472,9 +472,9 @@ final class SingleProductView
             true,
         );
 
-        $variationDescription =
-            $variation->get_description() ?:
-            $variation->get_short_description();
+        $variationDescription
+            = $variation->get_description()
+            ?: $variation->get_short_description();
 
         if ($variationDescription !== '') {
             return wpautop(wp_kses_post($variationDescription));
