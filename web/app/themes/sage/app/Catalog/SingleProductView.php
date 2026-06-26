@@ -13,6 +13,11 @@ final class SingleProductView
 {
     private ProductData $data;
 
+    /**
+     * @var array<string, mixed>
+     */
+    private array $cache = [];
+
     public function __construct(public readonly WC_Product $product)
     {
         $this->data = new ProductData($product);
@@ -98,7 +103,13 @@ final class SingleProductView
             return [];
         }
 
-        return $this->product->get_available_variations();
+        if (isset($this->cache['availableVariations'])) {
+            return $this->cache['availableVariations'];
+        }
+
+        $this->cache['availableVariations'] = $this->product->get_available_variations();
+
+        return $this->cache['availableVariations'];
     }
 
     /**
@@ -108,6 +119,10 @@ final class SingleProductView
     {
         if (!($this->product instanceof WC_Product_Variable)) {
             return [];
+        }
+
+        if (isset($this->cache['variationAttributes'])) {
+            return $this->cache['variationAttributes'];
         }
 
         $availableVariations = $this->availableVariations();
@@ -174,7 +189,9 @@ final class SingleProductView
             ];
         }
 
-        return $groups;
+        $this->cache['variationAttributes'] = $groups;
+
+        return $this->cache['variationAttributes'];
     }
 
     /**
@@ -182,8 +199,12 @@ final class SingleProductView
      */
     protected function variations(): array
     {
+        if (isset($this->cache['variations'])) {
+            return $this->cache['variations'];
+        }
+
         if (!($this->product instanceof WC_Product_Variable)) {
-            return [
+            $this->cache['variations'] = [
                 [
                     'id' => $this->product->get_id(),
                     'name' => __('Standard', 'sage-front'),
@@ -198,11 +219,13 @@ final class SingleProductView
                             : __('Gotowy do zamowienia od razu.', 'sage-front'),
                 ],
             ];
+
+            return $this->cache['variations'];
         }
 
         $variations = [];
 
-        foreach ($this->product->get_available_variations() as $variationData) {
+        foreach ($this->availableVariations() as $variationData) {
             $variationId = absint($variationData['variation_id'] ?? 0);
 
             if ($variationId <= 0) {
@@ -237,7 +260,9 @@ final class SingleProductView
             ];
         }
 
-        return $variations;
+        $this->cache['variations'] = $variations;
+
+        return $this->cache['variations'];
     }
 
     /**
@@ -447,13 +472,20 @@ final class SingleProductView
      */
     protected function variationPreviewDescription(array $variationData): string
     {
+        $variationId = absint($variationData['variation_id'] ?? 0);
+        $cacheKey = 'variationPreviewDescription:' . $variationId;
+
+        if (isset($this->cache[$cacheKey])) {
+            return $this->cache[$cacheKey];
+        }
+
         $description = trim((string) ($variationData['variation_description'] ?? ''));
 
         if ($description !== '') {
-            return $description;
-        }
+            $this->cache[$cacheKey] = $description;
 
-        $variationId = absint($variationData['variation_id'] ?? 0);
+            return $this->cache[$cacheKey];
+        }
 
         if ($variationId <= 0) {
             return '';
@@ -477,10 +509,14 @@ final class SingleProductView
             ?: $variation->get_short_description();
 
         if ($variationDescription !== '') {
-            return wpautop(wp_kses_post($variationDescription));
+            $this->cache[$cacheKey] = wpautop(wp_kses_post($variationDescription));
+
+            return $this->cache[$cacheKey];
         }
 
-        return wpautop(esc_html(wp_strip_all_tags((string) $attributeSummary)));
+        $this->cache[$cacheKey] = wpautop(esc_html(wp_strip_all_tags((string) $attributeSummary)));
+
+        return $this->cache[$cacheKey];
     }
 
     /**

@@ -36,3 +36,10 @@ composer.lock
 
 /layout
 .htaccess
+
+# PHPUnit/Pest
+phpunit.xml
+.phpunit.result.cache
+.phpunit.cache
+
+.devcontainer

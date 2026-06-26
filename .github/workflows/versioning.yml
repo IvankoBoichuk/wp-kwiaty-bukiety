@@ -57,8 +57,11 @@ jobs:
           PR_NUMBER: ${{ github.event.pull_request.number }}
           REPO: ${{ github.repository }}
 
-      - name: PHP Tests
+      - name: Run Pint
         run: composer lint
+
+      - name: Run tests
+        run: composer test
 
       - name: Run theme typecheck
         working-directory: ${{ env.THEME_PATH }}

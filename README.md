@@ -48,3 +48,10 @@
 ## Примітка
 
 README написаний у спрощеному вигляді, щоб швидко зрозуміти призначення репозиторію без зайвої технічної інформації.
+
+
+mysqldump -h localhost -u 'u958399693_iedcP' -p --single-transaction --default-character-set=utf8mb4 'u958399693_HSVuZ' > stage-$(date +%F-%H%M).sql
+
+tar -czf uploads-$(date +%F-%H%M).tar.gz web/app/uploads
+
+mysql -h database -u wordpress -ppassword wordpress < /roots/app/stage-2026-06-26-1830.sql
