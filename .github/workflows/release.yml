@@ -1,0 +1,147 @@
+name: Main Release
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  THEME_PATH: web/app/themes/sage
+
+jobs:
+  release:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Update changelog
+        run: node .github/scripts/update-main-changelog.mjs
+
+      - name: Commit changelog
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add CHANGELOG.md
+          git diff --cached --quiet || git commit -m "docs(changelog): update release notes [skip ci]"
+          git push origin HEAD:main
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.2
+          tools: composer:v2
+
+      - name: Install Bedrock Composer dependencies
+        run: composer install --no-dev --no-interaction --no-progress --prefer-dist --optimize-autoloader
+
+      - name: Install theme Composer dependencies
+        working-directory: ${{ env.THEME_PATH }}
+        run: composer install --no-dev --no-interaction --no-progress --prefer-dist --optimize-autoloader
+
+      - name: Install theme dependencies
+        working-directory: ${{ env.THEME_PATH }}
+        run: bun install --frozen-lockfile
+
+      - name: Build theme assets
+        working-directory: ${{ env.THEME_PATH }}
+        run: bun run build
+
+      - name: Read release version
+        id: version
+        run: echo "version=$(node -p \"require('./composer.json').version\")" >> "$GITHUB_OUTPUT"
+
+      - name: Check existing tag
+        id: tag
+        run: |
+          if git rev-parse "v${{ steps.version.outputs.version }}" >/dev/null 2>&1; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Create git tag
+        if: steps.tag.outputs.exists != 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag "v${{ steps.version.outputs.version }}"
+          git push origin "v${{ steps.version.outputs.version }}"
+
+      - name: Create GitHub release
+        if: steps.tag.outputs.exists != 'true'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.version.outputs.version }}
+          name: v${{ steps.version.outputs.version }}
+          body_path: CHANGELOG.md
+
+      - name: Validate production deploy settings
+        env:
+          DEPLOY_PATH: ${{ vars.PROD_DEPLOY_PATH }}
+          SSH_HOST: ${{ vars.PROD_SSH_HOST }}
+          SSH_PORT: ${{ vars.PROD_SSH_PORT }}
+          SSH_USER: ${{ vars.PROD_SSH_USER }}
+          SSH_PRIVATE_KEY: ${{ secrets.PROD_SSH_PRIVATE_KEY }}
+        run: |
+          test -n "${SSH_HOST}"
+          test -n "${SSH_PORT}"
+          test -n "${SSH_USER}"
+          test -n "${SSH_PRIVATE_KEY}"
+          test -n "${DEPLOY_PATH}"
+
+      - name: Setup SSH
+        env:
+          SSH_HOST: ${{ vars.PROD_SSH_HOST }}
+          SSH_PORT: ${{ vars.PROD_SSH_PORT }}
+          SSH_PRIVATE_KEY: ${{ secrets.PROD_SSH_PRIVATE_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "${SSH_PRIVATE_KEY}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -p "${SSH_PORT}" "${SSH_HOST}" >> ~/.ssh/known_hosts
+
+      - name: Deploy production
+        env:
+          DEPLOY_PATH: ${{ vars.PROD_DEPLOY_PATH }}
+          SSH_HOST: ${{ vars.PROD_SSH_HOST }}
+          SSH_PORT: ${{ vars.PROD_SSH_PORT }}
+          SSH_USER: ${{ vars.PROD_SSH_USER }}
+        run: |
+          rsync -az --delete \
+            -e "ssh -i ~/.ssh/id_ed25519 -p ${SSH_PORT}" \
+            --exclude=".git" \
+            --exclude=".github" \
+            --exclude=".env" \
+            --exclude=".env.*" \
+            --exclude=".htaccess" \
+            --exclude="layout" \
+            --exclude="node_modules" \
+            --exclude="web/app/uploads" \
+            --exclude="web/app/cache" \
+            --exclude="web/app/backups-dup-lite" \
+            --exclude="web/app/upgrade" \
+            --exclude="web/app/upgrade-temp-backup" \
+            --exclude="web/app/languages" \
+            --exclude="web/.htaccess" \
+            ./ \
+            ${SSH_USER}@${SSH_HOST}:${DEPLOY_PATH}
+
+      - name: Smoke test production
+        run: curl --fail --silent --show-error https://kwiaty-bukiety.com.pl > /dev/null
