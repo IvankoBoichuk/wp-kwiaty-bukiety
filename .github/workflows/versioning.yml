@@ -1,0 +1,77 @@
+name: Dev Version Bump
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - dev
+
+permissions:
+  contents: write
+  pull-requests: read
+
+env:
+  THEME_PATH: web/app/themes/sage
+
+jobs:
+  bump-version:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: dev
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.2
+          tools: composer:v2
+
+      - name: Install Bedrock Composer dependencies
+        run: composer install --no-interaction --no-progress --prefer-dist
+
+      - name: Install theme Composer dependencies
+        working-directory: ${{ env.THEME_PATH }}
+        run: composer install --no-interaction --no-progress --prefer-dist
+
+      - name: Install theme dependencies
+        working-directory: ${{ env.THEME_PATH }}
+        run: bun install --frozen-lockfile
+
+      - name: Calculate next version and update files
+        run: node .github/scripts/bump-dev-version.mjs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          REPO: ${{ github.repository }}
+
+      - name: Run backend checks
+        run: composer lint
+
+      - name: Run theme typecheck
+        working-directory: ${{ env.THEME_PATH }}
+        run: bun run typecheck
+
+      - name: Build theme assets
+        working-directory: ${{ env.THEME_PATH }}
+        run: bun run build
+
+      - name: Commit version changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add composer.json web/app/themes/sage/style.css
+          git diff --cached --quiet || git commit -m "chore(release): bump dev version"
+          git push origin HEAD:dev

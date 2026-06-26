@@ -18,7 +18,7 @@ jobs:
   deploy-dev:
     runs-on: ubuntu-latest
     if: github.ref_name == 'dev'
-    environment: devolopment
+    environment: development
     env:
       DEPLOY_PATH: ${{ vars.DEPLOY_PATH }}
       SSH_HOST: ${{ vars.SSH_HOST }}
@@ -90,6 +90,9 @@ jobs:
             --exclude="web/.htaccess" \
             ./ \
             ${SSH_USER}@${SSH_HOST}:${DEPLOY_PATH}
+
+      - name: Smoke test development
+        run: curl --fail --silent --show-error https://dev.kwiaty-bukiety.com.pl > /dev/null
 
   # deploy-main:
   #   runs-on: ubuntu-latest

@@ -1,33 +1,17 @@
 {
-  "name": "roots/bedrock",
+  "name": "kwiaty-bukiety/bedrock",
   "type": "project",
   "license": "MIT",
-  "description": "WordPress boilerplate with Composer, easier configuration, and an improved folder structure",
-  "homepage": "https://roots.io/bedrock/",
+  "version": "0.0.1",
+  "description": "WordPress site for flowers delivery built with Bedrock",
+  "homepage": "https://kwiaty-bukiety.com.pl/",
   "authors": [
     {
-      "name": "Scott Walkinshaw",
-      "email": "scott.walkinshaw@gmail.com",
-      "homepage": "https://github.com/swalkinshaw"
-    },
-    {
-      "name": "Ben Word",
-      "email": "ben@benword.com",
-      "homepage": "https://github.com/retlehs"
+      "name": "Ivan Boichuk",
+      "email": "ivan.boychuck@gmail.com",
+      "homepage": "https://github.com/IvankoBoichuk"
     }
   ],
-  "keywords": [
-    "bedrock",
-    "composer",
-    "roots",
-    "wordpress",
-    "wp",
-    "wp-config"
-  ],
-  "support": {
-    "issues": "https://github.com/roots/bedrock/issues",
-    "forum": "https://discourse.roots.io/category/bedrock"
-  },
   "repositories": {
     "wp-packages": {
       "type": "composer",
