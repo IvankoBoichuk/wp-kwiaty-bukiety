@@ -18,12 +18,12 @@ jobs:
   deploy-dev:
     runs-on: ubuntu-latest
     if: github.ref_name == 'dev'
-    environment: dev
+    environment: devolopment
     env:
-      DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
-      SSH_HOST: ${{ secrets.SSH_HOST }}
-      SSH_PORT: ${{ secrets.SSH_PORT }}
-      SSH_USER: ${{ secrets.SSH_USER }}
+      DEPLOY_PATH: ${{ vars.DEPLOY_PATH }}
+      SSH_HOST: ${{ vars.SSH_HOST }}
+      SSH_PORT: ${{ vars.SSH_PORT }}
+      SSH_USER: ${{ vars.SSH_USER }}
       SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
     steps:
@@ -66,7 +66,7 @@ jobs:
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
-          printf '%s' "${SSH_PRIVATE_KEY}" > ~/.ssh/id_ed25519
+          echo "${SSH_PRIVATE_KEY}" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
           ssh-keyscan -p "${SSH_PORT}" "${SSH_HOST}" >> ~/.ssh/known_hosts
 
@@ -78,6 +78,7 @@ jobs:
             --exclude=".github" \
             --exclude=".env" \
             --exclude=".env.*" \
+            --exclude=".htaccess" \
             --exclude="layout" \
             --exclude="node_modules" \
             --exclude="web/app/uploads" \
@@ -86,6 +87,7 @@ jobs:
             --exclude="web/app/upgrade" \
             --exclude="web/app/upgrade-temp-backup" \
             --exclude="web/app/languages" \
+            --exclude="web/.htaccess" \
             ./ \
             ${SSH_USER}@${SSH_HOST}:${DEPLOY_PATH}
 
@@ -94,10 +96,10 @@ jobs:
     if: github.ref_name == 'main'
     environment: production
     env:
-      DEPLOY_PATH: ${{ secrets.PROD_DEPLOY_PATH }}
-      SSH_HOST: ${{ secrets.PROD_SSH_HOST }}
-      SSH_PORT: ${{ secrets.PROD_SSH_PORT }}
-      SSH_USER: ${{ secrets.PROD_SSH_USER }}
+      DEPLOY_PATH: ${{ vars.PROD_DEPLOY_PATH }}
+      SSH_HOST: ${{ vars.PROD_SSH_HOST }}
+      SSH_PORT: ${{ vars.PROD_SSH_PORT }}
+      SSH_USER: ${{ vars.PROD_SSH_USER }}
       SSH_PRIVATE_KEY: ${{ secrets.PROD_SSH_PRIVATE_KEY }}
 
     steps:
@@ -140,7 +142,7 @@ jobs:
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
-          printf '%s' "${SSH_PRIVATE_KEY}" > ~/.ssh/id_ed25519
+          echo "${SSH_PRIVATE_KEY}" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
           ssh-keyscan -p "${SSH_PORT}" "${SSH_HOST}" >> ~/.ssh/known_hosts
 
@@ -152,6 +154,7 @@ jobs:
             --exclude=".github" \
             --exclude=".env" \
             --exclude=".env.*" \
+            --exclude=".htaccess" \
             --exclude="layout" \
             --exclude="node_modules" \
             --exclude="web/app/uploads" \
@@ -160,5 +163,6 @@ jobs:
             --exclude="web/app/upgrade" \
             --exclude="web/app/upgrade-temp-backup" \
             --exclude="web/app/languages" \
+            --exclude="web/.htaccess" \
             ./ \
             ${SSH_USER}@${SSH_HOST}:${DEPLOY_PATH}

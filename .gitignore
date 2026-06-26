@@ -35,3 +35,4 @@ wp-cli.local.yml
 composer.lock
 
 /layout
+.htaccess
