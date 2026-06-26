@@ -91,78 +91,78 @@ jobs:
             ./ \
             ${SSH_USER}@${SSH_HOST}:${DEPLOY_PATH}
 
-  deploy-main:
-    runs-on: ubuntu-latest
-    if: github.ref_name == 'main'
-    environment: production
-    env:
-      DEPLOY_PATH: ${{ vars.PROD_DEPLOY_PATH }}
-      SSH_HOST: ${{ vars.PROD_SSH_HOST }}
-      SSH_PORT: ${{ vars.PROD_SSH_PORT }}
-      SSH_USER: ${{ vars.PROD_SSH_USER }}
-      SSH_PRIVATE_KEY: ${{ secrets.PROD_SSH_PRIVATE_KEY }}
+  # deploy-main:
+  #   runs-on: ubuntu-latest
+  #   if: github.ref_name == 'main'
+  #   environment: production
+  #   env:
+  #     DEPLOY_PATH: ${{ vars.PROD_DEPLOY_PATH }}
+  #     SSH_HOST: ${{ vars.PROD_SSH_HOST }}
+  #     SSH_PORT: ${{ vars.PROD_SSH_PORT }}
+  #     SSH_USER: ${{ vars.PROD_SSH_USER }}
+  #     SSH_PRIVATE_KEY: ${{ secrets.PROD_SSH_PRIVATE_KEY }}
 
-    steps:
-      - uses: actions/checkout@v4
+  #   steps:
+  #     - uses: actions/checkout@v4
 
-      - name: Validate branch deploy settings
-        run: |
-          test -n "${SSH_HOST}"
-          test -n "${SSH_PORT}"
-          test -n "${SSH_USER}"
-          test -n "${SSH_PRIVATE_KEY}"
-          test -n "${DEPLOY_PATH}"
+  #     - name: Validate branch deploy settings
+  #       run: |
+  #         test -n "${SSH_HOST}"
+  #         test -n "${SSH_PORT}"
+  #         test -n "${SSH_USER}"
+  #         test -n "${SSH_PRIVATE_KEY}"
+  #         test -n "${DEPLOY_PATH}"
 
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: latest
+  #     - name: Setup Bun
+  #       uses: oven-sh/setup-bun@v2
+  #       with:
+  #         bun-version: latest
 
-      - name: Install theme dependencies
-        working-directory: ${{ env.THEME_PATH }}
-        run: bun install
+  #     - name: Install theme dependencies
+  #       working-directory: ${{ env.THEME_PATH }}
+  #       run: bun install
 
-      - name: Build theme assets
-        working-directory: ${{ env.THEME_PATH }}
-        run: bun run build
+  #     - name: Build theme assets
+  #       working-directory: ${{ env.THEME_PATH }}
+  #       run: bun run build
 
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: 8.2
-          tools: composer:v2
+  #     - name: Setup PHP
+  #       uses: shivammathur/setup-php@v2
+  #       with:
+  #         php-version: 8.2
+  #         tools: composer:v2
 
-      - name: Install Bedrock Composer dependencies
-        run: composer install --no-dev --optimize-autoloader
+  #     - name: Install Bedrock Composer dependencies
+  #       run: composer install --no-dev --optimize-autoloader
 
-      - name: Install theme Composer dependencies
-        working-directory: ${{ env.THEME_PATH }}
-        run: composer install --no-dev --optimize-autoloader
+  #     - name: Install theme Composer dependencies
+  #       working-directory: ${{ env.THEME_PATH }}
+  #       run: composer install --no-dev --optimize-autoloader
 
-      - name: Setup SSH
-        run: |
-          mkdir -p ~/.ssh
-          echo "${SSH_PRIVATE_KEY}" > ~/.ssh/id_ed25519
-          chmod 600 ~/.ssh/id_ed25519
-          ssh-keyscan -p "${SSH_PORT}" "${SSH_HOST}" >> ~/.ssh/known_hosts
+  #     - name: Setup SSH
+  #       run: |
+  #         mkdir -p ~/.ssh
+  #         echo "${SSH_PRIVATE_KEY}" > ~/.ssh/id_ed25519
+  #         chmod 600 ~/.ssh/id_ed25519
+  #         ssh-keyscan -p "${SSH_PORT}" "${SSH_HOST}" >> ~/.ssh/known_hosts
 
-      - name: Deploy
-        run: |
-          rsync -az --delete \
-            -e "ssh -i ~/.ssh/id_ed25519 -p ${SSH_PORT}" \
-            --exclude=".git" \
-            --exclude=".github" \
-            --exclude=".env" \
-            --exclude=".env.*" \
-            --exclude=".htaccess" \
-            --exclude="layout" \
-            --exclude="node_modules" \
-            --exclude="web/app/uploads" \
-            --exclude="web/app/cache" \
-            --exclude="web/app/backups-dup-lite" \
-            --exclude="web/app/upgrade" \
-            --exclude="web/app/upgrade-temp-backup" \
-            --exclude="web/app/languages" \
-            --exclude="web/.htaccess" \
-            ./ \
-            ${SSH_USER}@${SSH_HOST}:${DEPLOY_PATH}
+  #     - name: Deploy
+  #       run: |
+  #         rsync -az --delete \
+  #           -e "ssh -i ~/.ssh/id_ed25519 -p ${SSH_PORT}" \
+  #           --exclude=".git" \
+  #           --exclude=".github" \
+  #           --exclude=".env" \
+  #           --exclude=".env.*" \
+  #           --exclude=".htaccess" \
+  #           --exclude="layout" \
+  #           --exclude="node_modules" \
+  #           --exclude="web/app/uploads" \
+  #           --exclude="web/app/cache" \
+  #           --exclude="web/app/backups-dup-lite" \
+  #           --exclude="web/app/upgrade" \
+  #           --exclude="web/app/upgrade-temp-backup" \
+  #           --exclude="web/app/languages" \
+  #           --exclude="web/.htaccess" \
+  #           ./ \
+  #           ${SSH_USER}@${SSH_HOST}:${DEPLOY_PATH}
