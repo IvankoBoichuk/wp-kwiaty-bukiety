@@ -279,7 +279,7 @@ class ContactSettingsPage
                         'hello@example.com',
                         'sage-back',
                     ),
-                            ],
+                ],
             ],
             $options['emails'],
         );
