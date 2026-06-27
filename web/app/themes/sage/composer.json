@@ -39,12 +39,7 @@
     }
   },
   "require": {
-    "php": ">=8.2",
-    "generoi/sage-woocommerce": "^1.1",
-    "roots/acorn": "^5.0"
-  },
-  "require-dev": {
-    "laravel/pint": "^1.20"
+    "php": ">=8.2"
   },
   "suggest": {
     "log1x/sage-directives": "A collection of useful Blade directives for WordPress and Sage (^1.0)."
@@ -55,10 +50,5 @@
     "sort-packages": true
   },
   "minimum-stability": "dev",
-  "prefer-stable": true,
-  "scripts": {
-    "post-autoload-dump": [
-      "Roots\\Acorn\\ComposerScripts::postAutoloadDump"
-    ]
-  }
+  "prefer-stable": true
 }

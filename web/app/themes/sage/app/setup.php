@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\Vite;
 use WP_Customize_Image_Control;
 use WP_Customize_Manager;
 
+Vite::useHotFile(get_theme_file_path('public/hot'));
+Vite::useBuildDirectory('build');
+
 /**
  * Inject styles into the block editor.
  *
