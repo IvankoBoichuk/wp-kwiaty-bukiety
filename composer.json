@@ -73,7 +73,7 @@
   "scripts": {
     "lint": "pint --test",
     "lint:fix": "pint",
-    "test": "APP_URL=http://host.docker.internal:8080 pest",
+    "test": "pest",
     "post-autoload-dump": [
       "Roots\\Acorn\\ComposerScripts::postAutoloadDump"
     ]
