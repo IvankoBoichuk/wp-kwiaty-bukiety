@@ -1,289 +1,279 @@
+#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: Kwiaty Bukiety\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-11 21:38+0000\n"
-"PO-Revision-Date: 2026-06-29 12:35+0000\n"
-"Last-Translator: \n"
-"Language-Team: Polski\n"
-"Language: pl_PL\n"
-"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10 >= 2 && n%10<=4 "
-"&&(n%100<10||n%100 >= 20)? 1 : 2);\n"
+"POT-Creation-Date: 2026-06-29 12:18+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: \n"
+"Language: \n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Loco https://localise.biz/\n"
-"X-Loco-Version: 2.8.5; wp-7.0; php-8.2.29\n"
+"X-Loco-Version: 2.8.5; wp-7.0; php-8.4.22\n"
 "X-Domain: sage-front"
 
 #: app/View/Composers/Comments.php:63
 msgid "&larr; Older comments"
-msgstr "&larr; Starsze komentarze"
+msgstr ""
 
 #: resources/views/woocommerce/single-product/add-to-cart-bar/desktop.blade.php:5
 msgid "Add to cart"
-msgstr "Dodaj do koszyka"
+msgstr ""
 
 #: app/filters.php:790 app/filters.php:956 app/filters.php:956
 #: resources/views/woocommerce/single-product/order-options-funeral.blade.php:82
 msgid "Add-ons"
-msgstr "Dodatki"
+msgstr ""
 
 #: resources/views/woocommerce/single-product/add-to-cart-bar/desktop.blade.php:4
-#, fuzzy
 msgid "Adding..."
-msgstr "Dodawanie..."
+msgstr ""
 
 #: resources/views/woocommerce/single-product/cross-sell-products.blade.php:4
 msgid "Additions to flowers"
-msgstr "Dodatki do kwiatów"
+msgstr ""
 
 #: resources/views/woocommerce/checkout/thankyou.blade.php:83
 #: resources/views/woocommerce/checkout/thankyou.blade.php:109
 msgid "Back to Home Page"
-msgstr "Wróć do strony głównej"
+msgstr ""
 
 #: resources/views/woocommerce/cart/cart.blade.php:274
-#, fuzzy
 msgid "Back to shop"
-msgstr "Powrót do sklepu"
+msgstr ""
 
 #: app/Catalog/ProductData.php:32
 msgid "Bestseller"
-msgstr "Bestseller"
+msgstr ""
 
 #: public/build/assets/theme.json:1
 msgctxt "Border radius size name"
 msgid "2xl"
-msgstr "2xl"
+msgstr ""
 
 #: public/build/assets/theme.json:1
-#, fuzzy
 msgctxt "Border radius size name"
 msgid "4xl"
-msgstr "4xl"
+msgstr ""
 
 #: public/build/assets/theme.json:1
-#, fuzzy
 msgctxt "Border radius size name"
 msgid "lg"
-msgstr "lg"
+msgstr ""
 
 #: public/build/assets/theme.json:1
-#, fuzzy
 msgctxt "Border radius size name"
 msgid "sm"
-msgstr "sm"
+msgstr ""
 
 #: public/build/assets/theme.json:1
 msgctxt "Border radius size name"
 msgid "xl"
-msgstr "xl"
+msgstr ""
 
 #: resources/views/sections/footer.blade.php:3
 #: resources/views/woocommerce/cart/cart.blade.php:37
 msgid "Buy and pay"
-msgstr "Kup i zapłać"
+msgstr ""
 
 #: resources/views/partials/entry-meta.blade.php:4
 msgid "By"
-msgstr "Przez"
+msgstr ""
 
 #: resources/views/woocommerce/single-product/order-options.blade.php:88
 msgid "Card message"
-msgstr "Wiadomość do karty"
+msgstr ""
 
 #: app/filters.php:773 app/filters.php:952 app/filters.php:952
 msgid "Card message content"
-msgstr "Treść wiadomości do karty"
+msgstr ""
 
 #: resources/views/woocommerce/cart/cart.blade.php:62
-#, fuzzy
 msgid "Cart"
-msgstr "Koszyk"
+msgstr ""
 
 #: resources/views/woocommerce/cart/cart.blade.php:503
-#, fuzzy
 msgid "Checkout"
-msgstr "Zamówienie"
+msgstr ""
 
 #: resources/js/modules/product-core/ProductStore.ts:236
 msgid "Choose a delivery date"
-msgstr "Wybierz datę dostawy"
+msgstr ""
 
 #: resources/js/modules/product-core/ProductStore.ts:243
 msgid "Choose a delivery time"
-msgstr "Wybierz godzinę dostawy"
+msgstr ""
 
 #: app/Catalog/Settings.php:15
 msgid "Church"
-msgstr "Kościół"
+msgstr ""
 
 #: app/filters.php:263
 msgid "City"
-msgstr "Miasto"
+msgstr ""
 
 #: public/build/assets/theme.json:1
 msgctxt "Color name"
 msgid "Accent"
-msgstr "Akcent"
+msgstr ""
 
 #: public/build/assets/theme.json:1
 msgctxt "Color name"
 msgid "Background"
-msgstr "Tło"
+msgstr ""
 
 #: public/build/assets/theme.json:1
 msgctxt "Color name"
 msgid "Black"
-msgstr "Czarny"
+msgstr ""
 
 #: public/build/assets/theme.json:1
 msgctxt "Color name"
 msgid "Dark (Text)"
-msgstr "Ciemny (Tekst)"
+msgstr ""
 
 #: public/build/assets/theme.json:1
 msgctxt "Color name"
 msgid "Gray (1)"
-msgstr "Szary (1)"
+msgstr ""
 
 #: public/build/assets/theme.json:1
 msgctxt "Color name"
 msgid "Gray (2)"
-msgstr "Szary (2)"
+msgstr ""
 
 #: public/build/assets/theme.json:1
 msgctxt "Color name"
 msgid "Gray (200)"
-msgstr "Szary (200)"
+msgstr ""
 
 #: public/build/assets/theme.json:1
 msgctxt "Color name"
 msgid "Gray (3)"
-msgstr "Szary (3)"
+msgstr ""
 
 #: public/build/assets/theme.json:1
 msgctxt "Color name"
 msgid "Gray (300)"
-msgstr "Szary (300)"
+msgstr ""
 
 #: public/build/assets/theme.json:1
 msgctxt "Color name"
 msgid "Gray (4)"
-msgstr "Szary (4)"
+msgstr ""
 
 #: public/build/assets/theme.json:1
 msgctxt "Color name"
 msgid "Gray (6)"
-msgstr "Szary (6)"
+msgstr ""
 
 #: public/build/assets/theme.json:1
 msgctxt "Color name"
 msgid "Gray (600)"
-msgstr "Szary (600)"
+msgstr ""
 
 #: public/build/assets/theme.json:1
 msgctxt "Color name"
 msgid "Green (400)"
-msgstr "Zielony (400)"
+msgstr ""
 
 #: public/build/assets/theme.json:1
 msgctxt "Color name"
 msgid "Green (50)"
-msgstr "Zielony (50)"
+msgstr ""
 
 #: public/build/assets/theme.json:1
-#, fuzzy
 msgctxt "Color name"
 msgid "Green (500)"
-msgstr "Zielony (500)"
+msgstr ""
 
 #: public/build/assets/theme.json:1
 msgctxt "Color name"
 msgid "Green (Dark)"
-msgstr "Zielony (Ciemny)"
+msgstr ""
 
 #: public/build/assets/theme.json:1
 msgctxt "Color name"
 msgid "Green (Default)"
-msgstr "Zielony (Domyślny)"
+msgstr ""
 
 #: public/build/assets/theme.json:1
 msgctxt "Color name"
 msgid "Green (Easy)"
-msgstr "Zielony (Łatwy)"
+msgstr ""
 
 #: public/build/assets/theme.json:1
 msgctxt "Color name"
 msgid "Indigo (400)"
-msgstr "Indygo (400)"
+msgstr ""
 
 #: public/build/assets/theme.json:1
 msgctxt "Color name"
 msgid "Indigo (50)"
-msgstr "Indygo (50)"
+msgstr ""
 
 #: public/build/assets/theme.json:1
 msgctxt "Color name"
 msgid "Primary"
-msgstr "Podstawowy"
+msgstr ""
 
 #: public/build/assets/theme.json:1
 msgctxt "Color name"
 msgid "Purple"
-msgstr "Fioletowy"
+msgstr ""
 
 #: public/build/assets/theme.json:1
 msgctxt "Color name"
 msgid "Purple (Dark)"
-msgstr "Fioletowy (Ciemny)"
+msgstr ""
 
 #: public/build/assets/theme.json:1
 msgctxt "Color name"
 msgid "Purple (Easy)"
-msgstr "Fioletowy (Łatwy)"
+msgstr ""
 
 #: public/build/assets/theme.json:1
 msgctxt "Color name"
 msgid "Red (400)"
-msgstr "Czerwony (400)"
+msgstr ""
 
 #: public/build/assets/theme.json:1
 msgctxt "Color name"
 msgid "Red (50)"
-msgstr "Czerwony (50)"
+msgstr ""
 
 #: public/build/assets/theme.json:1
-#, fuzzy
 msgctxt "Color name"
 msgid "Red (500)"
-msgstr "Czerwony (500)"
+msgstr ""
 
 #: public/build/assets/theme.json:1
-#, fuzzy
 msgctxt "Color name"
 msgid "Secondary"
-msgstr "Drugorzędny"
+msgstr ""
 
 #: public/build/assets/theme.json:1
 msgctxt "Color name"
 msgid "White"
-msgstr "Biały"
+msgstr ""
 
 #: public/build/assets/theme.json:1
 msgctxt "Color name"
 msgid "Yellow (400)"
-msgstr "Żółty (400)"
+msgstr ""
 
 #: public/build/assets/theme.json:1
 msgctxt "Color name"
 msgid "Yellow (50)"
-msgstr "Żółty (50)"
+msgstr ""
 
 #: resources/views/partials/comments.blade.php:24
 msgid "Comments are closed."
-msgstr "Komentarze są zamknięte."
+msgstr ""
 
 #. %1$s is replaced with the number of comments and %2$s with the post title
 #: app/View/Composers/Comments.php:23
@@ -291,586 +281,558 @@ msgstr "Komentarze są zamknięte."
 msgctxt "comments title"
 msgid "%1$s response to &ldquo;%2$s&rdquo;"
 msgid_plural "%1$s responses to &ldquo;%2$s&rdquo;"
-msgstr[0] "%1$s odpowiedź na „%2$s”"
-msgstr[1] "%1$s odpowiedzi na „%2$s”"
-msgstr[2] ""
+msgstr[0] ""
+msgstr[1] ""
 
 #: app/View/Composers/Comments.php:31
 msgctxt "comments title"
 msgid "One"
-msgstr "Jeden"
+msgstr ""
 
 #: app/Catalog/Settings.php:14
 msgid "Company"
-msgstr "Firma"
+msgstr ""
 
 #: resources/views/woocommerce/cart/cart.blade.php:516
-#, fuzzy
 msgid "Continue to payment"
-msgstr "Kontynuuj do płatności"
+msgstr ""
 
 #: app/filters.php:25
 msgid "Continued"
-msgstr "Kontynuuj"
+msgstr ""
 
 #: resources/views/woocommerce/cart/cart.blade.php:330
-#, fuzzy
 msgid "Coupon code"
-msgstr "Kod kuponu"
+msgstr ""
 
 #. Name of the template
 #: resources/views/template-custom.blade.php:1
 msgid "Custom Template"
-msgstr "Szablon niestandardowy"
+msgstr ""
 
 #: app/filters.php:767 app/filters.php:948 app/filters.php:948
 msgid "Deceased's full name"
-msgstr "Pełne imię i nazwisko zmarłego"
+msgstr ""
 
 #: resources/views/woocommerce/single-product/add-to-cart-bar/desktop.blade.php:2
-#, fuzzy
 msgid "Decrease quantity"
-msgstr "Zmniejsz ilość"
+msgstr ""
 
 #: resources/js/modules/cart-checkout/CartCheckoutStore.ts:207
 msgid "Delivery"
-msgstr "Dostawa"
+msgstr ""
 
 #: app/filters.php:938 app/Checkout/CartCheckout.php:222
 msgid "Delivery date"
-msgstr "Data dostawy"
+msgstr ""
 
 #: app/filters.php:440 app/filters.php:755 app/filters.php:940
 #: app/filters.php:940
 msgid "Delivery location"
-msgstr "Miejsce dostawy"
+msgstr ""
 
 #: resources/views/woocommerce/cart/cart.blade.php:311
-#, fuzzy
 msgid "Delivery notes"
-msgstr "Uwagi do dostawy"
+msgstr ""
 
 #: app/filters.php:290 app/filters.php:291
 msgid "Delivery place"
-msgstr "Miejsce dostawy"
+msgstr ""
 
 #: app/filters.php:820 app/filters.php:893
 msgid "Delivery place type"
-msgstr "Typ miejsca dostawy"
+msgstr ""
 
 #: app/filters.php:939 app/Checkout/CartCheckout.php:230
 msgid "Delivery time"
-msgstr "Czas dostawy"
+msgstr ""
 
 #: app/filters.php:442 app/filters.php:761 app/filters.php:944
 #: app/filters.php:944
 msgid "Delivery type"
-msgstr "Rodzaj dostawy"
+msgstr ""
 
 #: app/Checkout/CartCheckout.php:368 app/Checkout/CartCheckout.php:383
 #: resources/js/modules/cart-checkout/CartCheckoutStore.ts:211
 msgid "Discount"
-msgstr "Rabat"
+msgstr ""
 
 #: app/Checkout/CartCheckout.php:367 app/Checkout/CartCheckout.php:379
 msgid "Dostawa"
-msgstr "Dostawa"
+msgstr ""
 
 #: app/filters.php:245
 msgid "e.g. 00-001"
-msgstr "np. 00-001"
+msgstr ""
 
 #: app/filters.php:216 app/filters.php:238
 msgid "e.g. 123 456 789"
-msgstr "np. 123 456 789"
+msgstr ""
 
 #: app/filters.php:227
 msgid "e.g. 1234567890"
-msgstr "np. 1234567890"
+msgstr ""
 
 #: app/filters.php:211
 msgid "e.g. Doe"
-msgstr "np. Kowalski"
+msgstr ""
 
 #: app/filters.php:272
 msgid "e.g. Hotel Marriott"
-msgstr "np. Hotel Marriott"
+msgstr ""
 
 #: app/filters.php:206
 msgid "e.g. John"
-msgstr "np. Jan"
+msgstr ""
 
 #: app/filters.php:188
 msgid "e.g. John Doe"
-msgstr "np. Jan Kowalski"
+msgstr ""
 
 #: app/filters.php:196
 msgid "e.g. john.doe@example.com"
-msgstr "np. jan.kowalski@przyklad.pl"
+msgstr ""
 
 #: app/filters.php:281
 msgid "e.g. ul. Marszałkowska 1/5"
-msgstr "np. ul. Marszałkowska 1/5"
+msgstr ""
 
 #: app/filters.php:259
 msgid "e.g. Warsaw"
-msgstr "np. Warszawa"
+msgstr ""
 
 #: resources/js/modules/cart-checkout/CartCheckoutStore.ts:127
 msgid "Enter a valid email address."
-msgstr "Wprowadź poprawny adres e-mail."
+msgstr ""
 
 #: resources/js/modules/cart-checkout/CartCheckoutStore.ts:277
 msgid "Enter a valid recipient phone number."
-msgstr "Wprowadź poprawny numer telefonu odbiorcy."
+msgstr ""
 
 #: resources/js/modules/cart-checkout/CartCheckoutStore.ts:288
 msgid "Enter a valid sender phone number."
-msgstr "Wprowadź poprawny numer telefonu nadawcy."
+msgstr ""
 
 #: resources/js/modules/cart-checkout/CartCheckoutStore.ts:111
 msgid "Enter the city."
-msgstr "Wprowadź miasto."
+msgstr ""
 
 #: resources/js/modules/cart-checkout/CartCheckoutStore.ts:105
 msgid "Enter the delivery address."
-msgstr "Wprowadź adres dostawy."
+msgstr ""
 
 #: resources/js/modules/cart-checkout/CartCheckoutStore.ts:129
 msgid "Enter the email address."
-msgstr "Wprowadź adres e-mail."
+msgstr ""
 
 #: resources/js/modules/cart-checkout/CartCheckoutStore.ts:115
 msgid "Enter the location name."
-msgstr "Wprowadź nazwę lokalizacji."
+msgstr ""
 
 #: resources/js/modules/cart-checkout/CartCheckoutStore.ts:110
 msgid "Enter the postal code."
-msgstr "Wprowadź kod pocztowy."
+msgstr ""
 
 #: resources/js/modules/cart-checkout/CartCheckoutStore.ts:112
 msgid "Enter the recipient full name."
-msgstr "Wprowadź pełne imię i nazwisko odbiorcy."
+msgstr ""
 
 #: resources/js/modules/cart-checkout/CartCheckoutStore.ts:118
 #: resources/js/modules/cart-checkout/CartCheckoutStore.ts:276
 msgid "Enter the recipient phone number."
-msgstr "Wprowadź numer telefonu odbiorcy."
+msgstr ""
 
 #: resources/js/modules/cart-checkout/CartCheckoutStore.ts:119
 msgid "Enter the sender first name."
-msgstr "Wprowadź imię nadawcy."
+msgstr ""
 
 #: resources/js/modules/cart-checkout/CartCheckoutStore.ts:120
 msgid "Enter the sender last name."
-msgstr "Wprowadź nazwisko nadawcy."
+msgstr ""
 
 #: resources/js/modules/cart-checkout/CartCheckoutStore.ts:121
 #: resources/js/modules/cart-checkout/CartCheckoutStore.ts:287
 msgid "Enter the sender phone number."
-msgstr "Wprowadź numer telefonu nadawcy."
+msgstr ""
 
 #: resources/views/woocommerce/checkout/thankyou.blade.php:67
 msgid "Expected delivery"
-msgstr "Przewidywany termin dostawy"
+msgstr ""
 
 #: public/build/assets/theme.json:1
 msgctxt "Font family name"
 msgid "deco"
-msgstr "deco"
+msgstr ""
 
 #: public/build/assets/theme.json:1
 msgctxt "Font family name"
 msgid "heading"
-msgstr "nagłówek"
+msgstr ""
 
 #: public/build/assets/theme.json:1
 msgctxt "Font family name"
 msgid "main"
-msgstr "główny"
+msgstr ""
 
 #: public/build/assets/theme.json:1
 msgctxt "Font family name"
 msgid "mono"
-msgstr "mono"
+msgstr ""
 
 #: public/build/assets/theme.json:1
 msgctxt "Font family name"
 msgid "sans"
-msgstr "sans"
+msgstr ""
 
 #: public/build/assets/theme.json:1
-#, fuzzy
 msgctxt "Font size name"
 msgid "2xl"
-msgstr "2xl"
+msgstr ""
 
 #: public/build/assets/theme.json:1
 msgctxt "Font size name"
 msgid "5xl"
-msgstr "5xl"
+msgstr ""
 
 #: public/build/assets/theme.json:1
 msgctxt "Font size name"
 msgid "base"
-msgstr "podstawowy"
+msgstr ""
 
 #: public/build/assets/theme.json:1
 msgctxt "Font size name"
 msgid "lg"
-msgstr "lg"
+msgstr ""
 
 #: public/build/assets/theme.json:1
 msgctxt "Font size name"
 msgid "sm"
-msgstr "sm"
+msgstr ""
 
 #: public/build/assets/theme.json:1
 msgctxt "Font size name"
 msgid "xs"
-msgstr "xs"
+msgstr ""
 
 #: app/Catalog/ProductData.php:36
-#, fuzzy
 msgid "Free delivery"
-msgstr "Darmowa dostawa"
+msgstr ""
 
 #: resources/views/woocommerce/single-product/add-to-cart-bar/desktop.blade.php:68
-#, fuzzy
 msgid "Free shipping"
-msgstr "Darmowa wysyłka"
+msgstr ""
 
 #: app/filters.php:149
 #, php-format
 msgid "from %s"
-msgstr "od %s"
+msgstr ""
 
 #: app/filters.php:184
 msgid "Full name"
-msgstr "Pełne imię i nazwisko"
+msgstr ""
 
 #: app/Catalog/Settings.php:16
 msgid "Funeral home"
-msgstr "Dom pogrzebowy"
+msgstr ""
 
 #: app/Catalog/SingleProductView.php:219
 msgid "Gotowy do zamowienia od razu."
-msgstr "Gotowy do zamówienia od razu."
+msgstr ""
 
 #: app/Catalog/Settings.php:29
 msgid "Hand delivery"
-msgstr "Dostawa ręczna"
+msgstr ""
 
 #: app/Catalog/Settings.php:17
 msgid "Hospital"
-msgstr "Szpital"
+msgstr ""
 
 #: app/Catalog/Settings.php:18
 msgid "Hotel"
-msgstr "Hotel"
+msgstr ""
 
 #. Author URI of the theme
 msgid "https://roots.io/"
-msgstr "https://roots.io/"
+msgstr ""
 
 #. URI of the theme
 msgid "https://roots.io/sage/"
-msgstr "https://roots.io/sage/"
+msgstr ""
 
 #: resources/views/woocommerce/single-product/add-to-cart-bar/desktop.blade.php:3
-#, fuzzy
 msgid "Increase quantity"
-msgstr "Zwiększ ilość"
+msgstr ""
 
 #: resources/views/woocommerce/cart/cart.blade.php:71
-#, fuzzy
 msgid "Info"
-msgstr "Informacje"
+msgstr ""
 
 #: app/View/Composers/CartCheckout.php:28
 msgid "Kupuję i płacę"
-msgstr "Kupuję i płacę"
+msgstr ""
 
 #. Name of the theme
 msgid "Kwiaty Bukiety"
-msgstr "Kwiaty Bukiety"
+msgstr ""
 
 #: resources/views/forms/search.blade.php:3
 msgctxt "label"
 msgid "Search for:"
-msgstr "Szukaj:"
+msgstr ""
 
 #: app/View/Composers/Post.php:34
 msgid "Latest Posts"
-msgstr "Najnowsze wpisy"
+msgstr ""
 
 #: app/Catalog/Settings.php:28
 msgid "Leave at the door"
-msgstr "Zostaw przy drzwiach"
+msgstr ""
 
 #: app/filters.php:1029
 msgid "Loading..."
-msgstr "Ładowanie..."
+msgstr ""
 
 #: resources/views/blocks/cities.blade.php:89
 msgid "More cities"
-msgstr "Więcej miast"
+msgstr ""
 
 #: resources/views/woocommerce/single-product/reviews.blade.php:15
-#, fuzzy
 msgid "More Reviews"
-msgstr "Więcej opinii"
+msgstr ""
 
 #: app/View/Composers/Comments.php:77
 msgid "Newer comments &rarr;"
-msgstr "Nowsze komentarze &rarr;"
+msgstr ""
 
 #: app/filters.php:226 app/filters.php:826 app/filters.php:899
 msgid "NIP"
-msgstr "NIP"
+msgstr ""
 
 #: app/View/Composers/Post.php:50
 msgid "Not Found"
-msgstr "Nie znaleziono"
+msgstr ""
 
 #: app/filters.php:324
 msgid "Notes about your order, e.g. specials notes for delivery"
-msgstr "Uwagi do zamówienia, np. specjalne notatki dotyczące dostawy"
+msgstr ""
 
 #: app/filters.php:650
 msgid "One of the additions was not found."
-msgstr "Nie znaleziono jednego z dodatków."
+msgstr ""
 
 #: resources/views/woocommerce/single-product/add-to-cart-bar/desktop.blade.php:82
-#, fuzzy
 msgid "Online payment"
-msgstr "Płatność online"
+msgstr ""
 
 #: resources/views/woocommerce/checkout/thankyou.blade.php:55
 msgid "Order Successful!"
-msgstr "Zamówienie złożone!"
+msgstr ""
 
 #: app/Checkout/CartCheckout.php:369 app/Checkout/CartCheckout.php:387
 msgid "Order Total"
-msgstr "Razem za zamówienie"
+msgstr ""
 
 #: resources/js/modules/cart-checkout/CartCheckoutStore.ts:215
 msgid "Order total"
-msgstr "Razem za zamówienie"
+msgstr ""
 
 #: app/View/Composers/Post.php:63
 msgid "Pages:"
-msgstr "Strony:"
+msgstr ""
 
 #: resources/views/woocommerce/cart/cart.blade.php:80
-#, fuzzy
 msgid "Payment"
-msgstr "Płatność"
+msgstr ""
 
 #: resources/views/woocommerce/cart/cart.blade.php:372
-#, fuzzy
 msgid "Payment method"
-msgstr "Metoda płatności"
+msgstr ""
 
 #: app/filters.php:237
 msgid "Phone number"
-msgstr "Numer telefonu"
+msgstr ""
 
 #: app/filters.php:271 app/filters.php:824 app/filters.php:897
 msgid "Place name"
-msgstr "Nazwa miejsca"
+msgstr ""
 
 #: app/filters.php:878
 msgid "Please provide the place name."
-msgstr "Proszę podać nazwę miejsca."
+msgstr ""
 
 #: resources/views/woocommerce/checkout/thankyou.blade.php:24
 msgid ""
 "Please try to pay for the order again or choose a different payment method."
 msgstr ""
-"Spróbuj ponownie zapłacić za zamówienie lub wybierz inną metodę płatności."
 
 #: app/filters.php:249
 msgid "Postal code"
-msgstr "Kod pocztowy"
+msgstr ""
 
 #: resources/js/modules/cart-checkout/CartCheckoutStore.ts:109
 msgid "Postal code must use the format 00-000."
-msgstr "Kod pocztowy musi mieć format 00-000."
+msgstr ""
 
 #: resources/views/woocommerce/cart/cart.blade.php:140
-#, fuzzy
 msgid "Price"
-msgstr "Cena"
+msgstr ""
 
 #: app/Catalog/Settings.php:13
 msgid "Private address"
-msgstr "Adres prywatny"
+msgstr ""
 
 #: resources/views/woocommerce/single-product/description.blade.php:8
 msgid "Product description"
-msgstr "Opis produktu"
+msgstr ""
 
 #: resources/views/woocommerce/cart/cart.blade.php:138
-#, fuzzy
 msgid "Product details"
-msgstr "Szczegóły produktu"
+msgstr ""
 
 #: resources/views/woocommerce/cart/cart.blade.php:137
-#, fuzzy
 msgid "Product image"
-msgstr "Zdjęcie produktu"
+msgstr ""
 
 #: app/Catalog/ProductData.php:28
 msgid "Promotion"
-msgstr "Promocja"
+msgstr ""
 
 #: resources/views/woocommerce/cart/cart.blade.php:139
-#, fuzzy
 msgid "Quantity"
-msgstr "Ilość"
+msgstr ""
 
 #: resources/views/woocommerce/cart/cart.blade.php:297
-#, fuzzy
 msgid "Recipient details"
-msgstr "Dane odbiorcy"
+msgstr ""
 
 #: app/filters.php:825 app/filters.php:898
 msgid "Recipient phone"
-msgstr "Telefon odbiorcy"
+msgstr ""
 
 #: resources/views/woocommerce/single-product/reviews.blade.php:2
-#, fuzzy
 msgid "Reviews"
-msgstr "Opinie"
+msgstr ""
 
 #. Author of the theme
 msgid "Roots"
-msgstr "Korzenie"
+msgstr ""
 
 #. Description of the theme
 msgid "Sage is a WordPress starter theme."
-msgstr "Sage to motyw startowy WordPress."
+msgstr ""
 
 #: resources/views/woocommerce/single-product/add-to-cart-bar/desktop.blade.php:75
-#, fuzzy
 msgid "Same day"
-msgstr "Tego samego dnia"
+msgstr ""
 
 #: app/Catalog/Settings.php:19
 msgid "School"
-msgstr "Szkoła"
+msgstr ""
 
 #. %s is replaced with the search query
 #: app/View/Composers/Post.php:44
 #, php-format
 msgid "Search Results for %s"
-msgstr "Wyniki wyszukiwania dla %s"
+msgstr ""
 
 #: resources/js/modules/cart-checkout/CartCheckoutStore.ts:104
 msgid "Select a delivery location."
-msgstr "Wybierz miejsce dostawy."
+msgstr ""
 
 #: resources/views/woocommerce/cart/cart.blade.php:304
-#, fuzzy
 msgid "Sender details"
-msgstr "Dane nadawcy"
+msgstr ""
 
 #: app/filters.php:1028 app/filters.php:1031
 msgid "Show more"
-msgstr "Pokaż więcej"
+msgstr ""
 
 #: resources/views/woocommerce/content-single-product.blade.php:107
 msgid "Similar products"
-msgstr "Podobne produkty"
+msgstr ""
 
 #: resources/views/layouts/app.blade.php:28
 msgid "Skip to content"
-msgstr "Przejdź do treści"
+msgstr ""
 
 #: resources/views/404.blade.php:9
 msgid "Sorry, but the page you are trying to view does not exist."
-msgstr "Przepraszamy, ale strona, którą próbujesz wyświetlić, nie istnieje."
+msgstr ""
 
 #: resources/views/search.blade.php:7 resources/views/index.blade.php:7
 msgid "Sorry, no results were found."
-msgstr "Przepraszamy, nie znaleziono wyników."
+msgstr ""
 
 #: app/Catalog/SingleProductView.php:210
 msgid "Standard"
-msgstr "Standardowy"
+msgstr ""
 
 #: app/filters.php:277
 msgid "Street and number"
-msgstr "Ulica i numer"
+msgstr ""
 
 #: resources/views/forms/search.blade.php:13
 msgctxt "submit button"
 msgid "Search"
-msgstr "Szukaj"
+msgstr ""
 
 #: app/Checkout/CartCheckout.php:366 app/Checkout/CartCheckout.php:375
 #: resources/js/modules/cart-checkout/CartCheckoutStore.ts:203
 msgid "Subtotal"
-msgstr "Razem do zapłaty"
+msgstr ""
 
 #: resources/js/modules/cart-checkout/CartCheckoutStore.ts:133
 msgid "Tax ID must contain 10 digits."
-msgstr "NIP musi zawierać 10 cyfr."
+msgstr ""
 
 #: resources/views/woocommerce/checkout/thankyou.blade.php:59
 msgid "Thank you for choosing us for your flower delivery."
-msgstr "Dziękujemy za wybranie naszej usługi dostawy kwiatów."
+msgstr ""
 
 #: resources/views/woocommerce/checkout/thankyou.blade.php:99
 msgid "Thank You for Your Order"
-msgstr "Dziękujemy za zamówienie"
+msgstr ""
 
 #: app/Support/DeliveryTimer.php:291
 msgid "Today"
-msgstr "Dziś"
+msgstr ""
 
 #: app/Support/DeliveryTimer.php:295
 msgid "Tomorrow"
-msgstr "Jutro"
+msgstr ""
 
 #: resources/views/woocommerce/cart/cart.blade.php:141
 #: resources/views/woocommerce/cart/cart.blade.php:435
-#, fuzzy
 msgid "Total"
-msgstr "Razem"
+msgstr ""
 
 #: resources/views/woocommerce/single-product/add-to-cart-bar/desktop.blade.php:11
-#, fuzzy
 msgid "Total price:"
-msgstr "Cena łączna:"
+msgstr ""
 
 #: resources/views/woocommerce/cart/cart.blade.php:488
-#, fuzzy, php-format
+#, php-format
 msgid "Total: %s"
-msgstr "Razem: %s"
+msgstr ""
 
 #: app/filters.php:714
 msgid "Unable to add one of the additions to cart."
-msgstr "Nie można dodać jednego z dodatków do koszyka."
+msgstr ""
 
 #: resources/js/modules/cart-checkout/CartCheckoutStore.ts:607
 msgid "Unable to place the order."
-msgstr "Nie można złożyć zamówienia."
+msgstr ""
 
 #: resources/views/woocommerce/cart/cart.blade.php:269
-#, fuzzy
 msgid "Your cart is empty"
-msgstr "Twój koszyk jest pusty"
+msgstr ""
 
 #: resources/views/woocommerce/checkout/thankyou.blade.php:101
 msgid "Your order confirmation has been saved."
-msgstr "Potwierdzenie zamówienia zostało zapisane."
+msgstr ""
 
 #: resources/views/woocommerce/checkout/thankyou.blade.php:60
 msgid ""
 "Your order has been successfully placed, and a confirmation has been sent to "
 "your email address."
 msgstr ""
-"Twoje zamówienie zostało pomyślnie złożone, a potwierdzenie zostało wysłane "
-"na Twój adres e-mail."

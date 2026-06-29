@@ -38,7 +38,7 @@
           </button>
           <div x-show="isActive('faq-{{ $loop->index }}')" x-collapse>
             <div
-              class="text-body-13 text-green-dark md:text-body-16 ml-auto w-full pt-2 md:pt-4 lg:max-w-208.5 lg:pr-51"
+              class="text-body-13 font-light text-green-dark md:text-body-16 ml-auto w-full pt-2 md:pt-4 lg:max-w-208.5 lg:pr-51"
             >
               {{ $item['text'] ?? '' }}
             </div>

@@ -48,7 +48,7 @@
     @include('elements.label-product-setting')
   @endif
 
-  <div class="grid grid-cols-2 gap-3 lg:grid-cols-3">
+  <div class="grid grid-cols-2 gap-3 xl:grid-cols-3">
     @foreach ($products as $item)
       @php
         $optionId = ($id ?: $name ?: 'addition-checkboxes') . '-' . $item->id;

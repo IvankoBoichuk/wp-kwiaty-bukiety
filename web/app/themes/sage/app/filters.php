@@ -271,7 +271,7 @@ add_filter(
             'label' => __('Place name', 'sage-front'),
             'placeholder' => __('e.g. Hotel Marriott', 'sage-front'),
             'priority' => 5,
-            'required' => true,
+            'required' => false,
         ];
 
         $fields['shipping']['shipping_address_1']['label'] = __(
@@ -729,6 +729,11 @@ add_action(
     10,
     6,
 );
+
+// Add specific CSS class by filter.
+add_filter( 'body_class', function( $classes ) {
+	return array_merge( $classes, ['flex', 'flex-col', 'min-h-screen'] );
+} );
 
 add_filter(
     'woocommerce_get_item_data',
