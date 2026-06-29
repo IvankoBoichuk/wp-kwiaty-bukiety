@@ -42,7 +42,7 @@
                   {{ $item['title'] ?? '' }}</span
                 >
               </h3>
-              <p class="text-body-13 mt-1 lg:text-[16px]">{{ $item['text'] ?? '' }}</p>
+              <p class="text-body-13 font-light mt-1 lg:text-[16px]">{{ $item['text'] ?? '' }}</p>
             </div>
           </div>
         @endforeach

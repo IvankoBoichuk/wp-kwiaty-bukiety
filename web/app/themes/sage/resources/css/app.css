@@ -98,6 +98,10 @@
   }
 }
 
+@utility card {
+  @apply shadow-card rounded-xl bg-white px-3 py-4;
+}
+
 @layer components {
   .cart-checkout-step-panel {
     will-change: transform, opacity;
@@ -133,11 +137,11 @@
   }
 
   .single-product-order-panel .variations select {
-    @apply text-body-13 bg-background text-green-default focus:border-green-easy w-full rounded-xl border border-[#E0E0D7] px-3 py-2.5 focus:outline-none;
+    @apply text-body-13 font-light bg-background text-green-default focus:border-green-easy w-full rounded-xl border border-[#E0E0D7] px-3 py-2.5 focus:outline-none;
   }
 
   .single-product-order-panel .reset_variations {
-    @apply text-body-13 text-[#2F80ED];
+    @apply text-body-13 font-light text-[#2F80ED];
   }
 
   .single-product-order-panel .woocommerce-variation-price,
@@ -159,16 +163,12 @@
   }
 
   .single-product-order-panel .stock {
-    @apply text-body-13 text-green-easy;
+    @apply text-body-13 font-light text-green-easy;
   }
 
   .single-product-order-panel .woocommerce-variation-description,
   .single-product-order-panel .woocommerce-product-details__short-description {
-    @apply text-body-13 text-green-default;
-  }
-
-  .card {
-    @apply shadow-card rounded-xl bg-white px-3 py-4;
+    @apply text-body-13 font-light text-green-default;
   }
 
   .single-product-settings-option {
@@ -179,6 +179,10 @@
     &:has(*:checked) {
       @apply border-green-easy bg-green-easy text-white;
     }
+  }
+
+  .woocommerce-privacy-policy-text a {
+    @apply text-[#0885CD] underline hover:no-underline;
   }
 }
 
@@ -215,13 +219,13 @@
   @apply h2-mobile md:h2-desktop;
 }
 
-#app {
+#main {
   .payu-list-banks {
-    @apply mt-2 grid grid-cols-4 gap-1.5;
+    @apply mt-2 grid grid-cols-4 gap-1.5 lg:grid-cols-10;
   }
 
   .payu-accept-conditions .payu-conditions-description a {
-    @apply text-[#0885CD];
+    @apply text-[#0885CD] underline hover:no-underline;
   }
 
   .payu-bank {

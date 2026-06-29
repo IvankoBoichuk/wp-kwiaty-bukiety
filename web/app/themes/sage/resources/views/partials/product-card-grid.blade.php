@@ -21,6 +21,6 @@
     >
       {{ $item->name }}
     </a>
-    <p class="text-body-13 md:text-body-15">{!! $item->price !!}</p>
+    <p class="text-body-13 font-light md:text-body-15">{!! $item->price !!}</p>
   </div>
 </div>

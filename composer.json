@@ -32,7 +32,6 @@
     "roots/allow-svg": "^1.0",
     "wp-plugin/woo-payu-payment-gateway": "^2.10",
     "wp-plugin/woocommerce-paypal-payments": "^4.0.4",
-    "wp-plugin/duplicator": "^1.5",
     "roots/acorn": "^6.2",
     "generoi/sage-woocommerce": "^1.1"
   },
