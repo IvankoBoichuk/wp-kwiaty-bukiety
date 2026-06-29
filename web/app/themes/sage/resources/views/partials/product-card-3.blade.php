@@ -23,10 +23,10 @@
     <a
       href="{{ $item->link }}"
       target="{{ $item->target }}"
-      class="text-body-13 truncate font-bold text-wrap uppercase before:absolute before:inset-0 md:text-lg lg:font-semibold"
+      class="text-body-13 font-light truncate font-bold text-wrap uppercase before:absolute before:inset-0 md:text-lg lg:font-semibold"
     >
       {{ $item->name }}
     </a>
-    <p class="text-body-13 md:text-body-15">{!! $item->price !!}</p>
+    <p class="text-body-13 font-light md:text-body-15">{!! $item->price !!}</p>
   </div>
 </div>

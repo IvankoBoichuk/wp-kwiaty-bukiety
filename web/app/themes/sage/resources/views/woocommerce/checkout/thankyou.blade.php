@@ -40,29 +40,33 @@
         </div>
       </div>
     @else
-      <section>
+      <section
+        class="relative -mt-2.5 flex flex-col gap-8 md:-mt-4 lg:mt-8 lg:grid lg:grid-cols-2 lg:items-center lg:gap-12"
+      >
         <img
           src="{{ get_template_directory_uri() . '/resources/images/flowers-on-the-table.jpg' }}"
           alt="{{ esc_attr__('Order Confirmation', 'sage-front') }}"
-          class="aspect-394/226 w-full object-cover"
+          class="h-full w-screen max-w-max self-center object-cover lg:order-last lg:h-auto lg:w-full lg:max-w-full lg:self-auto"
         />
 
-        <div class="px-3 py-8 text-center">
-          <h1 class="h2-mobile text-dark-text mb-4">{{ __('Order Successful!', 'sage-front') }}</h1>
-          <p class="mb-6 text-[#426E59]">
-            {{
+        <div class="flex grow flex-col gap-6 md:gap-10 lg:mx-auto lg:w-full lg:max-w-130 lg:grow-0">
+          <div class="flex flex-col items-center gap-4">
+            <h2 class="h2-mobile text-dark-text text-center md:h2-desktop lg:text-left">
+              {{ __('Order Successful!', 'sage-front') }}
+            </h2>
+            <p class="text-3.5 text-center font-normal text-[#426E59] md:max-w-112.5 md:text-base md:text-[16px]">{{
               implode(' ', [
                 __('Thank you for choosing us for your flower delivery.', 'sage-front'),
                 __('Your order has been successfully placed, and a confirmation has been sent to your email address.', 'sage-front'),
               ])
-            }}
-          </p>
+            }}</p>
+          </div>
           @if ($deliveryDate || $deliveryTimeLabel !== '')
-            <div class="mb-6 flex flex-col gap-1">
-              <div class="text-3.5 text-green-easy text-center font-normal">
+            <div class="mb-6 flex flex-col gap-1 md:mb-0 lg:mb-5.5">
+              <div class="text-3.5 text-center font-normal text-[#6D9586] md:text-base">
                 {{ __('Expected delivery', 'sage-front') }}
               </div>
-              <div class="text-body-15 text-dark-text flex justify-center gap-3 font-bold">
+              <div class="text-body-15 text-dark-text flex justify-center gap-3 font-bold md:text-lg md:text-[22px]">
                 @if ($deliveryDate)
                   <span> {{ date_i18n('d.m.Y', $deliveryDate) }} </span>
                 @endif
@@ -73,8 +77,7 @@
               </div>
             </div>
           @endif
-
-          <div class="mt-auto">
+          <div class="mt-auto w-full md:mx-auto md:max-w-92 lg:mt-0">
             @include('partials.button',
               [
                 'text' => __('Back to Home Page', 'sage-front'),

@@ -52,4 +52,15 @@
         <path d="M3.05208 10.868C2.77542 11.0766 2.76285 11.1747 2.7377 12.4018C2.71255 14.2423 2.64967 14.1932 5.49167 14.1932H7.67976L7.93127 13.8742C8.15762 13.6043 8.19535 13.3711 8.19535 12.5122C8.19535 10.7084 8.09475 10.6471 5.4288 10.6471C3.61796 10.6348 3.31616 10.6716 3.05208 10.868ZM6.93783 12.414V12.9662H5.4288H3.91977V12.414V11.8619H5.4288H6.93783V12.414Z" fill="#969998"/>
         <path d="M22.9465 15.0996C22.1182 15.9884 21.4153 16.7157 21.3651 16.7157C21.3275 16.7157 21.0011 16.4059 20.6623 16.0423C20.0222 15.3555 19.5829 15.1938 19.2691 15.5305C18.9428 15.8807 19.1311 16.2713 20.1226 17.3622C21.0639 18.3992 21.3777 18.6012 21.6914 18.3588C22.1307 18.0355 25.2684 14.3992 25.2684 14.2242C25.2684 13.9817 24.8291 13.4834 24.6032 13.4834C24.5154 13.4834 23.7749 14.2107 22.9465 15.0996Z" fill="#969998"/>
     </symbol>
+    <symbol id="close" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M14.125 5.875L5.87542 14.1246" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M14.125 14.125L5.87542 5.87542" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="decrement" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M15.8335 10H4.16683" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="increment" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M10 4.16602V15.8327" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M15.8335 10H4.16683" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
 </svg>

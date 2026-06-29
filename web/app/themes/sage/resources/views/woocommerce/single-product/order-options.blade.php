@@ -90,7 +90,7 @@
       ])
 
     <textarea
-      class="single-product-settings-option focus:border-green-easy max-lg:text-body-13 min-h-23 w-full cursor-text resize-none placeholder:text-[#404844] focus:outline-none"
+      class="single-product-settings-option focus:border-green-easy max-lg:text-body-13 font-light min-h-23 w-full cursor-text resize-none placeholder:text-[#404844] focus:outline-none"
       placeholder="{{ __('Leave empty if you don\'t need a card', 'sage-front') }}"
       name="card-message"
     ></textarea>

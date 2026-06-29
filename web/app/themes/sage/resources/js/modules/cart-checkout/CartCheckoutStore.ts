@@ -91,10 +91,10 @@ const INFO_STEP_FIELD_NAMES = [
 ] as const
 
 const SHIPPING_PLACE_TYPES = {
-    PRIVATE_ADDRESS: 'private_address',
+    PRIVATE_ADDRESS: 'private-address',
     COMPANY: 'company',
     CHURCH: 'church',
-    FUNERAL_HOME: 'funeral_home',
+    FUNERAL_HOME: 'funeral-home',
     HOSPITAL: 'hospital',
     HOTEL: 'hotel',
     SCHOOL: 'school',
@@ -122,7 +122,10 @@ const infoStepSchema = yup.object({
     billing_email: yup
         .string()
         .trim()
-        .email(__('Enter a valid email address.', 'sage-front'))
+        .matches(
+            /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+            __('Enter a valid email address.', 'sage-front')
+        )
         .required(__('Enter the email address.', 'sage-front')),
     billing_nip: yup
         .string()
