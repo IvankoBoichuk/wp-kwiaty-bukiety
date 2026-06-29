@@ -52,7 +52,7 @@
       {{-- Product Gallery --}}
       @include('woocommerce.single-product.gallery', ['gallery' => $productData['gallery'], 'title' => $productData['title']])
 
-      {{-- Product Details --}}
+      {{-- Details --}}
       <div
         class="grid gap-8 lg:sticky lg:top-(--header-top-height) lg:col-start-2 lg:row-span-3 lg:row-start-1 lg:gap-6"
       >

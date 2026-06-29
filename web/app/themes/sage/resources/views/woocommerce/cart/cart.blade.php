@@ -134,8 +134,8 @@
               class="hidden mb-5 border-none text-body-16 text-green-default @4xl:grid @4xl:grid-cols-[6.875rem_minmax(0,1fr)_9rem_7rem_7rem_2rem] @4xl:items-center @4xl:gap-5"
               aria-hidden="true"
             >
-              <span>{{ __('Product image', 'sage-front') }}</span>
-              <span>{{ __('Product details', 'sage-front') }}</span>
+              <span>{{ __('Image', 'sage-front') }}</span>
+              <span>{{ __('Details', 'sage-front') }}</span>
               <span class="text-center">{{ __('Quantity', 'sage-front') }}</span>
               <span class="text-right">{{ __('Price', 'sage-front') }}</span>
               <span class="text-right">{{ __('Total', 'sage-front') }}</span>

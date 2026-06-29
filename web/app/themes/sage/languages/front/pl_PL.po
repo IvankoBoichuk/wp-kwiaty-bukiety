@@ -713,13 +713,13 @@ msgstr "Opis produktu"
 
 #: resources/views/woocommerce/cart/cart.blade.php:138
 #, fuzzy
-msgid "Product details"
-msgstr "Szczegóły produktu"
+msgid "Details"
+msgstr "Szczegóły"
 
 #: resources/views/woocommerce/cart/cart.blade.php:137
 #, fuzzy
-msgid "Product image"
-msgstr "Zdjęcie produktu"
+msgid "Image"
+msgstr "Zdjęcie"
 
 #: app/Catalog/ProductData.php:28
 msgid "Promotion"

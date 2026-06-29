@@ -686,11 +686,11 @@ msgid "Product description"
 msgstr ""
 
 #: resources/views/woocommerce/cart/cart.blade.php:138
-msgid "Product details"
+msgid "Details"
 msgstr ""
 
 #: resources/views/woocommerce/cart/cart.blade.php:137
-msgid "Product image"
+msgid "Image"
 msgstr ""
 
 #: app/Catalog/ProductData.php:28
