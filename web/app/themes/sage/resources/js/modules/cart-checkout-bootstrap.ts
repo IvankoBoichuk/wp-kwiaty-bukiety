@@ -1,5 +1,6 @@
 import Alpine from 'alpinejs'
 import { CartCheckoutStore } from './cart-checkout/CartCheckoutStore'
+import { initPostalCodeAutocomplete } from './postal-code-autocomplete'
 
 function init(): void {
     if (!window.cartCheckoutConfig) return
@@ -10,3 +11,7 @@ function init(): void {
 }
 
 document.addEventListener('alpine:init', init)
+document.addEventListener('DOMContentLoaded', () => {
+    if (!window.cartCheckoutConfig) return
+    initPostalCodeAutocomplete()
+})
