@@ -265,7 +265,7 @@
             </template>
           </div>
 
-          <div class="card text-center" x-show="$store.cartCheckout.isCartEmpty">
+          <div class="card text-center lg:p-8 lg:rounded-4xl" x-show="$store.cartCheckout.isCartEmpty">
             <h2 class="text-green-default mb-3 text-[20px] font-semibold">{{ __('Your cart is empty', 'sage-front') }}</h2>
             <a
               href="{{ esc_url(wc_get_page_permalink('shop')) }}"
